@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#2F7EB7</color>
+    <color name="colorPrimaryDark">#10518C</color>
+    <color name="colorAccent">#7C7F81</color>
+
+    <color name="black">#030303</color>
+    <color name="blue">#2F7EB7</color>
+    <color name="blue_dark">#10518C</color>
+    <color name="blue_dark_second">#2F7EB7</color>
+    <color name="blue_light">#1889FD</color>
+    <color name="gold">#FCCE89</color>
+    <color name="yellow">#FCB038</color>
+    <color name="white">#ffffff</color>
+    <color name="gray">#dfdfdf</color>
+    <color name="hint_color">#D8D8D8</color>
+    <color name="transparant">#00d8d8d8</color>
+    <color name="green">#159F85</color>
+    <color name="green_light">#07DCA3</color>
+    <color name="tosca">#0099A4</color>
+    <color name="tosca_light">#2CC9D1</color>
+    <color name="red">#F85A59</color>
+    <color name="pink">#FD3073</color>
+    <color name="purple">#8975F8</color>
+    <color name="purple_light">#7799FA</color>
+    <color name="cream">#FFFDD0</color>
+
+    <color name="btn_blue">#1889FD</color>
+    <color name="btn_green">#08DA91</color>
+
+    <color name="icon_black">#7C7F81</color>
+    <color name="line">#f3f3f3</color>
+
+    <!--<color name="text_black">#030303</color>-->
+    <!--<color name="text_second">#4A4A4A</color>-->
+    <!--<color name="text_hint">#a6a6a6</color>-->
+    <color name="text_black">#262626</color>
+    <color name="text_second">#81868c</color>
+    <color name="text_hint">#a6a6a6</color>
+    <color name="text_white">#ffffff</color>
+
+    <color name="text_hint_transparan">#bdffffff</color>
+
+
+</resources>
