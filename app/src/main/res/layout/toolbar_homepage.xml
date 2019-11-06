@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:minHeight="?attr/actionBarSize"
     android:gravity="center"
+    android:background="@color/colorPrimary"
     >
 
     <TextView
@@ -14,7 +15,7 @@
         android:layout_gravity="left"
         android:text="Dashboard"
         android:textSize="18dp"
-        android:textColor="@color/text_black"
+        android:textColor="@color/text_white"
         android:fontFamily="@font/bold_opensans"/>
 
 </LinearLayout>

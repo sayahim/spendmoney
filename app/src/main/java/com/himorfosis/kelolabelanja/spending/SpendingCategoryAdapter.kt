@@ -33,8 +33,9 @@ class SpendingCategoryAdapter(var context: Context, var list: List<CategoryEntit
 //        if (data.image_category != null) {
 
 
+        val imageAssets = Util.convertImageDrawable(context, data.image_category)
 
-            holder.gambar.setImageResource(data.image_category)
+            holder.gambar.setImageResource(imageAssets)
 
 //        } else {
 //

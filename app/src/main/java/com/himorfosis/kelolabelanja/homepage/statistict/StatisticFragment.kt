@@ -6,6 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.himorfosis.kelolabelanja.R
+import com.anychart.AnyChart
+import com.anychart.charts.Pie
+import com.anychart.chart.common.dataentry.ValueDataEntry
+import com.anychart.chart.common.dataentry.DataEntry
+
+
+
+
 
 class StatisticFragment: Fragment() {
 

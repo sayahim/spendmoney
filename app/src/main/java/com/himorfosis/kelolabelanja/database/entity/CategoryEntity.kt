@@ -12,6 +12,6 @@ data class CategoryEntity(
 
         @PrimaryKey(autoGenerate = true) var id: Int,
         @ColumnInfo(name = "name") var name: String,
-        @ColumnInfo(name = "image_category") var image_category: Int,
+        @ColumnInfo(name = "image_category") var image_category: String,
         @ColumnInfo(name = "selected") var selected: Int
 )

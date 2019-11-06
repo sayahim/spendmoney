@@ -13,6 +13,7 @@
     <color name="yellow">#FCB038</color>
     <color name="white">#ffffff</color>
     <color name="gray">#dfdfdf</color>
+    <color name="gray_dark">#5c5c5c</color>
     <color name="hint_color">#D8D8D8</color>
     <color name="transparant">#00d8d8d8</color>
     <color name="green">#159F85</color>

@@ -7,6 +7,7 @@ import java.text.NumberFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
+import android.graphics.drawable.Drawable
 
 class Util {
 
@@ -54,13 +55,28 @@ class Util {
             editor.commit()
         }
 
-        fun numberFormat(nominal: String): String {
+        fun numberFormatMoney(nominal: String): String {
 
             val localeID = Locale("in", "ID")
             val formatRupiah = NumberFormat.getCurrencyInstance(localeID)
 
             return formatRupiah.format(java.lang.Double.valueOf(nominal))
 
+        }
+
+        fun numberFormat(nominal: String): String {
+
+            val formatRupiah = NumberFormat.getCurrencyInstance()
+
+            return formatRupiah.format(java.lang.Double.valueOf(nominal))
+
+        }
+
+        fun convertImageDrawable(c: Context, ImageName: String): Int {
+
+            val id = c.getResources().getIdentifier(ImageName, "drawable", c.getPackageName())
+
+            return id
         }
 
     }

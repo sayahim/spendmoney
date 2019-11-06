@@ -10,11 +10,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.room.Room
 import com.himorfosis.kelolabelanja.R
 import com.himorfosis.kelolabelanja.category.Category
-import com.himorfosis.kelolabelanja.database.entity.CategoryEntity
 import com.himorfosis.kelolabelanja.database.spending.SpendingDao
 import com.himorfosis.kelolabelanja.database.spending.SpendingDatabase
 import com.himorfosis.kelolabelanja.database.entity.SpendingEntitiy
-import com.himorfosis.kelolabelanja.homepage.Homepage
+import com.himorfosis.kelolabelanja.homepage.HomepageActivity
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.activity_spending.*
 import kotlinx.android.synthetic.main.toolbar_detail.*
@@ -47,7 +46,11 @@ class SpendingActivity : AppCompatActivity() {
 
         Util.deleteData("category", this)
 
-        spendingDao = Room.databaseBuilder(this, SpendingDatabase::class.java, SpendingDatabase.DB_NAME).allowMainThreadQueries().build().spendingDao()
+        spendingDao = Room.databaseBuilder(this, SpendingDatabase::class.java, SpendingDatabase.DB_NAME)
+                .allowMainThreadQueries()
+                .fallbackToDestructiveMigration()
+                .build()
+                .spendingDao()
 
     }
 
@@ -153,7 +156,7 @@ class SpendingActivity : AppCompatActivity() {
 
         toast("Data Berhasil Tersimpan")
 
-        startActivity(Intent(this, Homepage::class.java))
+        startActivity(Intent(this, HomepageActivity::class.java))
 
     }
 
@@ -167,7 +170,7 @@ class SpendingActivity : AppCompatActivity() {
 
         backBar_btn.setOnClickListener {
 
-            startActivity(Intent(this, Homepage::class.java))
+            startActivity(Intent(this, HomepageActivity::class.java))
 
         }
 

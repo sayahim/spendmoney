@@ -20,6 +20,9 @@ interface SpendingDao {
     @Query("SELECT * FROM spending_db WHERE date =:date ")
     fun getMonthSpending(date: String): List<SpendingEntitiy>
 
+    @Query("SELECT * FROM spending_db WHERE id =:id ")
+    fun getDetailSpending(id: Int): SpendingEntitiy
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertSpending(spending_db: SpendingEntitiy)
 
@@ -33,6 +36,9 @@ interface SpendingDao {
 
     @Query("SELECT * FROM spending_db WHERE date =:date ")
     fun getReportSpendToday(date: String): List<SpendingEntitiy>
+
+    @Query("SELECT * FROM spending_db WHERE date =:date ")
+    fun getReportFinanceMounth(date: String): MutableList<SpendingEntitiy>
 
     // category
 

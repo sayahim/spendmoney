@@ -1,48 +1,50 @@
-package com.himorfosis.kelolabelanja.category
+package com.himorfosis.kelolabelanja.financial
 
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.appcompat.app.ActionBar
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
-import com.himorfosis.kelolabelanja.R
-import com.himorfosis.kelolabelanja.database.spending.SpendingDao
-import com.himorfosis.kelolabelanja.database.spending.SpendingDatabase
-import com.himorfosis.kelolabelanja.spending.SpendingActivity
-import com.himorfosis.kelolabelanja.utilities.Util
-import kotlinx.android.synthetic.main.activity_category.*
-import kotlinx.android.synthetic.main.toolbar_detail.*
-import org.jetbrains.anko.toast
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
+import androidx.appcompat.app.ActionBar
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
+import com.himorfosis.kelolabelanja.R
+import com.himorfosis.kelolabelanja.category.CategoryAdapter
 import com.himorfosis.kelolabelanja.database.entity.CategoryEntity
 import com.himorfosis.kelolabelanja.database.entity.SpendingEntitiy
+import com.himorfosis.kelolabelanja.database.spending.SpendingDao
+import com.himorfosis.kelolabelanja.database.spending.SpendingDatabase
 import com.himorfosis.kelolabelanja.homepage.HomepageActivity
+import com.himorfosis.kelolabelanja.utilities.Util
+import kotlinx.android.synthetic.main.activity_category.*
+import kotlinx.android.synthetic.main.toolbar_detail.*
+import org.jetbrains.anko.toast
 import java.text.SimpleDateFormat
 import java.util.*
 
+class InputFinancial : AppCompatActivity() {
 
-class Category : AppCompatActivity() {
-
-    var TAG = "Category"
-
-    lateinit var spendingDao: SpendingDao
+    var TAG = "InputFinancial"
 
     lateinit var categoryAdapter: CategoryAdapter
 
     var recycler_category = null
+    var getNominal : String? = null
+
+
+    // database
+    lateinit var spendingDao: SpendingDao
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_category)
+        setContentView(R.layout.activity_input_financial)
 
         setToolbar()
 
@@ -56,9 +58,7 @@ class Category : AppCompatActivity() {
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
 
-
     }
-
 
     private fun setActionSearchCategory() {
 
@@ -73,7 +73,6 @@ class Category : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence, start: Int,
                                        before: Int, count: Int) {
 
-//                val query = search_category_et.getText().toString().toLowerCase(Locale.getDefault())
                 val query = search_category_et.text.toString().toLowerCase(Locale.getDefault())
 
                 Util.log(TAG, "query : $query")
@@ -94,11 +93,7 @@ class Category : AppCompatActivity() {
         val nominal_et = findViewById<EditText>(R.id.nominal_et)
         val note_et = findViewById<EditText>(R.id.note_et)
 
-//        add_category.setOnClickListener {
-//
-//            toast("Add Category")
-//
-//        }
+
 
         delete_search_btn.setOnClickListener {
 
@@ -108,9 +103,29 @@ class Category : AppCompatActivity() {
 
         }
 
+        nominal_et.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(s: Editable) {}
+
+            override fun beforeTextChanged(s: CharSequence, start: Int,
+                                           count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int,
+                                       before: Int, count: Int) {
+
+                val nominal = search_category_et.text.toString().toLowerCase(Locale.getDefault())
+
+                nominal_et.setText(Util.numberFormat(nominal))
+
+                getNominal = nominal
+
+            }
+        })
+
         save_btn.setOnClickListener {
 
-            val nominal_str = nominal_et.text.toString()
+            //            val nominal_str = nominal_et.text.toString()
             var note_str = note_et.text.toString()
             val getIdSelected = Util.getData("category", "selected", this)
 
@@ -121,10 +136,10 @@ class Category : AppCompatActivity() {
             }
 
             Util.log(TAG, "id selected " + getIdSelected)
-            Util.log(TAG, "nominal " + nominal_str)
+            Util.log(TAG, "nominal " + getNominal)
             Util.log(TAG, "note " + note_str)
 
-            if (!nominal_str.equals("") && getIdSelected != null) {
+            if (getNominal != null && getIdSelected != null) {
 
                 val time = SimpleDateFormat("HH:mm")
                 val date = SimpleDateFormat("yyyy.MM.dd")
@@ -143,7 +158,7 @@ class Category : AppCompatActivity() {
 
                     if (item.id == getIdSelected.toInt()) {
 
-                        insertToDatabase(SpendingEntitiy(null, getIdSelected.toInt(), item.name, item.image_category, nominal_str, note_str, dateNow, timeNow))
+                        insertToDatabase(SpendingEntitiy(null, getIdSelected.toInt(), item.name, item.image_category, getNominal, note_str, dateNow, timeNow))
 
                         break
 
@@ -223,7 +238,7 @@ class Category : AppCompatActivity() {
         recycler_category.apply {
 
             categoryAdapter.addAll(listCategory)
-            layoutManager = GridLayoutManager(this@Category, 4)
+            layoutManager = GridLayoutManager(this@InputFinancial, 4)
             adapter = categoryAdapter
 
         }
@@ -265,21 +280,21 @@ class Category : AppCompatActivity() {
 
         backBar_btn.setOnClickListener {
 
-            startActivity(Intent(this, SpendingActivity::class.java))
+            startActivity(Intent(this, HomepageActivity::class.java))
 
         }
 
-        titleBar_tv.setText("Pilih Kategori")
+        titleBar_tv.setText("Input Kategori")
 
     }
 
     override fun onBackPressed() {
 
-        val selected = Util.getData("category", "selected",  this)
+        val selected = Util.getData("category", "selected", this)
 
         Util.log(TAG, "category selected : " + selected)
 
-        if (selected.equals("")) {
+        if (selected == null) {
 
             startActivity(Intent(this, HomepageActivity::class.java))
 

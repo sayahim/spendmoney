@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import com.himorfosis.kelolabelanja.database.entity.CategoryEntity
 import com.himorfosis.kelolabelanja.database.entity.SpendingEntitiy
 
-@Database(entities = [SpendingEntitiy::class, CategoryEntity::class], version = 3, exportSchema = false)
+@Database(entities = [SpendingEntitiy::class, CategoryEntity::class], version = 4, exportSchema = true)
 abstract class SpendingDatabase : RoomDatabase() {
 
     abstract fun spendingDao(): SpendingDao

@@ -10,15 +10,18 @@ import androidx.fragment.app.Fragment
 import com.himorfosis.kelolabelanja.R
 import com.himorfosis.kelolabelanja.homepage.home.HomeFragment
 import com.himorfosis.kelolabelanja.homepage.report.ReportsFragment
+import com.himorfosis.kelolabelanja.homepage.statistict.ChartView
+import com.himorfosis.kelolabelanja.homepage.statistict.PieChartView
 import com.himorfosis.kelolabelanja.homepage.statistict.StatisticFragment
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.activity_homepage.*
 import kotlinx.android.synthetic.main.toolbar_homepage.*
 import me.anwarshahriar.calligrapher.Calligrapher
 
-class Homepage : AppCompatActivity() {
+class HomepageActivity : AppCompatActivity() {
 
-    val TAG = "Homepage"
+    val TAG = "HomepageActivity"
+    var fragmentActive = 0
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -29,6 +32,8 @@ class Homepage : AppCompatActivity() {
 
                 Util.log(TAG, "beranda")
 
+                fragmentActive = 0
+
                 return@OnNavigationItemSelectedListener true
             }
             R.id.nav_reports -> {
@@ -38,14 +43,18 @@ class Homepage : AppCompatActivity() {
 
                 Util.log(TAG, "nav_reports")
 
+                fragmentActive = 1
+
                 return@OnNavigationItemSelectedListener true
             }
             R.id.nav_statistic -> {
 
-                val fragment = StatisticFragment()
+                val fragment = PieChartView()
                 replaceFragment(fragment)
 
                 Util.log(TAG, "nav_statistic")
+
+                fragmentActive = 3
 
                 return@OnNavigationItemSelectedListener true
             }
@@ -57,7 +66,7 @@ class Homepage : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_homepage)
 
-        setToolbar()
+//        setToolbar()
 
         setFontType()
 
@@ -91,12 +100,26 @@ class Homepage : AppCompatActivity() {
     private fun setFontType() {
 
         val calligrapher = Calligrapher(this)
-        calligrapher.setFont(this@Homepage, Util.regularOpenSans, true)
+        calligrapher.setFont(this@HomepageActivity, Util.regularOpenSans, true)
 
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
+
+        if (fragmentActive == 0) {
+
+            finishAffinity()
+
+        } else {
+
+            navigation.setSelectedItemId(R.id.nav_home)
+            fragmentActive = 0
+
+            val fragment = HomeFragment()
+            replaceFragment(fragment)
+
+        }
+
     }
 
 }

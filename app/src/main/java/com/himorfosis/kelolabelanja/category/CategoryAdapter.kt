@@ -1,6 +1,7 @@
 package com.himorfosis.kelolabelanja.category
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,13 +14,15 @@ import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.item_category_spending.view.*
 import java.util.ArrayList
 
-class CategoryAdapter (private val context: Context)
+class CategoryAdapter(private val context: Context, val adapterCallback : (CategoryEntity) -> Unit)
     : RecyclerView.Adapter<CategoryAdapter.ViewHolder>(), Filterable {
 
     private val TAG = "CategoryAdapter"
 
     private var dataListFilter: MutableList<CategoryEntity>? = null
     private var listData: MutableList<CategoryEntity>? = ArrayList<CategoryEntity>()
+
+    val getIdSelected = Util.getData("category", "selected", context)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_category_spending, parent, false))
@@ -31,17 +34,38 @@ class CategoryAdapter (private val context: Context)
 
         var data = listData!!.get(position)
 
+        // check selected
+
+        var convertID = data.id.toString()
+
+        if (getIdSelected.equals(convertID)) {
+
+            Util.log(TAG, "pos : " + position)
+            Util.log(TAG, "id selected : " + getIdSelected)
+            Util.log(TAG, "id  : " + convertID)
+
+            holder.frame.setBackgroundResource(R.drawable.border_selected)
+
+        } else {
+
+            holder.frame.setBackgroundResource(R.drawable.border_line)
+
+        }
+
+        val imageAssets = Util.convertImageDrawable(context, data.image_category)
+
         holder.name_tv.text = data.name
 
-//        if (data.image_category != null) {
+        holder.image_img.setImageResource(imageAssets)
 
-            holder.image_img.setImageResource(data.image_category)
+        holder.itemView.setOnClickListener {
 
-//        } else {
-//
-//            holder.image_img.setImageResource(R.drawable.ic_broken_image)
-//
-//        }
+            Util.log(TAG, "id selected  : " + data.id)
+
+            // callback adapter
+            adapterCallback(data)
+
+        }
 
     }
 
@@ -69,6 +93,10 @@ class CategoryAdapter (private val context: Context)
 
             add(response)
         }
+    }
+
+    interface AdapterOnClick {
+        fun onClick(item: Any)
     }
 
     override fun getFilter(): Filter {
