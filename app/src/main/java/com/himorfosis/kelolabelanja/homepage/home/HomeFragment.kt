@@ -136,7 +136,7 @@ class HomeFragment : Fragment() {
 
             val data = spendingDao.getReportFinanceMounth(thisMonth)
 
-            Util.log(TAG, "list size : "+ data.size  + " pos : " + x)
+//            Util.log(TAG, "list size : "+ data.size  + " pos : " + x)
 
             if (data != null) {
 
@@ -147,7 +147,7 @@ class HomeFragment : Fragment() {
         }
 
 
-        Util.log(TAG, "list data : " + listDataSpending.size)
+//        Util.log(TAG, "list data : " + listDataSpending.size)
 
         var totalSpend_int = 0
 

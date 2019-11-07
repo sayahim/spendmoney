@@ -66,8 +66,7 @@ class Util {
 
         fun numberFormat(nominal: String): String {
 
-            val formatRupiah = NumberFormat.getCurrencyInstance()
-
+            val formatRupiah = NumberFormat.getInstance()
             return formatRupiah.format(java.lang.Double.valueOf(nominal))
 
         }

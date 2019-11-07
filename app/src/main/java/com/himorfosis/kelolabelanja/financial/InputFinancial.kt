@@ -26,8 +26,12 @@ import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.activity_category.*
 import kotlinx.android.synthetic.main.toolbar_detail.*
 import org.jetbrains.anko.toast
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.Collections.replaceAll
+
+
 
 class InputFinancial : AppCompatActivity() {
 
@@ -36,7 +40,7 @@ class InputFinancial : AppCompatActivity() {
     lateinit var categoryAdapter: CategoryAdapter
 
     var recycler_category = null
-    var getNominal : String? = null
+    var getNominal: String? = null
 
 
     // database
@@ -103,25 +107,48 @@ class InputFinancial : AppCompatActivity() {
 
         }
 
-        nominal_et.addTextChangedListener(object : TextWatcher {
-
-            override fun afterTextChanged(s: Editable) {}
-
-            override fun beforeTextChanged(s: CharSequence, start: Int,
-                                           count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence, start: Int,
-                                       before: Int, count: Int) {
-
-                val nominal = search_category_et.text.toString().toLowerCase(Locale.getDefault())
-
-                nominal_et.setText(Util.numberFormat(nominal))
-
-                getNominal = nominal
-
-            }
-        })
+//        nominal_et.addTextChangedListener(object : TextWatcher {
+//
+//            override fun afterTextChanged(s: Editable) {}
+//
+//            override fun beforeTextChanged(s: CharSequence, start: Int,
+//                                           count: Int, after: Int) {
+//            }
+//
+//            override fun onTextChanged(s: CharSequence, start: Int,
+//                                       before: Int, count: Int) {
+//
+//
+//                var char = s.toString()
+//
+//                if (char == null) {
+//
+//                    getNominal = ""
+//                    nominal_et.setText("")
+//
+//                } else if (char.equals(getNominal)) {
+//
+//                    // do nothing
+//
+//                } else {
+//
+//                    val nominal = nominal_et.text.toString().replace(".", "")
+//
+//                    Util.log(TAG, "nominal : " + nominal)
+//                    Util.log(TAG, "number format : " + Util.numberFormat(nominal))
+//                    Util.log(TAG, "char : " + char)
+//
+//                    val nominalNumberFormat = Util.numberFormat(nominal)
+//
+//                    nominal_et.setText(nominalNumberFormat)
+//
+//                    getNominal = char
+//
+//                }
+//
+//
+//            }
+//        })
 
         save_btn.setOnClickListener {
 
@@ -176,6 +203,7 @@ class InputFinancial : AppCompatActivity() {
         }
 
     }
+
 
     private fun insertToDatabase(data: SpendingEntitiy) {
 

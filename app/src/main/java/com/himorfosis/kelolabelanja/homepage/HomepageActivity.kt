@@ -10,9 +10,7 @@ import androidx.fragment.app.Fragment
 import com.himorfosis.kelolabelanja.R
 import com.himorfosis.kelolabelanja.homepage.home.HomeFragment
 import com.himorfosis.kelolabelanja.homepage.report.ReportsFragment
-import com.himorfosis.kelolabelanja.homepage.statistict.ChartView
 import com.himorfosis.kelolabelanja.homepage.statistict.PieChartView
-import com.himorfosis.kelolabelanja.homepage.statistict.StatisticFragment
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.activity_homepage.*
 import kotlinx.android.synthetic.main.toolbar_homepage.*

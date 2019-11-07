@@ -31,6 +31,7 @@
 
     <color name="icon_black">#7C7F81</color>
     <color name="line">#f3f3f3</color>
+    <color name="line_dark">#7C7F81</color>
 
     <!--<color name="text_black">#030303</color>-->
     <!--<color name="text_second">#4A4A4A</color>-->

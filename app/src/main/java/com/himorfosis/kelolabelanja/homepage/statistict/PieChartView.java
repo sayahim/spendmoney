@@ -22,16 +22,22 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.himorfosis.kelolabelanja.R;
+import com.himorfosis.kelolabelanja.homepage.statistict.adapter.FinancialProgressAdapter;
+import com.himorfosis.kelolabelanja.homepage.statistict.model.FinancialProgressModel;
 
 import java.util.ArrayList;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class PieChartView extends Fragment {
 
     String TAG = "PieChartView";
 
     private PieChart pieChart;
+    FinancialProgressAdapter adapterFinancial;
+    RecyclerView recyclerView;
 
     private float[] yData = {66.76f, 44.32f};
     private String[] xData = {"Mitch", "Jessica" , "Mohammad" , "Kelsey", "Sam", "Robert", "Ashley"};
@@ -49,6 +55,8 @@ public class PieChartView extends Fragment {
         setHasOptionsMenu(true);
         super.onViewCreated(view, savedInstanceState);
         getActivity().invalidateOptionsMenu();
+
+        recyclerView = view.findViewById(R.id.recycler_report_cart);
 
         pieChart = view.findViewById(R.id.pie_chart);
 //        pieChart.setDescription("Sales by employee (In Thousands $) ");
@@ -74,33 +82,18 @@ public class PieChartView extends Fragment {
         pieChart.animateXY(50, 50);
         pieChart.invalidate();
 
-//        addDataSet();
+        setAdapterFinancial();
 
-//        pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-//            @Override
-//            public void onValueSelected(Entry e, Highlight h) {
-//                Log.d(TAG, "onValueSelected: Value select from chart.");
-//                Log.d(TAG, "onValueSelected: " + e.toString());
-//                Log.d(TAG, "onValueSelected: " + h.toString());
-//
-//                int pos1 = e.toString().indexOf("(sum): ");
-//                String sales = e.toString().substring(pos1 + 7);
-//
-//                for(int i = 0; i < yData.length; i++){
-//                    if(yData[i] == Float.parseFloat(sales)){
-//                        pos1 = i;
-//                        break;
-//                    }
-//                }
-//                String employee = xData[pos1 + 1];
-//                Toast.makeText(getContext(), "Employee " + employee + "\n" + "Sales: $" + sales + "K", Toast.LENGTH_LONG).show();
-//            }
-//
-//            @Override
-//            public void onNothingSelected() {
-//
-//            }
-//        });
+    }
+
+    private void setAdapterFinancial() {
+
+        adapterFinancial = new FinancialProgressAdapter(getDataProgress());
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+
+        recyclerView.setAdapter(adapterFinancial);
 
     }
 
@@ -113,6 +106,19 @@ public class PieChartView extends Fragment {
         entries.add(new PieEntry(1050f, "Jalan"));
         entries.add(new PieEntry(750f, "Developer"));
         return entries;
+
+    }
+
+    private ArrayList getDataProgress() {
+
+        ArrayList<FinancialProgressModel> data = new ArrayList<>();
+        data.add(new FinancialProgressModel("Makanan", 100, 100));
+        data.add(new FinancialProgressModel("Hiburan", 70, 100));
+        data.add(new FinancialProgressModel("Tiket", 30, 100));
+        data.add(new FinancialProgressModel("Developer", 50, 100));
+
+        return data;
+
     }
 
     private void addDataSet() {

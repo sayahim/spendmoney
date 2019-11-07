@@ -27,6 +27,17 @@
 
     </androidx.cardview.widget.CardView>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:text="Menampilkan novemver"
+        android:textSize="@dimen/_14ssp"
+        android:textColor="@color/text_black"
+        android:fontFamily="@font/bold_opensans"
+        android:layout_marginBottom="@dimen/_10sdp"/>
+
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_report_cart"
