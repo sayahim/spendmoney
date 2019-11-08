@@ -6,8 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.himorfosis.kelolabelanja.R
+import kotlinx.android.synthetic.main.report_income_fragment.*
 
-class ReportsWeek: Fragment() {
+class ReportsIncomeFragment: Fragment() {
 
     companion object {
 
@@ -18,6 +19,15 @@ class ReportsWeek: Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.reports_fragment, container, false)
+        return inflater.inflate(R.layout.report_income_fragment, container, false)
+
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        status_data_tv.visibility = View.VISIBLE
+
+    }
+
 }

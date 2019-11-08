@@ -1,4 +1,4 @@
-package com.himorfosis.kelolabelanja.homepage.statistict
+package com.himorfosis.kelolabelanja.homepage.statistict.model
 
 import androidx.room.ColumnInfo
 

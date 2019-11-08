@@ -1,36 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
-
-    <include
-        layout="@layout/tablayout_double"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
+    android:layout_height="match_parent">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <FrameLayout
-            android:id="@+id/frame_reports"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_reports"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        </androidx.recyclerview.widget.RecyclerView>
 
         <TextView
+            android:id="@+id/status_data_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:text="Spending Cooming Soon"
             android:fontFamily="@font/bold_opensans"
-            android:text="Reports"
+            android:textSize="@dimen/_14ssp"
             android:textColor="@color/text_hint"
-            android:textSize="@dimen/_20ssp"
-            android:visibility="invisible"/>
-
+            android:layout_gravity="center"
+            android:visibility="invisible"
+            />
 
     </FrameLayout>
-
 
 </LinearLayout>

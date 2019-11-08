@@ -14,7 +14,7 @@ import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.item_category_spending.view.*
 import java.util.ArrayList
 
-class CategoryAdapter(private val context: Context, val adapterCallback : (CategoryEntity) -> Unit)
+class CategoryAdapter(private val context: Context, val adapterCallback: (CategoryEntity) -> Unit)
     : RecyclerView.Adapter<CategoryAdapter.ViewHolder>(), Filterable {
 
     private val TAG = "CategoryAdapter"
@@ -80,7 +80,7 @@ class CategoryAdapter(private val context: Context, val adapterCallback : (Categ
     private fun add(categoryEntity: CategoryEntity) {
         listData!!.add(categoryEntity)
 
-        // ada data filter
+        // add data filter
         dataListFilter = listData
 
         notifyItemInserted(listData!!.size - 1)
@@ -93,6 +93,14 @@ class CategoryAdapter(private val context: Context, val adapterCallback : (Categ
 
             add(response)
         }
+    }
+
+    fun removeListAdapter() {
+
+        listData!!.clear()
+
+        notifyDataSetChanged()
+
     }
 
     interface AdapterOnClick {
@@ -131,8 +139,15 @@ class CategoryAdapter(private val context: Context, val adapterCallback : (Categ
             }
 
             override fun publishResults(charSequence: CharSequence, filterResults: Filter.FilterResults) {
-                listData = filterResults.values as MutableList<CategoryEntity>
-                notifyDataSetChanged()
+
+                Util.log(TAG, "list filter : " + listData)
+
+                if (listData != null) {
+
+                    listData = filterResults.values as MutableList<CategoryEntity>
+                    notifyDataSetChanged()
+                }
+
             }
         }
     }

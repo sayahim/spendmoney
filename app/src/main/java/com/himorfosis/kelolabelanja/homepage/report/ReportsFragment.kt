@@ -5,10 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import com.himorfosis.kelolabelanja.R
+import com.himorfosis.kelolabelanja.homepage.home.HomeFragment
+import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.tablayout_double.*
 
 class ReportsFragment: Fragment() {
+
+    val TAG = "ReportsFragment"
 
     companion object {
 
@@ -27,6 +32,9 @@ class ReportsFragment: Fragment() {
 
         setTablayoutAction()
 
+        val fragment = ReportsSpendingFragment()
+        replaceFragment(fragment)
+
     }
 
     private fun setTablayoutAction() {
@@ -41,6 +49,11 @@ class ReportsFragment: Fragment() {
             titletab_two_tv.setTextColor(resources.getColor(R.color.blue_dark))
             tab_two_fl.setBackgroundResource(0)
 
+            val fragment = ReportsSpendingFragment()
+            replaceFragment(fragment)
+
+            Util.log(TAG, "spending ")
+
         }
 
         tab_two_fl.setOnClickListener {
@@ -52,9 +65,22 @@ class ReportsFragment: Fragment() {
             titletab_one_tv.setTextColor(resources.getColor(R.color.blue_dark))
             tab_one_fl.setBackgroundResource(0)
 
+            val fragment = ReportsIncomeFragment()
+            replaceFragment(fragment)
+
+            Util.log(TAG, "income ")
+
         }
 
 
+    }
+
+    private fun replaceFragment(fragment: Fragment) {
+
+        childFragmentManager
+                .beginTransaction()
+                .replace(R.id.frame_reports, fragment, fragment.javaClass.getSimpleName())
+                .commit()
     }
 
 }

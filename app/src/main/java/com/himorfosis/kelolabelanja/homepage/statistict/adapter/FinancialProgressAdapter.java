@@ -44,7 +44,6 @@ public class FinancialProgressAdapter extends RecyclerView.Adapter<FinancialProg
         new Thread(new Runnable() {
             public void run() {
                 while (progressStatusCounter < data.getMax_nominal()) {
-//                    progressStatusCounter += 2;
                     progressHandler.post(new Runnable() {
                         public void run() {
 

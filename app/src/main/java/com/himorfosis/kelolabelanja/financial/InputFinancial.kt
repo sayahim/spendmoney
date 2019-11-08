@@ -10,6 +10,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import androidx.appcompat.app.ActionBar
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
@@ -24,13 +25,15 @@ import com.himorfosis.kelolabelanja.database.spending.SpendingDatabase
 import com.himorfosis.kelolabelanja.homepage.HomepageActivity
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.activity_category.*
+import kotlinx.android.synthetic.main.activity_input_financial.*
+import kotlinx.android.synthetic.main.layout_input_data.*
 import kotlinx.android.synthetic.main.toolbar_detail.*
 import org.jetbrains.anko.toast
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.Collections.replaceAll
-
+import kotlin.collections.ArrayList
 
 
 class InputFinancial : AppCompatActivity() {
@@ -42,6 +45,8 @@ class InputFinancial : AppCompatActivity() {
     var recycler_category = null
     var getNominal: String? = null
 
+    // data
+    var listCategory :List<CategoryEntity> = ArrayList<CategoryEntity>()
 
     // database
     lateinit var spendingDao: SpendingDao
@@ -54,11 +59,15 @@ class InputFinancial : AppCompatActivity() {
 
         setDatabase()
 
+        setDataCategorySpending()
+
         setAdapterCategory()
 
         setActionClick()
 
         setActionSearchCategory()
+
+        setTabLayout()
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
 
@@ -91,19 +100,81 @@ class InputFinancial : AppCompatActivity() {
 
     }
 
+
+    private fun setTabLayout() {
+
+        spend_ll.setOnClickListener {
+
+            spend_tv.setTextColor(resources.getColor(R.color.text_blue_dark))
+            income_tv.setTextColor(resources.getColor(R.color.text_hint))
+
+            // set indicator
+            income_indicator.visibility = View.INVISIBLE
+            spend_indicator.visibility = View.VISIBLE
+
+            search_category_et.setText("")
+            delete_search_btn.visibility = View.INVISIBLE
+
+            // delete cache data
+            Util.deleteData("category", this)
+
+            deleteTextSearch()
+
+            hideLayoutInputData()
+
+            setDataCategorySpending()
+
+
+        }
+
+        income_ll.setOnClickListener {
+
+            income_tv.setTextColor(resources.getColor(R.color.text_blue_dark))
+            spend_tv.setTextColor(resources.getColor(R.color.text_hint))
+
+            // set indicator
+            income_indicator.visibility = View.VISIBLE
+            spend_indicator.visibility = View.INVISIBLE
+
+            // delete cache data
+            Util.deleteData("category", this)
+
+            deleteTextSearch()
+
+            hideLayoutInputData()
+
+            setDataCategoryIncome()
+
+        }
+
+    }
+
+    private fun hideLayoutInputData() {
+
+        frame_input_data.visibility = View.GONE
+//        frame_search.visibility = View.GONE
+
+    }
+
+    private fun showLayoutInputData() {
+
+        frame_input_data.visibility = View.VISIBLE
+        frame_search.visibility = View.GONE
+
+    }
+
+    private fun deleteTextSearch() {
+
+        search_category_et.setText("")
+        delete_search_btn.visibility = View.INVISIBLE
+
+    }
+
     private fun setActionClick() {
-
-        val save_btn = findViewById<Button>(R.id.save_btn)
-        val nominal_et = findViewById<EditText>(R.id.nominal_et)
-        val note_et = findViewById<EditText>(R.id.note_et)
-
-
 
         delete_search_btn.setOnClickListener {
 
-            search_category_et.setText("")
-
-            delete_search_btn.visibility = View.INVISIBLE
+            deleteTextSearch()
 
         }
 
@@ -152,7 +223,7 @@ class InputFinancial : AppCompatActivity() {
 
         save_btn.setOnClickListener {
 
-            //            val nominal_str = nominal_et.text.toString()
+            val getNominal = nominal_et.text.toString()
             var note_str = note_et.text.toString()
             val getIdSelected = Util.getData("category", "selected", this)
 
@@ -177,7 +248,7 @@ class InputFinancial : AppCompatActivity() {
                 Util.log(TAG, "time : " + timeNow)
                 Util.log(TAG, "getIdSelected : " + getIdSelected)
 
-                val listCategory = spendingDao.getAllCategory()
+//                val listCategory = spendingDao.getAllCategory()
 
                 for (i in 0 until listCategory.size) {
 
@@ -215,6 +286,55 @@ class InputFinancial : AppCompatActivity() {
 
     }
 
+    private fun setDataCategorySpending() {
+
+        listCategory = listOf(
+
+                CategoryEntity(1, "Makanan", "ic_food_black"),
+                CategoryEntity(2, "Belanja", "ic_shopping_bag_black"),
+                CategoryEntity(3, "Hiburan", "ic_ticket_black"),
+                CategoryEntity(4, "Transportasi", "ic_bus_black"),
+
+                CategoryEntity(5, "Pendidikan", "ic_mortarboard_black"),
+                CategoryEntity(6, "Keluarga", "ic_family_black"),
+                CategoryEntity(7, "Elektronik", "ic_photo_camera_black"),
+                CategoryEntity(8, "Pendidikan", "ic_other_black"),
+
+                CategoryEntity(9, "Pendidikan", "ic_mortarboard_black"),
+                CategoryEntity(10, "Keluarga", "ic_family_black"),
+                CategoryEntity(11, "Elektronik", "ic_photo_camera_black"),
+                CategoryEntity(12, "Pendidikan", "ic_other_black"),
+
+                CategoryEntity(13, "Pendidikan", "ic_mortarboard_black"),
+                CategoryEntity(14, "Keluarga", "ic_family_black"),
+                CategoryEntity(15, "Elektronik", "ic_photo_camera_black"),
+                CategoryEntity(16, "Pendidikan", "ic_other_black"),
+
+                CategoryEntity(17, "Pendidikan", "ic_mortarboard_black"),
+                CategoryEntity(18, "Keluarga", "ic_family_black"),
+                CategoryEntity(19, "Elektronik", "ic_photo_camera_black"),
+                CategoryEntity(20, "Pendidikan", "ic_other_black"),
+
+                CategoryEntity(21, "Pendidikan", "ic_mortarboard_black"),
+                CategoryEntity(22, "Keluarga", "ic_family_black"),
+                CategoryEntity(23, "Elektronik", "ic_photo_camera_black"),
+                CategoryEntity(24, "Pendidikan", "ic_other_black")
+
+        )
+
+        setAdapterCategory()
+
+    }
+
+    private fun setDataCategoryIncome() {
+
+        listCategory = listOf()
+
+        categoryAdapter.removeListAdapter()
+
+        setAdapterCategory()
+
+    }
 
     private fun setAdapterCategory() {
 
@@ -223,40 +343,6 @@ class InputFinancial : AppCompatActivity() {
         var recycler_category = findViewById<RecyclerView>(R.id.recycler_category)
 
 //        val listCategory = spendingDao.getAllCategory()
-
-        val listCategory = listOf(
-
-                CategoryEntity(1, "Makanan", "ic_food_black", 0),
-                CategoryEntity(2, "Belanja", "ic_shopping_bag_black", 0),
-                CategoryEntity(3, "Hiburan", "ic_ticket_black", 0),
-                CategoryEntity(4, "Transportasi", "ic_bus_black", 0),
-
-                CategoryEntity(5, "Pendidikan", "ic_mortarboard_black", 0),
-                CategoryEntity(6, "Keluarga", "ic_family_black", 0),
-                CategoryEntity(7, "Elektronik", "ic_photo_camera_black", 0),
-                CategoryEntity(8, "Pendidikan", "ic_other_black", 0),
-
-                CategoryEntity(9, "Pendidikan", "ic_mortarboard_black", 0),
-                CategoryEntity(10, "Keluarga", "ic_family_black", 0),
-                CategoryEntity(11, "Elektronik", "ic_photo_camera_black", 0),
-                CategoryEntity(12, "Pendidikan", "ic_other_black", 0),
-
-                CategoryEntity(13, "Pendidikan", "ic_mortarboard_black", 0),
-                CategoryEntity(14, "Keluarga", "ic_family_black", 0),
-                CategoryEntity(15, "Elektronik", "ic_photo_camera_black", 0),
-                CategoryEntity(16, "Pendidikan", "ic_other_black", 0),
-
-                CategoryEntity(17, "Pendidikan", "ic_mortarboard_black", 0),
-                CategoryEntity(18, "Keluarga", "ic_family_black", 0),
-                CategoryEntity(19, "Elektronik", "ic_photo_camera_black", 0),
-                CategoryEntity(20, "Pendidikan", "ic_other_black", 0),
-
-                CategoryEntity(21, "Pendidikan", "ic_mortarboard_black", 0),
-                CategoryEntity(22, "Keluarga", "ic_family_black", 0),
-                CategoryEntity(23, "Elektronik", "ic_photo_camera_black", 0),
-                CategoryEntity(24, "Pendidikan", "ic_other_black", 0)
-
-        )
 
         categoryAdapter = CategoryAdapter(this, { item ->
             actionCallbackAdapter(item)
@@ -271,14 +357,27 @@ class InputFinancial : AppCompatActivity() {
 
         }
 
+        Util.log(TAG, "list category : " + listCategory)
+        Util.log(TAG, "list category size : " + listCategory.size)
+
+        if (listCategory.size == 0) {
+
+            status_data_tv.visibility = View.VISIBLE
+
+        } else {
+
+            status_data_tv.visibility = View.INVISIBLE
+
+
+        }
+
     }
 
     fun actionCallbackAdapter(item: CategoryEntity) {
 
-        Util.log(TAG, "click : " + item.name)
+        Util.log(TAG, "callback : " + item.name)
 
-        frame_input_data.visibility = View.VISIBLE
-        frame_search.visibility = View.GONE
+        showLayoutInputData()
 
         Util.saveData("category", "selected", item.id.toString(), this)
 

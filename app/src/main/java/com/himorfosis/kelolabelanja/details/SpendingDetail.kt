@@ -11,6 +11,7 @@ import androidx.room.Room
 import com.himorfosis.kelolabelanja.R
 import com.himorfosis.kelolabelanja.database.spending.SpendingDao
 import com.himorfosis.kelolabelanja.database.spending.SpendingDatabase
+import com.himorfosis.kelolabelanja.homepage.HomepageActivity
 import com.himorfosis.kelolabelanja.spending.SpendingActivity
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.activity_spending_detail.*
@@ -72,7 +73,7 @@ class SpendingDetail : AppCompatActivity() {
 
         backBar_btn.setOnClickListener {
 
-            startActivity(Intent(this, SpendingActivity::class.java))
+            startActivity(Intent(this, HomepageActivity::class.java))
 
         }
 

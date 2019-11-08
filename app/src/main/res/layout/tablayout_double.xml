@@ -7,8 +7,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginLeft="@dimen/_40sdp"
-        android:layout_marginRight="@dimen/_20sdp"
+        android:layout_marginLeft="@dimen/_30sdp"
+        android:layout_marginRight="@dimen/_30sdp"
         android:background="@drawable/border_line"
         android:orientation="horizontal"
         android:weightSum="2">
@@ -28,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:text="Minggu"
+                android:text="Pengeluaran"
                 android:fontFamily="@font/regular_opensans"
                 android:textSize="@dimen/_13ssp"
                 android:textStyle="bold"
@@ -54,7 +54,7 @@
                 android:textColor="@color/blue_dark"
                 android:textStyle="bold"
                 android:textSize="@dimen/_13ssp"
-                android:text="Bulan"
+                android:text="Pendapatan"
                 android:fontFamily="@font/regular_opensans"
                 android:layout_gravity="center"
                 />

@@ -62,29 +62,29 @@ class Category : AppCompatActivity() {
 
     private fun setActionSearchCategory() {
 
-        search_category_et.addTextChangedListener(object : TextWatcher {
-
-            override fun afterTextChanged(s: Editable) {}
-
-            override fun beforeTextChanged(s: CharSequence, start: Int,
-                                           count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence, start: Int,
-                                       before: Int, count: Int) {
-
-//                val query = search_category_et.getText().toString().toLowerCase(Locale.getDefault())
-                val query = search_category_et.text.toString().toLowerCase(Locale.getDefault())
-
-                Util.log(TAG, "query : $query")
-
-                categoryAdapter.getFilter().filter(query)
-
-                // visible delete search query
-                delete_search_btn.visibility = View.VISIBLE
-
-            }
-        })
+//        search_category_et.addTextChangedListener(object : TextWatcher {
+//
+//            override fun afterTextChanged(s: Editable) {}
+//
+//            override fun beforeTextChanged(s: CharSequence, start: Int,
+//                                           count: Int, after: Int) {
+//            }
+//
+//            override fun onTextChanged(s: CharSequence, start: Int,
+//                                       before: Int, count: Int) {
+//
+////                val query = search_category_et.getText().toString().toLowerCase(Locale.getDefault())
+//                val query = search_category_et.text.toString().toLowerCase(Locale.getDefault())
+//
+//                Util.log(TAG, "query : $query")
+//
+//                categoryAdapter.getFilter().filter(query)
+//
+//                // visible delete search query
+//                delete_search_btn.visibility = View.VISIBLE
+//
+//            }
+//        })
 
     }
 
@@ -100,13 +100,13 @@ class Category : AppCompatActivity() {
 //
 //        }
 
-        delete_search_btn.setOnClickListener {
-
-            search_category_et.setText("")
-
-            delete_search_btn.visibility = View.INVISIBLE
-
-        }
+//        delete_search_btn.setOnClickListener {
+//
+//            search_category_et.setText("")
+//
+//            delete_search_btn.visibility = View.INVISIBLE
+//
+//        }
 
         save_btn.setOnClickListener {
 
@@ -183,35 +183,35 @@ class Category : AppCompatActivity() {
 
         val listCategory = listOf(
 
-                CategoryEntity(1, "Makanan", "ic_food_black", 0),
-                CategoryEntity(2, "Belanja", "ic_shopping_bag_black", 0),
-                CategoryEntity(3, "Hiburan", "ic_ticket_black", 0),
-                CategoryEntity(4, "Transportasi", "ic_bus_black", 0),
+                CategoryEntity(1, "Makanan", "ic_food_black"),
+                CategoryEntity(2, "Belanja", "ic_shopping_bag_black"),
+                CategoryEntity(3, "Hiburan", "ic_ticket_black"),
+                CategoryEntity(4, "Transportasi", "ic_bus_black"),
 
-                CategoryEntity(5, "Pendidikan", "ic_mortarboard_black", 0),
-                CategoryEntity(6, "Keluarga", "ic_family_black", 0),
-                CategoryEntity(7, "Elektronik", "ic_photo_camera_black", 0),
-                CategoryEntity(8, "Pendidikan", "ic_other_black", 0),
+                CategoryEntity(5, "Pendidikan", "ic_mortarboard_black"),
+                CategoryEntity(6, "Keluarga", "ic_family_black"),
+                CategoryEntity(7, "Elektronik", "ic_photo_camera_black"),
+                CategoryEntity(8, "Pendidikan", "ic_other_black"),
 
-                CategoryEntity(9, "Pendidikan", "ic_mortarboard_black", 0),
-                CategoryEntity(10, "Keluarga", "ic_family_black", 0),
-                CategoryEntity(11, "Elektronik", "ic_photo_camera_black", 0),
-                CategoryEntity(12, "Pendidikan", "ic_other_black", 0),
+                CategoryEntity(9, "Pendidikan", "ic_mortarboard_black"),
+                CategoryEntity(10, "Keluarga", "ic_family_black"),
+                CategoryEntity(11, "Elektronik", "ic_photo_camera_black"),
+                CategoryEntity(12, "Pendidikan", "ic_other_black"),
 
-                CategoryEntity(13, "Pendidikan", "ic_mortarboard_black", 0),
-                CategoryEntity(14, "Keluarga", "ic_family_black", 0),
-                CategoryEntity(15, "Elektronik", "ic_photo_camera_black", 0),
-                CategoryEntity(16, "Pendidikan", "ic_other_black", 0),
+                CategoryEntity(13, "Pendidikan", "ic_mortarboard_black"),
+                CategoryEntity(14, "Keluarga", "ic_family_black"),
+                CategoryEntity(15, "Elektronik", "ic_photo_camera_black"),
+                CategoryEntity(16, "Pendidikan", "ic_other_black"),
 
-                CategoryEntity(17, "Pendidikan", "ic_mortarboard_black", 0),
-                CategoryEntity(18, "Keluarga", "ic_family_black", 0),
-                CategoryEntity(19, "Elektronik", "ic_photo_camera_black", 0),
-                CategoryEntity(20, "Pendidikan", "ic_other_black", 0),
+                CategoryEntity(17, "Pendidikan", "ic_mortarboard_black"),
+                CategoryEntity(18, "Keluarga", "ic_family_black"),
+                CategoryEntity(19, "Elektronik", "ic_photo_camera_black"),
+                CategoryEntity(20, "Pendidikan", "ic_other_black"),
 
-                CategoryEntity(21, "Pendidikan", "ic_mortarboard_black", 0),
-                CategoryEntity(22, "Keluarga", "ic_family_black", 0),
-                CategoryEntity(23, "Elektronik", "ic_photo_camera_black", 0),
-                CategoryEntity(24, "Pendidikan", "ic_other_black", 0)
+                CategoryEntity(21, "Pendidikan", "ic_mortarboard_black"),
+                CategoryEntity(22, "Keluarga", "ic_family_black"),
+                CategoryEntity(23, "Elektronik", "ic_photo_camera_black"),
+                CategoryEntity(24, "Pendidikan", "ic_other_black")
 
         )
 
@@ -232,14 +232,14 @@ class Category : AppCompatActivity() {
 
     fun actionCallbackAdapter(item: CategoryEntity) {
 
-        Util.log(TAG, "click : " + item.name)
-
-        frame_input_data.visibility = View.VISIBLE
-        frame_search.visibility = View.GONE
-
-        Util.saveData("category", "selected", item.id.toString(), this)
-
-        setAdapterCategory()
+//        Util.log(TAG, "click : " + item.name)
+//
+//        frame_input_data.visibility = View.VISIBLE
+//        frame_search.visibility = View.GONE
+//
+//        Util.saveData("category", "selected", item.id.toString(), this)
+//
+//        setAdapterCategory()
 
     }
 
@@ -275,20 +275,20 @@ class Category : AppCompatActivity() {
 
     override fun onBackPressed() {
 
-        val selected = Util.getData("category", "selected",  this)
-
-        Util.log(TAG, "category selected : " + selected)
-
-        if (selected.equals("")) {
-
-            startActivity(Intent(this, HomepageActivity::class.java))
-
-        } else {
-
-            frame_input_data.visibility = View.GONE
-            Util.deleteData("category", this)
-
-        }
+//        val selected = Util.getData("category", "selected",  this)
+//
+//        Util.log(TAG, "category selected : " + selected)
+//
+//        if (selected.equals("")) {
+//
+//            startActivity(Intent(this, HomepageActivity::class.java))
+//
+//        } else {
+//
+//            frame_input_data.visibility = View.GONE
+//            Util.deleteData("category", this)
+//
+//        }
 
 
     }

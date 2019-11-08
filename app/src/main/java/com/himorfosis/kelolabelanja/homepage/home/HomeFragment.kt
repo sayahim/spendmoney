@@ -183,15 +183,15 @@ class HomeFragment : Fragment() {
 
             val listCategory = listOf(
 
-                    CategoryEntity(1, "Makanan", "ic_food_black", 0),
-                    CategoryEntity(2, "Belanja", "ic_shopping_bag_black", 0),
-                    CategoryEntity(3, "Hiburan", "ic_ticket_black", 0),
-                    CategoryEntity(4, "Transportasi", "ic_bus_black", 0),
+                    CategoryEntity(1, "Makanan", "ic_food_black"),
+                    CategoryEntity(2, "Belanja", "ic_shopping_bag_black"),
+                    CategoryEntity(3, "Hiburan", "ic_ticket_black"),
+                    CategoryEntity(4, "Transportasi", "ic_bus_black"),
 
-                    CategoryEntity(5, "Pendidikan", "ic_mortarboard_black", 0),
-                    CategoryEntity(6, "Keluarga", "ic_family_black", 0),
-                    CategoryEntity(7, "Elektronik", "ic_photo_camera_black", 0),
-                    CategoryEntity(8, "Lainnya", "ic_other_black", 0)
+                    CategoryEntity(5, "Pendidikan", "ic_mortarboard_black"),
+                    CategoryEntity(6, "Keluarga", "ic_family_black"),
+                    CategoryEntity(7, "Elektronik", "ic_photo_camera_black"),
+                    CategoryEntity(8, "Lainnya", "ic_other_black")
 
             )
 

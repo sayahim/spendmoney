@@ -10,9 +10,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
@@ -57,9 +60,17 @@ public class PieChartView extends Fragment {
         getActivity().invalidateOptionsMenu();
 
         recyclerView = view.findViewById(R.id.recycler_report_cart);
-
         pieChart = view.findViewById(R.id.pie_chart);
-//        pieChart.setDescription("Sales by employee (In Thousands $) ");
+
+        setTablayoutAction(view);
+
+        setPieChart();
+
+    }
+
+    private void setPieChart() {
+
+        pieChart.getDescription().setText("Data teratas");
         //pieChart.setUsePercentValues(true);
         //pieChart.setHoleColor(Color.BLUE);
         //pieChart.setCenterTextColor(Color.BLACK);
@@ -160,6 +171,47 @@ public class PieChartView extends Fragment {
 //        PieData pieData = new PieData(pieDataSet);
 //        pieChart.setData(pieData);
 //        pieChart.invalidate();
+
+    }
+
+
+    private void setTablayoutAction(View view) {
+
+        FrameLayout tab_one_fl = view.findViewById(R.id.tab_one_fl);
+        FrameLayout tab_two_fl = view.findViewById(R.id.tab_two_fl);
+        TextView titletab_one_tv = view.findViewById(R.id.titletab_one_tv);
+        TextView titletab_two_tv = view.findViewById(R.id.titletab_two_tv);
+
+        tab_one_fl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                titletab_one_tv.setTextColor(getResources().getColor(R.color.white));
+                tab_one_fl.setBackgroundResource(R.drawable.border_blue_dark);
+
+                // unselected
+
+                titletab_two_tv.setTextColor(getResources().getColor(R.color.blue_dark));
+                tab_two_fl.setBackgroundResource(0);
+
+            }
+        });
+
+        tab_two_fl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                titletab_two_tv.setTextColor(getResources().getColor(R.color.white));
+                tab_two_fl.setBackgroundResource(R.drawable.border_blue_dark);
+
+                // unselected
+                titletab_one_tv.setTextColor(getResources().getColor(R.color.blue_dark));
+                tab_one_fl.setBackgroundResource(0);
+
+            }
+        });
+
+
 
     }
 
