@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.himorfosis.kelolabelanja.R
 import com.himorfosis.kelolabelanja.category.Category
@@ -16,6 +18,8 @@ import com.himorfosis.kelolabelanja.database.entity.SpendingEntitiy
 import com.himorfosis.kelolabelanja.details.SpendingDetail
 import com.himorfosis.kelolabelanja.financial.InputFinancial
 import com.himorfosis.kelolabelanja.homepage.home.adapter.HomeAdapter
+import com.himorfosis.kelolabelanja.homepage.home.adapter.HomeGroupAdapter
+import com.himorfosis.kelolabelanja.homepage.home.model.HomeGroupDataModel
 import com.himorfosis.kelolabelanja.spending.SpendingActivity
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.activity_category.*
@@ -27,12 +31,16 @@ class HomeFragment : Fragment() {
 
     private val TAG = "HomeFragment"
 
-    private var listDataSpending: MutableList<SpendingEntitiy> = ArrayList()
-//    private var listDataFinancial: MutableList<SpendingEntitiy> = ArrayList()
+//    private var listDataSpending: MutableList<SpendingEntitiy> = ArrayList()
+    private var listDataFinancial: MutableList<SpendingEntitiy> = ArrayList()
+    private var listPerDayData: MutableList<HomeGroupDataModel> = ArrayList()
 
     lateinit var spendingDao: SpendingDao
 
     lateinit var adapterReports: HomeAdapter
+    lateinit var adapterReportsGroup: HomeGroupAdapter
+    lateinit var linearLayoutManager: LinearLayoutManager
+
 
     companion object {
 
@@ -55,29 +63,89 @@ class HomeFragment : Fragment() {
 
         getAllDataToday()
 
-        setAdapter()
+//        setAdapter()
+
+        setAdapterGroup()
+
+        selectedMonthShow()
 
 //        setCategoryDB()
 
     }
 
+    private fun selectedMonthShow() {
+
+        val date = SimpleDateFormat("yyyy.MM.dd")
+        val today = date.format(Date())
+
+        val thisMonth = Util.convertCalendarMonth(today)
+        val dateNow = Util.convertDateName(today)
+
+
+        month_selected_tv.setText(thisMonth)
+
+    }
+
+    private fun setAdapterGroup() {
+
+        if (listPerDayData.size != 0) {
+
+            adapterReportsGroup = HomeGroupAdapter(requireContext())
+
+            recycler.apply {
+
+                // sorted list
+                var sortedListDescending = listPerDayData.sortedWith(compareByDescending { it.date })
+
+                // add data in adapter
+                adapterReportsGroup.addAll(sortedListDescending)
+
+                layoutManager = LinearLayoutManager(requireContext())
+                setHasFixedSize(true)
+                adapter = adapterReportsGroup
+
+                addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
+                    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                        super.onScrollStateChanged(recyclerView, newState)
+
+                        val totalItemCount = recyclerView.layoutManager!!.itemCount
+                        if ( totalItemCount == lastVisibleItemPosition + 1) {
+
+                            add_ll.visibility = View.INVISIBLE
+
+                        } else {
+
+                            add_ll.visibility = View.VISIBLE
+
+                        }
+                    }
+
+                })
+
+            }
+
+        }
+    }
+
+    private val lastVisibleItemPosition: Int
+        get() = linearLayoutManager.findLastVisibleItemPosition()
+
+
     private fun setAdapter() {
 
-        if (listDataSpending.size != 0) {
+        if (listDataFinancial.size != 0) {
 
             status_tv.visibility = View.INVISIBLE
 
-            adapterReports = HomeAdapter(requireContext(), { item ->
-                actionCallbackAdapter(item)
-
-            })
+            adapterReports = HomeAdapter(requireContext())
 
             recycler.apply {
 
                 // sorted list
 
 //                var sortedListAscending = listDataSpending.sortedWith(compareBy({ it.date }))
-                var sortedListDescending = listDataSpending.sortedWith(compareByDescending { it.date })
+                var sortedListDescending = listDataFinancial.sortedWith(compareByDescending { it.date })
 
                 adapterReports.addAll(sortedListDescending)
 
@@ -93,14 +161,6 @@ class HomeFragment : Fragment() {
             status_tv.setText("Tidak Ada Transaksi" + "\nKetuk + Tambah untuk menambahkan")
 
         }
-
-    }
-
-    fun actionCallbackAdapter(item: SpendingEntitiy) {
-
-        val intent = Intent(context, SpendingDetail::class.java)
-        intent.putExtra("id", item.id)
-        startActivity(intent)
 
     }
 
@@ -124,36 +184,39 @@ class HomeFragment : Fragment() {
 
             if (x < 10) {
 
-                thisMonth = month + ".0" + x
+                thisMonth = "$month.0$x"
 
             } else {
 
-                thisMonth = month + "." + x
+                thisMonth = "$month.$x"
 
             }
 
 //            Util.log(TAG, thisMonth)
+            Util.log(TAG, "this month : $thisMonth")
 
             val data = spendingDao.getReportFinanceMounth(thisMonth)
 
-//            Util.log(TAG, "list size : "+ data.size  + " pos : " + x)
+            if (data.size != 0) {
 
-            if (data != null) {
+//                listDataFinancial.addAll(data)
 
-                listDataSpending.addAll(data)
+                Util.log(TAG, "data : $data")
+                Util.log(TAG, "data size : ${data.size}")
+
+                listPerDayData.add(HomeGroupDataModel(thisMonth, 0, 0, data))
 
             }
 
         }
 
-
 //        Util.log(TAG, "list data : " + listDataSpending.size)
 
         var totalSpend_int = 0
 
-        for (i in 0 until listDataSpending.size) {
+        for (i in 0 until listDataFinancial.size) {
 
-            val item = listDataSpending.get(i)
+            val item = listDataFinancial.get(i)
 
             totalSpend_int = totalSpend_int + item.nominal!!.toInt()
 

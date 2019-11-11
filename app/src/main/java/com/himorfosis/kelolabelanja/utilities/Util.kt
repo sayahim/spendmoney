@@ -8,6 +8,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 import android.graphics.drawable.Drawable
+import java.text.SimpleDateFormat
 
 class Util {
 
@@ -77,6 +78,52 @@ class Util {
 
             return id
         }
+
+        fun convertDateName(date:String): String {
+
+            val cal = Calendar.getInstance()
+            val daysArray = arrayOf("", "Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu")
+            val monthArray = arrayOf("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember")
+
+            val dateMonth = date.substring(date.indexOf(".") + 1)
+            val tanggal = dateMonth.substring(dateMonth.lastIndexOf(".") + 1)
+            val bulan = dateMonth.substring(0, dateMonth.indexOf("."))
+            val tahun = date.substring(0, date.indexOf("."))
+
+            val intDay = cal.get(Calendar.DAY_OF_WEEK)
+            val intMonth = Integer.parseInt(bulan)
+
+            val nameMonth = monthArray[intMonth]
+            val nameDay = daysArray[intDay]
+
+            val dateNameFinal = nameDay +", "+tanggal+" "+ nameMonth +" "+ tahun
+
+//            Util.log("month", "bulan : " + monthArray)
+//            Util.log("month", "hari : " + nameDay)
+//            Util.log("month", "dateNameFinal " + dateNameFinal)
+
+            return  dateNameFinal
+
+        }
+
+        fun convertCalendarMonth(month:String) : String {
+
+            val monthArray = arrayOf("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember")
+
+            val dateMonth = month.substring(month.indexOf(".") + 1)
+            val bulan = dateMonth.substring(0, dateMonth.indexOf("."))
+
+            val intMonth = Integer.parseInt(bulan)
+
+            val nameMonth = monthArray[intMonth]
+
+//            Util.log("month", "bulan : " + monthArray)
+
+            return nameMonth
+
+        }
+
+
 
     }
 

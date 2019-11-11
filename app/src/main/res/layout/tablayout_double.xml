@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/_10sdp"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginLeft="@dimen/_30sdp"
+        android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginRight="@dimen/_30sdp"
         android:background="@drawable/border_line"
         android:orientation="horizontal"
@@ -17,23 +21,22 @@
             android:id="@+id/tab_one_fl"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="@dimen/_10sdp"
-            android:paddingBottom="@dimen/_10sdp"
-            android:background="@drawable/border_blue_dark"
             android:layout_weight="1"
-            android:gravity="center">
+            android:background="@drawable/border_blue_dark"
+            android:gravity="center"
+            android:paddingTop="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_10sdp">
 
             <TextView
                 android:id="@+id/titletab_one_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:text="Pengeluaran"
-                android:fontFamily="@font/regular_opensans"
-                android:textSize="@dimen/_13ssp"
-                android:textStyle="bold"
                 android:layout_gravity="center"
-                />
+                android:fontFamily="@font/regular_opensans"
+                android:text="Pengeluaran"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_13ssp"
+                android:textStyle="bold" />
 
         </FrameLayout>
 
@@ -42,22 +45,21 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:gravity="center"
             android:paddingTop="@dimen/_10sdp"
-            android:paddingBottom="@dimen/_10sdp"
-            android:gravity="center">
+            android:paddingBottom="@dimen/_10sdp">
 
 
             <TextView
                 android:id="@+id/titletab_two_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/blue_dark"
-                android:textStyle="bold"
-                android:textSize="@dimen/_13ssp"
-                android:text="Pendapatan"
-                android:fontFamily="@font/regular_opensans"
                 android:layout_gravity="center"
-                />
+                android:fontFamily="@font/regular_opensans"
+                android:text="Pendapatan"
+                android:textColor="@color/blue_dark"
+                android:textSize="@dimen/_13ssp"
+                android:textStyle="bold" />
 
         </FrameLayout>
 
