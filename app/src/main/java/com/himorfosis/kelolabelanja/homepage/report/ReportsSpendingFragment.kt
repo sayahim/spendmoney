@@ -68,11 +68,11 @@ class ReportsSpendingFragment : Fragment() {
 
         if (data.size != 0) {
 
-            status_data_tv.visibility = View.VISIBLE
+            status_data_tv.visibility = View.INVISIBLE
 
         } else {
 
-            status_data_tv.visibility = View.INVISIBLE
+            status_data_tv.visibility = View.VISIBLE
             
         }
 
