@@ -2,18 +2,20 @@ package com.himorfosis.kelolabelanja.homepage.home.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.himorfosis.kelolabelanja.R
 import com.himorfosis.kelolabelanja.database.entity.FinancialEntitiy
 import com.himorfosis.kelolabelanja.details.SpendingDetail
 import com.himorfosis.kelolabelanja.utilities.Util
 
-class HomeAdapter(var context: Context, val adapterCallback : (FinancialEntitiy) -> Unit) : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
+class HomeAdapter(var context: Context) : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
     private var listReportFinancial: MutableList<FinancialEntitiy>? = ArrayList<FinancialEntitiy>()
 
@@ -38,6 +40,16 @@ class HomeAdapter(var context: Context, val adapterCallback : (FinancialEntitiy)
         } else {
 
             holder.name_tv.text = data.note
+
+        }
+
+        if (data.type == "income") {
+
+            holder.nominal_tv.setTextColor(ContextCompat.getColor(context, R.color.green))
+
+        } else {
+
+            holder.nominal_tv.setTextColor(ContextCompat.getColor(context, R.color.text_black))
 
         }
 
@@ -70,6 +82,14 @@ class HomeAdapter(var context: Context, val adapterCallback : (FinancialEntitiy)
             add(response)
 
         }
+    }
+
+    fun removeListAdapter() {
+
+        listReportFinancial!!.clear()
+
+        notifyDataSetChanged()
+
     }
 
     //this method is giving the size of the list

@@ -1,7 +1,6 @@
-package com.himorfosis.kelolabelanja.category
+package com.himorfosis.kelolabelanja.financial.adapter
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,10 +13,10 @@ import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.item_category_spending.view.*
 import java.util.ArrayList
 
-class CategoryAdapter(private val context: Context, val adapterCallback: (CategoryEntity) -> Unit)
-    : RecyclerView.Adapter<CategoryAdapter.ViewHolder>(), Filterable {
+class FinancialCategoryAdapter(private val context: Context, val adapterCallback: (CategoryEntity) -> Unit)
+    : RecyclerView.Adapter<FinancialCategoryAdapter.ViewHolder>(), Filterable {
 
-    private val TAG = "CategoryAdapter"
+    private val TAG = "FinancialCategoryAdapter"
 
     private var dataListFilter: MutableList<CategoryEntity>? = null
     private var listData: MutableList<CategoryEntity>? = ArrayList<CategoryEntity>()
@@ -30,7 +29,7 @@ class CategoryAdapter(private val context: Context, val adapterCallback: (Catego
 
     override fun getItemCount() = listData!!.size
 
-    override fun onBindViewHolder(holder: CategoryAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         var data = listData!!.get(position)
 
@@ -38,13 +37,21 @@ class CategoryAdapter(private val context: Context, val adapterCallback: (Catego
 
         var convertID = data.id.toString()
 
-        if (getIdSelected.equals(convertID)) {
+        if (getIdSelected != null) {
 
-            Util.log(TAG, "pos : " + position)
-            Util.log(TAG, "id selected : " + getIdSelected)
-            Util.log(TAG, "id  : " + convertID)
+            if (getIdSelected == convertID) {
 
-            holder.frame.setBackgroundResource(R.drawable.border_selected)
+                Util.log(TAG, "pos : $position")
+                Util.log(TAG, "id selected : $getIdSelected" )
+                Util.log(TAG, "id  : $convertID")
+
+                holder.frame.setBackgroundResource(R.drawable.border_selected)
+
+            } else {
+
+                holder.frame.setBackgroundResource(R.drawable.border_line)
+
+            }
 
         } else {
 
@@ -93,18 +100,6 @@ class CategoryAdapter(private val context: Context, val adapterCallback: (Catego
 
             add(response)
         }
-    }
-
-    fun removeListAdapter() {
-
-        listData!!.clear()
-
-        notifyDataSetChanged()
-
-    }
-
-    interface AdapterOnClick {
-        fun onClick(item: Any)
     }
 
     override fun getFilter(): Filter {
