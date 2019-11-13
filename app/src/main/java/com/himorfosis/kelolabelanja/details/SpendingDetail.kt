@@ -9,10 +9,9 @@ import androidx.appcompat.app.ActionBar
 import androidx.core.content.ContextCompat
 import androidx.room.Room
 import com.himorfosis.kelolabelanja.R
-import com.himorfosis.kelolabelanja.database.spending.SpendingDao
-import com.himorfosis.kelolabelanja.database.spending.SpendingDatabase
+import com.himorfosis.kelolabelanja.database.spending.DatabaseDao
+import com.himorfosis.kelolabelanja.database.spending.Database
 import com.himorfosis.kelolabelanja.homepage.HomepageActivity
-import com.himorfosis.kelolabelanja.spending.SpendingActivity
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.activity_spending_detail.*
 import kotlinx.android.synthetic.main.toolbar_detail.*
@@ -20,7 +19,7 @@ import org.jetbrains.anko.toast
 
 class SpendingDetail : AppCompatActivity() {
 
-    lateinit var spendingDao: SpendingDao
+    lateinit var databaseDao: DatabaseDao
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +39,7 @@ class SpendingDetail : AppCompatActivity() {
 
         val getId = data.getIntExtra("id", 0)
 
-        val details = spendingDao.getDetailSpending(getId)
+        val details = databaseDao.getDetailSpending(getId)
 
         nominal_tv.setText(Util.numberFormatMoney(details.nominal!!.toString()))
         category_tv.setText(details.category_name)
@@ -51,7 +50,7 @@ class SpendingDetail : AppCompatActivity() {
 
     private fun setDatabase() {
 
-        spendingDao = Room.databaseBuilder(this, SpendingDatabase::class.java, SpendingDatabase.DB_NAME)
+        databaseDao = Room.databaseBuilder(this, Database::class.java, Database.DB_NAME)
                 .allowMainThreadQueries()
                 .fallbackToDestructiveMigration()
                 .build()

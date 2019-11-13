@@ -9,6 +9,11 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 import android.graphics.drawable.Drawable
 import java.text.SimpleDateFormat
+import kotlin.collections.ArrayList
+import android.widget.DatePicker
+import android.app.DatePickerDialog
+import android.view.View
+
 
 class Util {
 
@@ -35,7 +40,7 @@ class Util {
 
         // get data shared preference String
 
-        fun getData(DBNAME: String, Tablekey: String, context: Context): String? {
+        fun getData(DBNAME: String, Tablekey: String, context: Context): String {
 
             val settings: SharedPreferences
             val text: String?
@@ -96,13 +101,7 @@ class Util {
             val nameMonth = monthArray[intMonth]
             val nameDay = daysArray[intDay]
 
-            val dateNameFinal = nameDay +", "+tanggal+" "+ nameMonth +" "+ tahun
-
-//            Util.log("month", "bulan : " + monthArray)
-//            Util.log("month", "hari : " + nameDay)
-//            Util.log("month", "dateNameFinal " + dateNameFinal)
-
-            return  dateNameFinal
+            return "$nameDay, $tanggal $nameMonth $tahun"
 
         }
 
@@ -115,15 +114,60 @@ class Util {
 
             val intMonth = Integer.parseInt(bulan)
 
-            val nameMonth = monthArray[intMonth]
-
-//            Util.log("month", "bulan : " + monthArray)
-
-            return nameMonth
+            return monthArray[intMonth]
 
         }
 
+        fun getDataListMonth():MutableList<String> {
 
+            var dataMonth : MutableList<String> = ArrayList<String>()
+            dataMonth.add("Januari")
+            dataMonth.add("Februari")
+            dataMonth.add("Maret")
+            dataMonth.add("April")
+            dataMonth.add("Mei")
+            dataMonth.add("Juni")
+            dataMonth.add("Juli")
+            dataMonth.add("Agustus")
+            dataMonth.add("September")
+            dataMonth.add("Oktober")
+            dataMonth.add("November")
+            dataMonth.add("Desember")
+
+            return dataMonth
+
+        }
+
+        fun createMonthSelectedDialog(context: Context): DatePickerDialog {
+
+            Util.log("create month", "hiya")
+
+            val dpd = DatePickerDialog(context, null, 2019, 1, 24)
+
+            try {
+                val datePickerDialogFields = dpd.javaClass.declaredFields
+                for (datePickerDialogField in datePickerDialogFields) {
+
+                    if (datePickerDialogField.name == "mDatePicker") {
+
+                        datePickerDialogField.isAccessible = true
+                        val datePicker = datePickerDialogField.get(dpd) as DatePicker
+                        val datePickerFields = datePickerDialogField.type.declaredFields
+                        for (datePickerField in datePickerFields) {
+                            Log.i("test", datePickerField.name)
+                            if ("mDaySpinner" == datePickerField.name) {
+                                datePickerField.isAccessible = true
+                                val dayPicker = datePickerField.get(datePicker)
+                                (dayPicker as View).visibility = View.GONE
+                            }
+                        }
+                    }
+                }
+            } catch (ex: Exception) {
+            }
+
+            return dpd
+        }
 
     }
 

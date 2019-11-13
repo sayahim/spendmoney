@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,8 +28,11 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.himorfosis.kelolabelanja.R;
 import com.himorfosis.kelolabelanja.homepage.statistict.adapter.FinancialProgressAdapter;
 import com.himorfosis.kelolabelanja.homepage.statistict.model.FinancialProgressModel;
+import com.himorfosis.kelolabelanja.utilities.Util;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -41,6 +45,8 @@ public class PieChartView extends Fragment {
     private PieChart pieChart;
     FinancialProgressAdapter adapterFinancial;
     RecyclerView recyclerView;
+    LinearLayout selectMonthClick_ll;
+    TextView month_selected_tv;
 
     private float[] yData = {66.76f, 44.32f};
     private String[] xData = {"Mitch", "Jessica" , "Mohammad" , "Kelsey", "Sam", "Robert", "Ashley"};
@@ -61,10 +67,45 @@ public class PieChartView extends Fragment {
 
         recyclerView = view.findViewById(R.id.recycler_report_cart);
         pieChart = view.findViewById(R.id.pie_chart);
+        pieChart = view.findViewById(R.id.pie_chart);
+        selectMonthClick_ll = view.findViewById(R.id.select_month_click_ll);
+        month_selected_tv = view.findViewById(R.id.month_selected_tv);
+
+        setDataDateToday();
 
         setTablayoutAction(view);
 
         setPieChart();
+
+        selectMonthClick_ll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+
+
+            }
+        });
+
+    }
+
+    private void setDataDateToday() {
+
+        SimpleDateFormat date = new SimpleDateFormat("yyyy.MM.dd");
+
+//        SimpleDateFormat dateMonth = new SimpleDateFormat("MM");
+//        SimpleDateFormat dateYear = new SimpleDateFormat("yyyy");
+
+        String month = date.format(new Date());
+
+        String[] monthArray = new String[ ]{"", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"};
+
+        String monthConnvert = month.substring(month.indexOf(".") + 1);
+        String bulan = monthConnvert.substring(0, monthConnvert.indexOf("."));
+
+        Integer intMonth = Integer.parseInt(bulan);
+
+        month_selected_tv.setText(monthArray[intMonth]);
 
     }
 

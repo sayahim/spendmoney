@@ -1,12 +1,12 @@
 package com.himorfosis.kelolabelanja.homepage.home.model
 
-import com.himorfosis.kelolabelanja.database.entity.SpendingEntitiy
+import com.himorfosis.kelolabelanja.database.entity.FinancialEntitiy
 
 data class HomeGroupDataModel(
 
         var date : String,
         var totalSpending : Int,
         var totalIncome : Int,
-        var spendingEntitiy: MutableList<SpendingEntitiy>
+        var financialEntitiy: MutableList<FinancialEntitiy>
 
 )

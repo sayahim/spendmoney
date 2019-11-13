@@ -7,17 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.himorfosis.kelolabelanja.R
-import com.himorfosis.kelolabelanja.database.entity.CategoryEntity
-import com.himorfosis.kelolabelanja.database.entity.SpendingEntitiy
+import com.himorfosis.kelolabelanja.database.entity.FinancialEntitiy
 import com.himorfosis.kelolabelanja.details.SpendingDetail
 import com.himorfosis.kelolabelanja.utilities.Util
 
-class HomeAdapter(var context: Context) : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
+class HomeAdapter(var context: Context, val adapterCallback : (FinancialEntitiy) -> Unit) : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
-    private var listReportFinancial: MutableList<SpendingEntitiy>? = ArrayList<SpendingEntitiy>()
+    private var listReportFinancial: MutableList<FinancialEntitiy>? = ArrayList<FinancialEntitiy>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeAdapter.ViewHolder {
         val v = LayoutInflater.from(context).inflate(R.layout.item_home_spending, parent, false)
@@ -58,15 +56,15 @@ class HomeAdapter(var context: Context) : RecyclerView.Adapter<HomeAdapter.ViewH
 
     }
 
-    private fun add(spendingEntitiy: SpendingEntitiy) {
+    private fun add(financialEntitiy: FinancialEntitiy) {
 
-        listReportFinancial!!.add(spendingEntitiy)
+        listReportFinancial!!.add(financialEntitiy)
 
         notifyItemInserted(listReportFinancial!!.size - 1)
 
     }
 
-    fun addAll(posItems: List<SpendingEntitiy>) {
+    fun addAll(posItems: List<FinancialEntitiy>) {
         for (response in posItems) {
 
             add(response)

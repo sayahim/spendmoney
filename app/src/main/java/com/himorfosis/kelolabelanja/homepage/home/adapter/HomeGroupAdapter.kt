@@ -9,11 +9,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.himorfosis.kelolabelanja.R
-import com.himorfosis.kelolabelanja.database.entity.SpendingEntitiy
 import com.himorfosis.kelolabelanja.details.SpendingDetail
 import com.himorfosis.kelolabelanja.homepage.home.model.HomeGroupDataModel
 import com.himorfosis.kelolabelanja.utilities.Util
-import kotlinx.android.synthetic.main.home_fragment.*
 
 class HomeGroupAdapter (var context: Context) : RecyclerView.Adapter<HomeGroupAdapter.ViewHolder>() {
 
@@ -37,16 +35,16 @@ class HomeGroupAdapter (var context: Context) : RecyclerView.Adapter<HomeGroupAd
         holder.day_date.text = data.date
 
         Util.log(TAG, "date : " + data.date)
-        Util.log(TAG, "list : " + data.spendingEntitiy.size)
+        Util.log(TAG, "list : " + data.financialEntitiy.size)
 
-        if (data.spendingEntitiy.size != 0) {
+        if (data.financialEntitiy.size != 0) {
 
             holder.recycler_home_adapter.apply {
 
                 adapterReports = HomeAdapter(context)
 
                 // sorted list
-                var sortedListDescending = data.spendingEntitiy.sortedWith(compareByDescending { it.time })
+                var sortedListDescending = data.financialEntitiy.sortedWith(compareByDescending { it.time })
 
                 adapterReports.addAll(sortedListDescending)
 
@@ -75,6 +73,13 @@ class HomeGroupAdapter (var context: Context) : RecyclerView.Adapter<HomeGroupAd
         }
     }
 
+    fun removeListAdapter() {
+
+        listReportFinancial!!.clear()
+        notifyDataSetChanged()
+
+    }
+
     //this method is giving the size of the list
     override fun getItemCount(): Int {
         return listReportFinancial!!.size
@@ -84,8 +89,6 @@ class HomeGroupAdapter (var context: Context) : RecyclerView.Adapter<HomeGroupAd
 
         val recycler_home_adapter = itemView.findViewById(R.id.recycler_home_adapter) as RecyclerView
         val day_date = itemView.findViewById(R.id.day_date) as TextView
-//        val nominal_tv = itemView.findViewById(R.id.nominal_tv) as TextView
-//        val category_img = itemView.findViewById(R.id.category_img) as ImageView
 
     }
 }

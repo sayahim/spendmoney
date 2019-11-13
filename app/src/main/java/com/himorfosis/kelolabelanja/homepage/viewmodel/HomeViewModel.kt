@@ -5,32 +5,32 @@ import androidx.lifecycle.AndroidViewModel
 
 class HomeViewModel(application: Application) : AndroidViewModel(application){
 
-//    var listSpending: LiveData<List<SpendingEntitiy>>
-//    private val spendingDatabase: SpendingDatabase
-
-
+//    var listSpending: LiveData<List<FinancialEntitiy>>
+//    private val spendingDatabase: Database
+//
+//
 //    init {
-//        spendingDatabase = SpendingDatabase.getDatabase(this.getApplication())
-////        listSpending = spendingDatabase.spendingDao().getAllSpending()
+//        spendingDatabase = Database.getDatabase(this.getApplication())
+////        listSpending = spendingDatabase.databaseDao().getAllSpending()
 //    }
 //
-//    fun getListSpendingToday(): LiveData<List<SpendingEntitiy>> {
+//    fun getListSpendingToday(): LiveData<List<FinancialEntitiy>> {
 //        return listSpending
 //    }
 //
-//    fun addSpending(data: SpendingEntitiy) {
+//    fun addSpending(data: FinancialEntitiy) {
 //        addAsynTask(spendingDatabase).execute(data)
 //    }
 //
 //
-//    class addAsynTask(db: SpendingDatabase) : AsyncTask<SpendingEntitiy, Void, Void>() {
+//    class addAsynTask(db: Database) : AsyncTask<FinancialEntitiy, Void, Void>() {
 //        private var spendingDatabase = db
-//        override fun doInBackground(vararg params: SpendingEntitiy): Void? {
-//            spendingDatabase.spendingDao().insertSpending(params[0])
+//        override fun doInBackground(vararg params: FinancialEntitiy): Void? {
+//            spendingDatabase.databaseDao().insertSpending(params[0])
 //            return null
 //        }
 //
 //    }
-//
+
 
 }

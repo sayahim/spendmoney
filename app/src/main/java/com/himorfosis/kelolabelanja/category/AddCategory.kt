@@ -7,7 +7,6 @@ import android.os.Bundle
 import androidx.appcompat.app.ActionBar
 import androidx.core.content.ContextCompat
 import com.himorfosis.kelolabelanja.R
-import com.himorfosis.kelolabelanja.spending.SpendingActivity
 import kotlinx.android.synthetic.main.toolbar_detail.*
 
 class AddCategory : AppCompatActivity() {
@@ -30,7 +29,7 @@ class AddCategory : AppCompatActivity() {
 
         backBar_btn.setOnClickListener {
 
-            startActivity(Intent(this, SpendingActivity::class.java))
+            startActivity(Intent(this, Category::class.java))
 
         }
 

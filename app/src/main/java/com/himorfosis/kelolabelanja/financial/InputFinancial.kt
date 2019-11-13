@@ -8,31 +8,25 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.WindowManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageButton
 import androidx.appcompat.app.ActionBar
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.himorfosis.kelolabelanja.R
-import com.himorfosis.kelolabelanja.category.CategoryAdapter
+import com.himorfosis.kelolabelanja.financial.adapter.FinancialCategoryAdapter
 import com.himorfosis.kelolabelanja.database.entity.CategoryEntity
-import com.himorfosis.kelolabelanja.database.entity.SpendingEntitiy
-import com.himorfosis.kelolabelanja.database.spending.SpendingDao
-import com.himorfosis.kelolabelanja.database.spending.SpendingDatabase
+import com.himorfosis.kelolabelanja.database.entity.FinancialEntitiy
+import com.himorfosis.kelolabelanja.database.spending.DatabaseDao
+import com.himorfosis.kelolabelanja.database.spending.Database
 import com.himorfosis.kelolabelanja.homepage.HomepageActivity
 import com.himorfosis.kelolabelanja.utilities.Util
-import kotlinx.android.synthetic.main.activity_category.*
 import kotlinx.android.synthetic.main.activity_input_financial.*
 import kotlinx.android.synthetic.main.layout_input_data.*
 import kotlinx.android.synthetic.main.toolbar_detail.*
 import org.jetbrains.anko.toast
-import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.Collections.replaceAll
 import kotlin.collections.ArrayList
 
 
@@ -40,7 +34,7 @@ class InputFinancial : AppCompatActivity() {
 
     var TAG = "InputFinancial"
 
-    lateinit var categoryAdapter: CategoryAdapter
+    lateinit var financialCategoryAdapter: FinancialCategoryAdapter
 
     var recycler_category = null
     var getNominal: String? = null
@@ -49,7 +43,8 @@ class InputFinancial : AppCompatActivity() {
     var listCategory :List<CategoryEntity> = ArrayList<CategoryEntity>()
 
     // database
-    lateinit var spendingDao: SpendingDao
+    lateinit var databaseDao: DatabaseDao
+    lateinit var typeDataFinancial: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,7 +85,7 @@ class InputFinancial : AppCompatActivity() {
 
                 Util.log(TAG, "query : $query")
 
-                categoryAdapter.getFilter().filter(query)
+                financialCategoryAdapter.filter.filter(query)
 
                 // visible delete search query
                 delete_search_btn.visibility = View.VISIBLE
@@ -123,7 +118,6 @@ class InputFinancial : AppCompatActivity() {
             hideLayoutInputData()
 
             setDataCategorySpending()
-
 
         }
 
@@ -178,49 +172,6 @@ class InputFinancial : AppCompatActivity() {
 
         }
 
-//        nominal_et.addTextChangedListener(object : TextWatcher {
-//
-//            override fun afterTextChanged(s: Editable) {}
-//
-//            override fun beforeTextChanged(s: CharSequence, start: Int,
-//                                           count: Int, after: Int) {
-//            }
-//
-//            override fun onTextChanged(s: CharSequence, start: Int,
-//                                       before: Int, count: Int) {
-//
-//
-//                var char = s.toString()
-//
-//                if (char == null) {
-//
-//                    getNominal = ""
-//                    nominal_et.setText("")
-//
-//                } else if (char.equals(getNominal)) {
-//
-//                    // do nothing
-//
-//                } else {
-//
-//                    val nominal = nominal_et.text.toString().replace(".", "")
-//
-//                    Util.log(TAG, "nominal : " + nominal)
-//                    Util.log(TAG, "number format : " + Util.numberFormat(nominal))
-//                    Util.log(TAG, "char : " + char)
-//
-//                    val nominalNumberFormat = Util.numberFormat(nominal)
-//
-//                    nominal_et.setText(nominalNumberFormat)
-//
-//                    getNominal = char
-//
-//                }
-//
-//
-//            }
-//        })
-
         save_btn.setOnClickListener {
 
             val getNominal = nominal_et.text.toString()
@@ -248,7 +199,7 @@ class InputFinancial : AppCompatActivity() {
                 Util.log(TAG, "time : " + timeNow)
                 Util.log(TAG, "getIdSelected : " + getIdSelected)
 
-//                val listCategory = spendingDao.getAllCategory()
+//                val listCategory = databaseDao.getAllCategory()
 
                 for (i in 0 until listCategory.size) {
 
@@ -256,7 +207,7 @@ class InputFinancial : AppCompatActivity() {
 
                     if (item.id == getIdSelected.toInt()) {
 
-                        insertToDatabase(SpendingEntitiy(null, getIdSelected.toInt(), item.name, item.image_category, getNominal, note_str, dateNow, timeNow))
+                        insertToDatabase(FinancialEntitiy(null, getIdSelected.toInt(), item.name, item.image_category, typeDataFinancial, getNominal, note_str, dateNow, timeNow))
 
                         break
 
@@ -276,9 +227,9 @@ class InputFinancial : AppCompatActivity() {
     }
 
 
-    private fun insertToDatabase(data: SpendingEntitiy) {
+    private fun insertToDatabase(data: FinancialEntitiy) {
 
-        spendingDao.insertSpending(data)
+        databaseDao.insertSpending(data)
 
         toast("Data Berhasil Tersimpan")
 
@@ -287,6 +238,10 @@ class InputFinancial : AppCompatActivity() {
     }
 
     private fun setDataCategorySpending() {
+
+        Util.saveData("category", "selected", "0", this)
+
+        typeDataFinancial = "spend"
 
         listCategory = listOf(
 
@@ -328,9 +283,18 @@ class InputFinancial : AppCompatActivity() {
 
     private fun setDataCategoryIncome() {
 
-        listCategory = listOf()
+        Util.saveData("category", "selected", "0", this)
 
-        categoryAdapter.removeListAdapter()
+        typeDataFinancial = "income"
+
+        listCategory = listOf(
+
+                CategoryEntity(1, "Gaji", "ic_food_black"),
+                CategoryEntity(2, "Usaha", "ic_shopping_bag_black"),
+                CategoryEntity(3, "Penjualan", "ic_ticket_black"),
+                CategoryEntity(4, "Hadiah", "ic_bus_black")
+
+                )
 
         setAdapterCategory()
 
@@ -342,24 +306,20 @@ class InputFinancial : AppCompatActivity() {
 
         var recycler_category = findViewById<RecyclerView>(R.id.recycler_category)
 
-//        val listCategory = spendingDao.getAllCategory()
+//        val listCategory = databaseDao.getAllCategory()
 
-        categoryAdapter = CategoryAdapter(this, { item ->
+        financialCategoryAdapter = FinancialCategoryAdapter(this) { item ->
             actionCallbackAdapter(item)
-
-        })
-
-        recycler_category.apply {
-
-            categoryAdapter.addAll(listCategory)
-            layoutManager = GridLayoutManager(this@InputFinancial, 4)
-            adapter = categoryAdapter
 
         }
 
-        Util.log(TAG, "list category : " + listCategory)
-        Util.log(TAG, "list category size : " + listCategory.size)
+        recycler_category.apply {
 
+            financialCategoryAdapter.addAll(listCategory)
+            layoutManager = GridLayoutManager(this@InputFinancial, 4)
+            adapter = financialCategoryAdapter
+
+        }
         if (listCategory.size == 0) {
 
             status_data_tv.visibility = View.VISIBLE
@@ -387,7 +347,7 @@ class InputFinancial : AppCompatActivity() {
 
     private fun setDatabase() {
 
-        spendingDao = Room.databaseBuilder(this, SpendingDatabase::class.java, SpendingDatabase.DB_NAME)
+        databaseDao = Room.databaseBuilder(this, Database::class.java, Database.DB_NAME)
                 .allowMainThreadQueries()
                 .fallbackToDestructiveMigration()
                 .build()
