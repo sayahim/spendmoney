@@ -71,6 +71,13 @@ public class FinancialProgressAdapter extends RecyclerView.Adapter<FinancialProg
         return (list != null) ? list.size() : 0;
     }
 
+    public void removeAdapter() {
+
+        list.clear();
+        notifyDataSetChanged();
+
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder{
         private TextView total_nominal_tv, title_category_tv;
         private ProgressBar total_progress;

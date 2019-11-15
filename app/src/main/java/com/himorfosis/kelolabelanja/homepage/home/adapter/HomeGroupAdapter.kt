@@ -32,7 +32,7 @@ class HomeGroupAdapter (var context: Context) : RecyclerView.Adapter<HomeGroupAd
 
         var data = listReportFinancial!![position]
 
-        holder.day_date.text = data.date
+        holder.day_date.text = Util.convertDateName(data.date)
 
         Util.log(TAG, "date : " + data.date)
         Util.log(TAG, "list : " + data.financialEntitiy.size)

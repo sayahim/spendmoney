@@ -29,12 +29,18 @@ class MonthPickerAdapter(private val context: Context, val adapterCallback: (Str
 
     override fun getItemCount() = listData!!.size
 
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+        val month_tv = itemView.item_month_tv as TextView
+        val bg_month_ll = itemView.item_bg_month as LinearLayout
+
+    }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val monthPosition = position + 1
 
         var data = listData!![position]
-
 
         holder.month_tv.text = data
 
@@ -73,12 +79,6 @@ class MonthPickerAdapter(private val context: Context, val adapterCallback: (Str
 
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-        val month_tv = itemView.item_month_tv as TextView
-        val bg_month_ll = itemView.item_bg_month as LinearLayout
-
-    }
 
     private fun add(data: String) {
 

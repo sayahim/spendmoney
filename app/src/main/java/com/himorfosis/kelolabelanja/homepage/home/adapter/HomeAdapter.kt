@@ -31,7 +31,6 @@ class HomeAdapter(var context: Context) : RecyclerView.Adapter<HomeAdapter.ViewH
         var data = listReportFinancial!!.get(position)
 
 //        holder.time_tv.text = data.time
-        holder.nominal_tv.text = Util.numberFormatMoney(data.nominal.toString())
 
         if (data.note.equals("-")) {
 
@@ -46,10 +45,12 @@ class HomeAdapter(var context: Context) : RecyclerView.Adapter<HomeAdapter.ViewH
         if (data.type == "income") {
 
             holder.nominal_tv.setTextColor(ContextCompat.getColor(context, R.color.green))
+            holder.nominal_tv.text = Util.numberFormatMoney(data.nominal.toString())
 
         } else {
 
             holder.nominal_tv.setTextColor(ContextCompat.getColor(context, R.color.text_black))
+            holder.nominal_tv.text =  Util.numberFormatMoney(data.nominal.toString())
 
         }
 

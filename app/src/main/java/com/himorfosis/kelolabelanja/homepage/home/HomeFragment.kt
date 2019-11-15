@@ -282,6 +282,4 @@ class HomeFragment : Fragment() {
 
     }
 
-
-
 }

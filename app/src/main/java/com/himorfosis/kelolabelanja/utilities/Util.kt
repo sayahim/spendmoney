@@ -13,6 +13,7 @@ import kotlin.collections.ArrayList
 import android.widget.DatePicker
 import android.app.DatePickerDialog
 import android.view.View
+import com.himorfosis.kelolabelanja.database.entity.CategoryEntity
 
 
 class Util {
@@ -29,9 +30,8 @@ class Util {
 
         fun saveData(DBNAME: String, Tablekey: String, value: String, context: Context) {
 
-            val settings: SharedPreferences
+            val settings: SharedPreferences = context.getSharedPreferences(DBNAME, Context.MODE_PRIVATE)
             val editor: SharedPreferences.Editor
-            settings = context.getSharedPreferences(DBNAME, Context.MODE_PRIVATE)
             editor = settings.edit()
             editor.putString(Tablekey, value)
             editor.commit()
@@ -42,9 +42,8 @@ class Util {
 
         fun getData(DBNAME: String, Tablekey: String, context: Context): String {
 
-            val settings: SharedPreferences
+            val settings: SharedPreferences = context.getSharedPreferences(DBNAME, Context.MODE_PRIVATE)
             val text: String?
-            settings = context.getSharedPreferences(DBNAME, Context.MODE_PRIVATE)
             text = settings.getString(Tablekey, null)
             return text
         }
@@ -53,9 +52,8 @@ class Util {
 
         fun deleteData(DBNAME: String, context: Context) {
 
-            val settings: SharedPreferences
+            val settings: SharedPreferences = context.getSharedPreferences(DBNAME, Context.MODE_PRIVATE)
             val editor: SharedPreferences.Editor
-            settings = context.getSharedPreferences(DBNAME, Context.MODE_PRIVATE)
             editor = settings.edit()
             editor.clear()
             editor.commit()
@@ -84,28 +82,43 @@ class Util {
             return id
         }
 
-        fun convertDateName(date:String): String {
+        fun convertDateName(date: String): String {
 
-            val cal = Calendar.getInstance()
-            val daysArray = arrayOf("", "Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu")
-            val monthArray = arrayOf("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember")
+            val dateToday = SimpleDateFormat("yyyy.MM.dd")
+            val getDateToday = dateToday.format(Date())
 
-            val dateMonth = date.substring(date.indexOf(".") + 1)
-            val tanggal = dateMonth.substring(dateMonth.lastIndexOf(".") + 1)
-            val bulan = dateMonth.substring(0, dateMonth.indexOf("."))
-            val tahun = date.substring(0, date.indexOf("."))
+            var nameDateFinal = ""
 
-            val intDay = cal.get(Calendar.DAY_OF_WEEK)
-            val intMonth = Integer.parseInt(bulan)
+            if (date.equals(getDateToday)) {
 
-            val nameMonth = monthArray[intMonth]
-            val nameDay = daysArray[intDay]
+                nameDateFinal = "Hari Ini"
 
-            return "$nameDay, $tanggal $nameMonth $tahun"
+            } else {
+
+                val cal = Calendar.getInstance()
+                val daysArray = arrayOf("", "Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu")
+                val monthArray = arrayOf("", "Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des")
+
+                val dateMonth = date.substring(date.indexOf(".") + 1)
+                val tanggal = dateMonth.substring(dateMonth.lastIndexOf(".") + 1)
+                val bulan = dateMonth.substring(0, dateMonth.indexOf("."))
+                val tahun = date.substring(0, date.indexOf("."))
+
+                val intDay = cal.get(Calendar.DAY_OF_WEEK)
+                val intMonth = Integer.parseInt(bulan)
+
+                val nameMonth = monthArray[intMonth]
+                val nameDay = daysArray[intDay]
+
+                nameDateFinal = "$nameDay, $tanggal $nameMonth $tahun"
+
+            }
+
+            return nameDateFinal
 
         }
 
-        fun convertCalendarMonth(month:String) : String {
+        fun convertCalendarMonth(month: String): String {
 
             val monthArray = arrayOf("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember")
 
@@ -118,9 +131,9 @@ class Util {
 
         }
 
-        fun getDataListMonth():MutableList<String> {
+        fun getDataListMonth(): MutableList<String> {
 
-            var dataMonth : MutableList<String> = ArrayList<String>()
+            var dataMonth: MutableList<String> = ArrayList<String>()
             dataMonth.add("Januari")
             dataMonth.add("Februari")
             dataMonth.add("Maret")
@@ -135,6 +148,59 @@ class Util {
             dataMonth.add("Desember")
 
             return dataMonth
+
+        }
+
+        fun getDataCategoryIncome(): List<CategoryEntity> {
+
+            var data: List<CategoryEntity> = ArrayList<CategoryEntity>()
+
+            data = listOf(
+
+                    CategoryEntity(1, "Gaji", "ic_money"),
+                    CategoryEntity(2, "Persewaan", "ic_store"),
+                    CategoryEntity(3, "Penjualan", "ic_payment"),
+                    CategoryEntity(4, "Hadiah", "ic_trophy")
+            )
+
+            return data
+
+        }
+
+        fun getDataCategorySpending(): List<CategoryEntity> {
+
+            var data: List<CategoryEntity> = ArrayList<CategoryEntity>()
+
+            data = listOf(
+
+                    CategoryEntity(1, "Makanan", "ic_eat"),
+                    CategoryEntity(2, "Belanja", "ic_belanja"),
+                    CategoryEntity(3, "Hiburan", "ic_acoustic_guitar"),
+                    CategoryEntity(4, "Kendaraan", "ic_scooter"),
+
+                    CategoryEntity(5, "Tiket", "ic_ticket"),
+                    CategoryEntity(6, "Keluarga", "ic_family"),
+                    CategoryEntity(7, "Elektronik", "ic_laptop"),
+                    CategoryEntity(8, "Pendidikan", "ic_toga"),
+
+                    CategoryEntity(9, "Rumah", "ic_house"),
+                    CategoryEntity(10, "Buku", "ic_open_book"),
+                    CategoryEntity(11, "Traveling", "ic_mountains"),
+                    CategoryEntity(12, "Utilitas", "ic_utilities"),
+
+                    CategoryEntity(13, "Kesehatan", "ic_medical"),
+                    CategoryEntity(14, "Pajak", "ic_tax"),
+                    CategoryEntity(15, "Kopi", "ic_coffee"),
+                    CategoryEntity(16, "Peliharaan", "ic_cat"),
+
+                    CategoryEntity(17, "Furnitur", "ic_sofa"),
+                    CategoryEntity(18, "Sumbangan", "ic_payment"),
+                    CategoryEntity(19, "Dapur", "ic_baker"),
+                    CategoryEntity(20, "Tanaman", "ic_plant")
+
+            )
+
+            return data
 
         }
 

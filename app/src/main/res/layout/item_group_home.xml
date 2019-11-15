@@ -26,7 +26,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/_10ssp"
                     android:fontFamily="@font/regular_opensans"
-                    android:text="Sabtu, 26 November"
+                    android:text="Sabtu, 26 Nov 2019"
                     android:textColor="@color/text_hint"
                     android:ellipsize="end"
                     android:maxLines="1"/>

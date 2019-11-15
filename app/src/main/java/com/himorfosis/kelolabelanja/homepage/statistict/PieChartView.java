@@ -1,11 +1,7 @@
 package com.himorfosis.kelolabelanja.homepage.statistict;
 
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.RelativeSizeSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,22 +9,19 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.himorfosis.kelolabelanja.R;
 import com.himorfosis.kelolabelanja.homepage.statistict.adapter.FinancialProgressAdapter;
 import com.himorfosis.kelolabelanja.homepage.statistict.model.FinancialProgressModel;
+import com.himorfosis.kelolabelanja.month_picker.java.MonthPickerJavaViewModel;
 import com.himorfosis.kelolabelanja.utilities.Util;
+import com.himorfosis.kelolabelanja.utilities.UtilJava;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -81,8 +74,7 @@ public class PieChartView extends Fragment {
             @Override
             public void onClick(View v) {
 
-
-
+                setShowMonthPicker();
 
             }
         });
@@ -92,11 +84,12 @@ public class PieChartView extends Fragment {
     private void setDataDateToday() {
 
         SimpleDateFormat date = new SimpleDateFormat("yyyy.MM.dd");
-
-//        SimpleDateFormat dateMonth = new SimpleDateFormat("MM");
-//        SimpleDateFormat dateYear = new SimpleDateFormat("yyyy");
+        SimpleDateFormat dateMonth = new SimpleDateFormat("MM");
+        SimpleDateFormat dateYear = new SimpleDateFormat("yyyy");
 
         String month = date.format(new Date());
+        String yearToday = dateYear.format(new Date());
+        String monthToday = dateMonth.format(new Date());
 
         String[] monthArray = new String[ ]{"", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"};
 
@@ -106,6 +99,58 @@ public class PieChartView extends Fragment {
         Integer intMonth = Integer.parseInt(bulan);
 
         month_selected_tv.setText(monthArray[intMonth]);
+
+        UtilJava.saveData("picker", "month", monthToday, getContext());
+        UtilJava.saveData("picker", "year", yearToday, getContext());
+
+        String getMonth = UtilJava.getData("picker", "month", getContext());
+
+        Log.e(TAG, "get month : " + getMonth);
+
+    }
+
+    private void setShowMonthPicker() {
+
+        MonthPickerJavaViewModel data = new MonthPickerJavaViewModel();
+
+        data.setDataMonth(getContext());
+
+        data.getDataMonth().observe(getActivity(), monthPicker -> {
+
+            if (monthPicker != null) {
+
+                UtilJava.log(TAG, "callback : " + monthPicker);
+
+                String getYearSelected = UtilJava.getData("picker", "year", getContext());
+
+                SimpleDateFormat date = new SimpleDateFormat("yyyy");
+
+                String year = date.format(new Date());
+
+
+                if (getYearSelected.equals(year)) {
+
+                    month_selected_tv.setText(UtilJava.convertCalendarMonth(monthPicker + ".0.1"));
+
+                } else {
+
+                    String thisMonth = UtilJava.convertCalendarMonth(monthPicker + ".0.1");
+                    month_selected_tv.setText(thisMonth + getYearSelected);
+
+                }
+
+                // remove data adapter
+                adapterFinancial.removeAdapter();
+
+                // get data month on year selected
+
+                setPieChart();
+
+                setAdapterFinancial();
+
+            }
+
+        });
 
     }
 

@@ -21,8 +21,6 @@ class FinancialCategoryAdapter(private val context: Context, val adapterCallback
     private var dataListFilter: MutableList<CategoryEntity>? = null
     private var listData: MutableList<CategoryEntity>? = ArrayList<CategoryEntity>()
 
-    val getIdSelected = Util.getData("category", "selected", context)
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_category_spending, parent, false))
     }
@@ -30,6 +28,8 @@ class FinancialCategoryAdapter(private val context: Context, val adapterCallback
     override fun getItemCount() = listData!!.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
+        val getIdSelected = Util.getData("category", "selected", context)
 
         var data = listData!!.get(position)
 
@@ -45,7 +45,7 @@ class FinancialCategoryAdapter(private val context: Context, val adapterCallback
                 Util.log(TAG, "id selected : $getIdSelected" )
                 Util.log(TAG, "id  : $convertID")
 
-                holder.frame.setBackgroundResource(R.drawable.border_selected)
+                holder.frame.setBackgroundResource(R.drawable.circle_gold)
 
             } else {
 

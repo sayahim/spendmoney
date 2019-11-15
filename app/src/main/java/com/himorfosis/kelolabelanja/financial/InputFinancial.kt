@@ -54,6 +54,7 @@ class InputFinancial : AppCompatActivity() {
 
         setDatabase()
 
+        // set data category to list
         setDataCategorySpending()
 
         setAdapterCategory()
@@ -117,6 +118,7 @@ class InputFinancial : AppCompatActivity() {
 
             hideLayoutInputData()
 
+            // set data category to list
             setDataCategorySpending()
 
         }
@@ -137,6 +139,7 @@ class InputFinancial : AppCompatActivity() {
 
             hideLayoutInputData()
 
+            // set data category to list
             setDataCategoryIncome()
 
         }
@@ -243,39 +246,7 @@ class InputFinancial : AppCompatActivity() {
 
         typeDataFinancial = "spend"
 
-        listCategory = listOf(
-
-                CategoryEntity(1, "Makanan", "ic_food_black"),
-                CategoryEntity(2, "Belanja", "ic_shopping_bag_black"),
-                CategoryEntity(3, "Hiburan", "ic_ticket_black"),
-                CategoryEntity(4, "Transportasi", "ic_bus_black"),
-
-                CategoryEntity(5, "Pendidikan", "ic_mortarboard_black"),
-                CategoryEntity(6, "Keluarga", "ic_family_black"),
-                CategoryEntity(7, "Elektronik", "ic_photo_camera_black"),
-                CategoryEntity(8, "Pendidikan", "ic_other_black"),
-
-                CategoryEntity(9, "Pendidikan", "ic_mortarboard_black"),
-                CategoryEntity(10, "Keluarga", "ic_family_black"),
-                CategoryEntity(11, "Elektronik", "ic_photo_camera_black"),
-                CategoryEntity(12, "Pendidikan", "ic_other_black"),
-
-                CategoryEntity(13, "Pendidikan", "ic_mortarboard_black"),
-                CategoryEntity(14, "Keluarga", "ic_family_black"),
-                CategoryEntity(15, "Elektronik", "ic_photo_camera_black"),
-                CategoryEntity(16, "Pendidikan", "ic_other_black"),
-
-                CategoryEntity(17, "Pendidikan", "ic_mortarboard_black"),
-                CategoryEntity(18, "Keluarga", "ic_family_black"),
-                CategoryEntity(19, "Elektronik", "ic_photo_camera_black"),
-                CategoryEntity(20, "Pendidikan", "ic_other_black"),
-
-                CategoryEntity(21, "Pendidikan", "ic_mortarboard_black"),
-                CategoryEntity(22, "Keluarga", "ic_family_black"),
-                CategoryEntity(23, "Elektronik", "ic_photo_camera_black"),
-                CategoryEntity(24, "Pendidikan", "ic_other_black")
-
-        )
+        listCategory = Util.getDataCategorySpending();
 
         setAdapterCategory()
 
@@ -287,14 +258,7 @@ class InputFinancial : AppCompatActivity() {
 
         typeDataFinancial = "income"
 
-        listCategory = listOf(
-
-                CategoryEntity(1, "Gaji", "ic_food_black"),
-                CategoryEntity(2, "Usaha", "ic_shopping_bag_black"),
-                CategoryEntity(3, "Penjualan", "ic_ticket_black"),
-                CategoryEntity(4, "Hadiah", "ic_bus_black")
-
-                )
+        listCategory = Util.getDataCategoryIncome()
 
         setAdapterCategory()
 

@@ -4,17 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ListView
-import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.room.Room
 import com.himorfosis.kelolabelanja.R
+import com.himorfosis.kelolabelanja.database.entity.FinancialEntitiy
+import com.himorfosis.kelolabelanja.database.spending.Database
+import com.himorfosis.kelolabelanja.database.spending.DatabaseDao
 import com.himorfosis.kelolabelanja.homepage.report.adapter.ReportsAdapter
+import com.himorfosis.kelolabelanja.homepage.report.model.ReportFinanceModel
 import com.himorfosis.kelolabelanja.homepage.statistict.model.FinancialProgressModel
 import com.himorfosis.kelolabelanja.month_picker.MonthPickerLiveData
-import com.himorfosis.kelolabelanja.utilities.AlertMonthAdapter
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.reports_spending_fragment.*
 import java.text.SimpleDateFormat
@@ -25,6 +25,10 @@ class ReportsSpendingFragment : Fragment() {
     var TAG = "ReportsSpendingFragment"
 
     lateinit var reportsAdapter: ReportsAdapter
+    private var listDataFinancial: MutableList<FinancialEntitiy> = ArrayList()
+    private var listDataReport: MutableList<ReportFinanceModel> = ArrayList()
+
+    lateinit var databaseDao: DatabaseDao
 
 
     companion object {
@@ -46,6 +50,10 @@ class ReportsSpendingFragment : Fragment() {
 
         setActionClick()
 
+        setLocalDatabase()
+
+        setDataDateToday()
+
         setDataDateToday()
 
         setAdapterFinancial()
@@ -57,9 +65,96 @@ class ReportsSpendingFragment : Fragment() {
 
         select_month_click_ll.setOnClickListener {
 
-
+            setShowMonthPicker()
 
         }
+
+    }
+
+    private fun getAllDataSelectedMonth() {
+
+        val month = Util.getData("picker", "month",  requireContext())
+        val year = Util.getData("picker", "year",  requireContext())
+
+        Util.log(TAG, "month selected : $month")
+
+        listDataFinancial.clear()
+//        listPerDayData.clear()
+
+        var monthOnYear = "$year.$month"
+
+        val dayOfMonth = 32
+
+        var thisMonth : String
+
+        for (x in 1 until dayOfMonth) {
+
+            if (x < 10) {
+
+                thisMonth = "$monthOnYear.0$x"
+
+            } else {
+
+                thisMonth = "$monthOnYear.$x"
+
+            }
+
+            Util.log(TAG, "this month : $thisMonth")
+
+            val data = databaseDao.getReportFinanceMounth(thisMonth)
+
+            if (data.size != 0) {
+
+                listDataFinancial.addAll(data)
+
+            }
+
+        }
+
+        var totalSpend_int = 0
+        var totalIncome_int = 0
+
+        if (listDataFinancial.size == 0) {
+
+            status_data_tv.text = "Tidak Ada Transaksi \n Ketuk + Tambah untuk menambakan satu"
+            status_data_tv.visibility = View.VISIBLE
+
+        } else{
+
+            status_data_tv.visibility = View.INVISIBLE
+
+            for (i in 0 until listDataFinancial.size) {
+
+                val item = listDataFinancial[i]
+
+                if (item.type == ("spend")) {
+
+//                    listDataReport.add(ReportFinanceModel())
+
+                    // type spending
+//                    totalSpend_int += item.nominal!!.toInt()
+
+                } else {
+
+                    // income
+//                    totalIncome_int += item.nominal!!.toInt()
+                }
+
+
+            }
+
+        }
+
+
+    }
+
+    fun setLocalDatabase() {
+
+        databaseDao = Room.databaseBuilder(requireContext(), Database::class.java, Database.DB_NAME)
+                .allowMainThreadQueries()
+                .fallbackToDestructiveMigration()
+                .build()
+                .spendingDao()
 
     }
 
@@ -110,7 +205,6 @@ class ReportsSpendingFragment : Fragment() {
             frame_data_spending.visibility = View.INVISIBLE
             status_data_tv.visibility = View.VISIBLE
             status_data_tv.setText("Tidak Ada Transaksi Di Bulan Ini")
-
 
         } else {
 
