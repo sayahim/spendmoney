@@ -1,4 +1,4 @@
-package com.himorfosis.kelolabelanja.homepage.report
+package com.himorfosis.kelolabelanja.homepage.report.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -59,9 +59,7 @@ class ReportsSpendingFragment : Fragment() {
 
         setDataDateToday()
 
-        getDataSelectedRepo()
-
-        setAdapterFinancial()
+        getDataSpendingUser()
 
     }
 
@@ -75,7 +73,7 @@ class ReportsSpendingFragment : Fragment() {
 
     }
 
-    private fun getDataSelectedRepo() {
+    private fun getDataSpendingUser() {
 
         ReportsRepo.setDataSpending(requireContext())
 
@@ -92,14 +90,13 @@ class ReportsSpendingFragment : Fragment() {
 
                 if (response.isEmpty()) {
 
-                    frame_data_spending.visibility = View.INVISIBLE
-                    status_data_tv.visibility = View.VISIBLE
-                    status_data_tv.text = "Tidak Ada Transaksi Di Bulan Ini"
+                    showNoticeDataIsEmpty()
 
                 } else {
 
                     // show data
                     status_data_tv.visibility = View.INVISIBLE
+                    status_deskripsi_tv.visibility = View.INVISIBLE
                     frame_data_spending.visibility = View.VISIBLE
 
                     // sorted list
@@ -117,9 +114,7 @@ class ReportsSpendingFragment : Fragment() {
 
             } else {
 
-                frame_data_spending.visibility = View.INVISIBLE
-                status_data_tv.visibility = View.VISIBLE
-                status_data_tv.setText("Tidak Ada Transaksi Di Bulan Ini")
+                showNoticeDataIsEmpty()
 
             }
 
@@ -127,79 +122,14 @@ class ReportsSpendingFragment : Fragment() {
 
     }
 
-    private fun getAllDataSelectedMonth() {
+    private fun showNoticeDataIsEmpty() {
 
-        val month = Util.getData("picker", "month",  requireContext())
-        val year = Util.getData("picker", "year",  requireContext())
+        frame_data_spending.visibility = View.INVISIBLE
+        status_data_tv.visibility = View.VISIBLE
+        status_deskripsi_tv.visibility = View.VISIBLE
 
-        Util.log(TAG, "month selected : $month")
-
-        listDataFinancial.clear()
-//        listPerDayData.clear()
-
-        var monthOnYear = "$year-$month"
-
-        val dayOfMonth = 32
-
-        var thisMonth : String
-
-        for (x in 1 until dayOfMonth) {
-
-            if (x < 10) {
-
-                thisMonth = "$monthOnYear-0$x"
-
-            } else {
-
-                thisMonth = "$monthOnYear-$x"
-
-            }
-
-            Util.log(TAG, "this month : $thisMonth")
-
-            val data = databaseDao.getReportFinanceMonth(thisMonth)
-
-            if (data.size != 0) {
-
-                listDataFinancial.addAll(data)
-
-            }
-
-        }
-
-        var totalSpend_int = 0
-        var totalIncome_int = 0
-
-        if (listDataFinancial.size == 0) {
-
-            status_data_tv.text = "Tidak Ada Transaksi \n Ketuk + Tambah untuk menambakan satu"
-            status_data_tv.visibility = View.VISIBLE
-
-        } else{
-
-            status_data_tv.visibility = View.INVISIBLE
-
-            for (i in 0 until listDataFinancial.size) {
-
-                val item = listDataFinancial[i]
-
-                if (item.type == ("spend")) {
-
-//                    listDataReport.add(ReportFinanceModel())
-
-                    // type spending
-//                    totalSpend_int += item.nominal!!.toInt()
-
-                } else {
-
-                    // income
-//                    totalIncome_int += item.nominal!!.toInt()
-                }
-
-
-            }
-
-        }
+        status_data_tv.text = "Tidak Ada Transaksi"
+        status_deskripsi_tv.text = "Untuk bulan ini, tidak ada data yang dapat di tampilkan. Silahkan pilih bulan lain atau tambahkan transaksi"
 
 
     }
@@ -234,30 +164,6 @@ class ReportsSpendingFragment : Fragment() {
 
     }
 
-    private fun getDataSpending(): List<ReportFinanceModel> {
-
-        return listOf(
-
-                ReportFinanceModel(1, "makanan", 30),
-                ReportFinanceModel(1, "makanan", 30)
-//                ReportFinanceModel("Hiburan", 70),
-//                ReportFinanceModel("Tiket", 30),
-//                ReportFinanceModel("Developer", 50)
-
-        )
-
-    }
-
-    private fun setAdapterFinancial() {
-
-//        Util.log(TAG, "adapter")
-
-        // get data spending
-//        val data = getDataSpending()
-
-
-    }
-
     private fun setShowMonthPicker() {
 
         MonthPickerLiveData.setMonthPicker(requireContext())
@@ -284,7 +190,7 @@ class ReportsSpendingFragment : Fragment() {
 
                 }
 
-                getDataSelectedRepo()
+                getDataSpendingUser()
 
             }
 

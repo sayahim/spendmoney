@@ -1,13 +1,15 @@
 package com.himorfosis.kelolabelanja.homepage.statistict.model;
 
-public class FinancialProgressModel {
+public class FinancialProgressStatisticModel {
 
     private String category_name;
     private Integer total_nominal_category;
+    private Integer max_nominal;
 
-    public FinancialProgressModel(String category_name, Integer total_nominal_category) {
+    public FinancialProgressStatisticModel(String category_name, Integer total_nominal_category, Integer max_nominal) {
         this.category_name = category_name;
         this.total_nominal_category = total_nominal_category;
+        this.max_nominal = max_nominal;
 
     }
 
@@ -27,4 +29,11 @@ public class FinancialProgressModel {
         this.total_nominal_category = total_nominal_category;
     }
 
+    public Integer getMax_nominal() {
+        return max_nominal;
+    }
+
+    public void setMax_nominal(Integer max_nominal) {
+        this.max_nominal = max_nominal;
+    }
 }

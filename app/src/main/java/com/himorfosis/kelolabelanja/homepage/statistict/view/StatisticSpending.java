@@ -22,7 +22,6 @@ import com.himorfosis.kelolabelanja.homepage.statistict.adapter.StatisticChartAd
 import com.himorfosis.kelolabelanja.homepage.statistict.model.ChartModel;
 import com.himorfosis.kelolabelanja.homepage.statistict.model.FinancialProgressStatisticModel;
 import com.himorfosis.kelolabelanja.homepage.statistict.model.StatistictModel;
-import com.himorfosis.kelolabelanja.homepage.statistict.repo.GrafikRepo;
 import com.himorfosis.kelolabelanja.homepage.statistict.viewmodel.StatistictViewModel;
 import com.himorfosis.kelolabelanja.month_picker.java.MonthPickerJavaViewModel;
 import com.himorfosis.kelolabelanja.utilities.Util;
@@ -40,9 +39,9 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class PieChartView extends Fragment {
+public class StatisticSpending extends Fragment {
 
-    String TAG = "PieChartView";
+    String TAG = "StatisticSpending";
 
     private PieChart pieChart;
     StatisticChartAdapter adapterFinancial;
@@ -71,8 +70,6 @@ public class PieChartView extends Fragment {
         setID(view);
 
         setDataDateToday();
-
-//        setTablayoutAction(view);
 
         getDataSpendingReport();
 
@@ -274,44 +271,6 @@ public class PieChartView extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         recyclerView.setAdapter(adapterFinancial);
-
-    }
-
-    private void setTablayoutAction(View view) {
-
-        FrameLayout tab_one_fl = view.findViewById(R.id.tab_one_fl);
-        FrameLayout tab_two_fl = view.findViewById(R.id.tab_two_fl);
-        TextView titletab_one_tv = view.findViewById(R.id.titletab_one_tv);
-        TextView titletab_two_tv = view.findViewById(R.id.titletab_two_tv);
-
-        tab_one_fl.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                titletab_one_tv.setTextColor(getResources().getColor(R.color.white));
-                tab_one_fl.setBackgroundResource(R.drawable.border_blue_dark);
-
-                // unselected
-
-                titletab_two_tv.setTextColor(getResources().getColor(R.color.blue_dark));
-                tab_two_fl.setBackgroundResource(0);
-
-            }
-        });
-
-        tab_two_fl.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                titletab_two_tv.setTextColor(getResources().getColor(R.color.white));
-                tab_two_fl.setBackgroundResource(R.drawable.border_blue_dark);
-
-                // unselected
-                titletab_one_tv.setTextColor(getResources().getColor(R.color.blue_dark));
-                tab_one_fl.setBackgroundResource(0);
-
-            }
-        });
 
     }
 

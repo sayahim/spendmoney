@@ -1,10 +1,15 @@
 package com.himorfosis.kelolabelanja.details
 
+import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.Window
+import android.widget.Button
 import androidx.appcompat.app.ActionBar
 import androidx.core.content.ContextCompat
 import androidx.room.Room
@@ -17,7 +22,7 @@ import kotlinx.android.synthetic.main.activity_spending_detail.*
 import kotlinx.android.synthetic.main.toolbar_detail.*
 import org.jetbrains.anko.toast
 
-class SpendingDetail : AppCompatActivity() {
+class FinancialDetail : AppCompatActivity() {
 
     lateinit var databaseDao: DatabaseDao
 
@@ -33,18 +38,16 @@ class SpendingDetail : AppCompatActivity() {
 
         getDataDetail()
 
+        setShowDataFinancialDetail()
+
     }
 
-    private fun getDataDetail() {
+    private fun setShowDataFinancialDetail() {
 
-        val data = intent
-
-        getId = data.getIntExtra("id", 0)
-
-        val details = databaseDao.getDetailSpending(getId)
+        val details = databaseDao.getDetailDataFinancial(getId)
 
         category_tv.text = details.category_name
-        date_tv.text = Util.convertCalendarMonth(details.date)
+        date_tv.text = Util.convertDateName(details.date)
         note_tv.text = details.note
 
         if (details.nominal != "") {
@@ -54,8 +57,15 @@ class SpendingDetail : AppCompatActivity() {
         } else {
 
             nominal_tv.text = "Rp 0"
-
         }
+
+    }
+
+    private fun getDataDetail() {
+
+        val data = intent
+
+        getId = data.getIntExtra("id", 0)
 
     }
 
@@ -79,6 +89,38 @@ class SpendingDetail : AppCompatActivity() {
 
     }
 
+    fun showAlertChoice() {
+
+        val layoutDialog = LayoutInflater.from(this).inflate(R.layout.alert_layout_delete_data, null)
+
+        val dialogView = Dialog(this)
+        dialogView.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialogView.setCancelable(true)
+        dialogView.setContentView(layoutDialog)
+
+        val cancelBtn = dialogView.findViewById(R.id.cancel_btn) as Button
+        val deleteBtn = dialogView.findViewById(R.id.delete_btn) as Button
+
+
+        cancelBtn.setOnClickListener {
+
+            dialogView.dismiss()
+
+        }
+
+        deleteBtn.setOnClickListener {
+
+            deleteDataSelected()
+
+            dialogView.dismiss()
+
+        }
+
+        dialogView.show()
+
+    }
+
+
     private fun setToolbar() {
 
         val actionBar = supportActionBar
@@ -89,7 +131,7 @@ class SpendingDetail : AppCompatActivity() {
 
         delete_btn.visibility = View.VISIBLE
 
-        titleBar_tv.setText("Detail")
+        titleBar_tv.text = "Detail"
 
         backBar_btn.setOnClickListener {
 
@@ -99,12 +141,11 @@ class SpendingDetail : AppCompatActivity() {
 
         delete_btn.setOnClickListener {
 
-           deleteDataSelected()
+
+            showAlertChoice()
 
         }
 
-
     }
-
 
 }

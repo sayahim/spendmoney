@@ -1,4 +1,11 @@
 package com.himorfosis.kelolabelanja.details.category.model
 
-class FinancialPerCategoryModel {
-}
+import com.himorfosis.kelolabelanja.database.entity.FinancialEntitiy
+
+data class FinancialPerCategoryModel (
+
+        var date : String,
+        var totalMoney : Int,
+        var financialEntitiy: MutableList<FinancialEntitiy>
+
+)

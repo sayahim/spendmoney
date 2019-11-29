@@ -1,4 +1,4 @@
-package com.himorfosis.kelolabelanja.homepage
+package com.himorfosis.kelolabelanja.homepage.activity
 
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -9,8 +9,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.himorfosis.kelolabelanja.R
 import com.himorfosis.kelolabelanja.homepage.home.HomeFragment
-import com.himorfosis.kelolabelanja.homepage.report.ReportsFragment
-import com.himorfosis.kelolabelanja.homepage.statistict.PieChartView
+import com.himorfosis.kelolabelanja.homepage.report.view.ReportsFragment
+import com.himorfosis.kelolabelanja.homepage.statistict.view.StatisticFragment
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.activity_homepage.*
 import kotlinx.android.synthetic.main.toolbar_homepage.*
@@ -47,7 +47,7 @@ class HomepageActivity : AppCompatActivity() {
             }
             R.id.nav_statistic -> {
 
-                val fragment = PieChartView()
+                val fragment = StatisticFragment()
                 replaceFragment(fragment)
 
                 Util.log(TAG, "nav_statistic")

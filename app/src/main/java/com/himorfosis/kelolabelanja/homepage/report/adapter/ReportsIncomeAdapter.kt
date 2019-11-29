@@ -7,23 +7,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.himorfosis.kelolabelanja.R
-import com.himorfosis.kelolabelanja.homepage.report.model.ReportFinanceModel
+import com.himorfosis.kelolabelanja.homepage.report.model.ReportsIncomeModel
 import com.himorfosis.kelolabelanja.homepage.report.model.ReportsSpendingModel
-import com.himorfosis.kelolabelanja.homepage.statistict.model.FinancialProgressStatisticModel
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.item_progress_financial.view.*
 import java.util.ArrayList
 
-class ReportsAdapter(private val context: Context)
-    : RecyclerView.Adapter<ReportsAdapter.ViewHolder>() {
+class ReportsIncomeAdapter(private val context: Context)
+    : RecyclerView.Adapter<ReportsIncomeAdapter.ViewHolder>() {
 
-    val TAG = "ReportsAdapter"
+    val TAG = "ReportsIncomeAdapter"
 
     internal var progressStatusCounter = 0
     internal var progressHandler = Handler()
-    private var listData: MutableList<ReportsSpendingModel>? = ArrayList<ReportsSpendingModel>()
+    private var listData: MutableList<ReportsIncomeModel> = ArrayList<ReportsIncomeModel>()
+    val maxNominal = Util.getDataInt("report", "income", context)
 
-    override fun getItemCount() = listData!!.size
+    override fun getItemCount() = listData.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
@@ -33,24 +33,25 @@ class ReportsAdapter(private val context: Context)
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        val data = listData!!.get(position)
+        val data = listData[position]
 
-        val maxNominal = Util.getDataInt("report", "income", context)
+        holder.title_category_tv.text = data.category_name
+        holder.total_nominal_tv.text = "Rp " + data.total_nominal_category.toString()
 
+        // set image
+        val imageAssets = Util.convertImageDrawable(context, data.category_image)
+        holder.category_image.setImageResource(imageAssets)
 
-        Util.log(TAG, "name : " + data.category_name)
-
-        holder.title_category_tv.setText(data.category_name)
-        holder.total_nominal_tv.setText("Rp " + data.total_nominal_category.toString())
+        // count to get persen
+        val progressPersen:Double = data.total_nominal_category.toDouble() / maxNominal.toDouble()
+        val persen:Double = progressPersen * 100.0
 
         Thread(Runnable {
-            while (progressStatusCounter < maxNominal) {
+            while (progressStatusCounter < 100) {
                 progressHandler.post {
                     // set progress
-                    holder.total_progress.setProgress(data.total_nominal_category)
+                    holder.total_progress.progress = persen.toInt()
 
-                    //Status update in textview
-                    //                            textView.setText("Status: " + progressStatusCounter + "/" + androidProgressBar.getMax());
                 }
                 try {
                     Thread.sleep(300)
@@ -63,13 +64,13 @@ class ReportsAdapter(private val context: Context)
 
     }
 
-    private fun add(data: ReportsSpendingModel) {
+    private fun add(data: ReportsIncomeModel) {
         listData?.add(data)
 
         notifyItemInserted(listData!!.size - 1)
     }
 
-    fun addAll(posItems: List<ReportsSpendingModel>) {
+    fun addAll(posItems: List<ReportsIncomeModel>) {
         for (response in posItems) {
 
             add(response)
@@ -88,6 +89,7 @@ class ReportsAdapter(private val context: Context)
         val total_nominal_tv = itemView.total_nominal_tv
         val title_category_tv = itemView.title_category_tv
         val total_progress = itemView.total_progress
+        val category_image = itemView.category_img
 
     }
 }

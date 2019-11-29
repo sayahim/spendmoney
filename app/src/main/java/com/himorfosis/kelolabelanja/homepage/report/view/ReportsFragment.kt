@@ -1,13 +1,11 @@
-package com.himorfosis.kelolabelanja.homepage.report
+package com.himorfosis.kelolabelanja.homepage.report.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import com.himorfosis.kelolabelanja.R
-import com.himorfosis.kelolabelanja.homepage.home.HomeFragment
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.tablayout_double.*
 

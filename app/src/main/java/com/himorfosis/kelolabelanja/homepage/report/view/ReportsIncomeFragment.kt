@@ -1,4 +1,4 @@
-package com.himorfosis.kelolabelanja.homepage.report
+package com.himorfosis.kelolabelanja.homepage.report.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.himorfosis.kelolabelanja.R
 import com.himorfosis.kelolabelanja.homepage.report.adapter.ReportsIncomeAdapter
-import com.himorfosis.kelolabelanja.homepage.report.adapter.ReportsSpendingAdapter
 import com.himorfosis.kelolabelanja.homepage.report.repo.ReportsRepo
 import com.himorfosis.kelolabelanja.homepage.statistict.model.FinancialProgressStatisticModel
 import com.himorfosis.kelolabelanja.month_picker.MonthPickerLiveData
@@ -18,6 +17,7 @@ import kotlinx.android.synthetic.main.report_income_fragment.month_selected_tv
 import kotlinx.android.synthetic.main.report_income_fragment.recycler_reports
 import kotlinx.android.synthetic.main.report_income_fragment.select_month_click_ll
 import kotlinx.android.synthetic.main.report_income_fragment.status_data_tv
+import kotlinx.android.synthetic.main.report_income_fragment.status_deskripsi_tv
 import kotlinx.android.synthetic.main.reports_spending_fragment.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -49,10 +49,6 @@ class ReportsIncomeFragment : Fragment() {
         setActionClick()
 
         setDataDateToday()
-
-//        getDataIncome()
-
-//        setAdapterFinancial()
 
         getDataSelectedRepo()
 
@@ -105,15 +101,14 @@ class ReportsIncomeFragment : Fragment() {
 
                 if (response.isEmpty()) {
 
-                    frame_data_spending.visibility = View.INVISIBLE
-                    status_data_tv.visibility = View.VISIBLE
-                    status_data_tv.setText("Tidak Ada Transaksi Di Bulan Ini")
+                    showNoticeDataIsEmpty()
 
                 } else {
 
                     // show data
                     status_data_tv.visibility = View.INVISIBLE
-                    frame_data_spending.visibility = View.VISIBLE
+                    status_deskripsi_tv.visibility = View.INVISIBLE
+                    frame_data_income.visibility = View.VISIBLE
 
                     // sorted list
                     var listData = response.sortedWith(compareByDescending { it.total_nominal_category })
@@ -130,9 +125,7 @@ class ReportsIncomeFragment : Fragment() {
 
             } else {
 
-                frame_data_spending.visibility = View.INVISIBLE
-                status_data_tv.visibility = View.VISIBLE
-                status_data_tv.setText("Tidak Ada Transaksi Di Bulan Ini")
+                showNoticeDataIsEmpty()
 
             }
 
@@ -140,19 +133,18 @@ class ReportsIncomeFragment : Fragment() {
 
     }
 
-    private fun getDataIncome(): List<FinancialProgressStatisticModel> {
+    private fun showNoticeDataIsEmpty() {
 
-        return listOf(
+        frame_data_income.visibility = View.INVISIBLE
+        status_data_tv.visibility = View.VISIBLE
+        status_deskripsi_tv.visibility = View.VISIBLE
 
-//                FinancialProgressStatisticModel("Gaji", 100),
-//                FinancialProgressStatisticModel("Penjualan", 60),
-//                FinancialProgressStatisticModel("Bonus", 20)
-
-        )
+        status_data_tv.text = "Tidak Ada Transaksi"
+        status_deskripsi_tv.text = "Untuk bulan ini, tidak ada data yang dapat di tampilkan. Silahkan pilih bulan lain atau tambahkan transaksi"
 
     }
 
-    private fun setShowMonthPicker() {
+        private fun setShowMonthPicker() {
 
         MonthPickerLiveData.setMonthPicker(requireContext())
 
@@ -186,36 +178,4 @@ class ReportsIncomeFragment : Fragment() {
 
     }
 
-    private fun setAdapterFinancial() {
-
-        // get data spending
-        val data = getDataIncome()
-
-        reportsIncomeAdapter = ReportsIncomeAdapter(requireContext())
-
-        if (data.isEmpty()) {
-
-            frame_data_income.visibility = View.INVISIBLE
-            status_data_tv.visibility = View.VISIBLE
-            status_data_tv.setText("Tidak Ada Transaksi Di Bulan Ini")
-
-        } else {
-
-            // show frame data
-            frame_data_income.visibility = View.VISIBLE
-
-            // sorted list
-            var listData = data.sortedWith(compareByDescending { it.total_nominal_category })
-
-            recycler_reports.apply {
-
-                layoutManager = LinearLayoutManager(requireContext())
-//                reportsIncomeAdapter.addAll(listData)
-                adapter = reportsIncomeAdapter
-
-            }
-
-        }
-
-    }
 }
