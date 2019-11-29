@@ -44,8 +44,8 @@ public class UtilJava {
                 "", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"
         };
 
-        String dateMonth = month.substring(month.indexOf(".") + 1);
-        String bulan = dateMonth.substring(0, dateMonth.indexOf("."));
+        String dateMonth = month.substring(month.indexOf("-") + 1);
+        String bulan = dateMonth.substring(0, dateMonth.indexOf("-"));
 
         Integer intMonth = Integer.parseInt(bulan);
 
@@ -62,7 +62,6 @@ public class UtilJava {
     public static void log(String TAG, String name) {
 
         Log.e(TAG, name);
-
 
     }
 

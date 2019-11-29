@@ -8,8 +8,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.himorfosis.kelolabelanja.R;
-import com.himorfosis.kelolabelanja.homepage.statistict.model.FinancialProgressModel;
-import com.himorfosis.kelolabelanja.utilities.Util;
+import com.himorfosis.kelolabelanja.homepage.statistict.model.FinancialProgressStatisticModel;
 
 import java.util.ArrayList;
 
@@ -17,12 +16,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class FinancialProgressAdapter extends RecyclerView.Adapter<FinancialProgressAdapter.ViewHolder> {
 
-    private ArrayList<FinancialProgressModel> list;
+    private ArrayList<FinancialProgressStatisticModel> list;
     int progressStatusCounter = 0;
     Handler progressHandler = new Handler();
 
 
-    public FinancialProgressAdapter(ArrayList<FinancialProgressModel> list) {
+    public FinancialProgressAdapter(ArrayList<FinancialProgressStatisticModel> list) {
         this.list = list;
     }
 
@@ -36,7 +35,7 @@ public class FinancialProgressAdapter extends RecyclerView.Adapter<FinancialProg
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-        FinancialProgressModel data = list.get(position);
+        FinancialProgressStatisticModel data = list.get(position);
 
         holder.title_category_tv.setText(data.getCategory_name());
         holder.total_nominal_tv.setText("Rp " + String.valueOf(data.getTotal_nominal_category()));
@@ -44,6 +43,7 @@ public class FinancialProgressAdapter extends RecyclerView.Adapter<FinancialProg
         new Thread(new Runnable() {
             public void run() {
                 while (progressStatusCounter < data.getMax_nominal()) {
+
                     progressHandler.post(new Runnable() {
                         public void run() {
 

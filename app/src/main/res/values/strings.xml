@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Manajemen Keuangan</string>
+    <string name="app_name">Start Money Management</string>
     <string name="title_home">Beranda</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
@@ -8,6 +8,16 @@
     <string name="home">Beranda</string>
     <string name="reports">Laporan</string>
     <string name="statistict">Statistik</string>
+
+    // input financial
+    <string name="rupiah">Rp</string>
+    <string name="note_optional">Tambahkan catatan anda disini (Opsional)</string>
+
+    // button
+    <string name="save">Simpan</string>
+
+    <string name="today">Hari Ini</string>
+
 
 
     <string-array name="month_full_list">

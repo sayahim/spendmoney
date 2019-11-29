@@ -10,20 +10,14 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.himorfosis.kelolabelanja.R
-import com.himorfosis.kelolabelanja.database.spending.DatabaseDao
-import com.himorfosis.kelolabelanja.database.spending.Database
+import com.himorfosis.kelolabelanja.database.db.DatabaseDao
+import com.himorfosis.kelolabelanja.database.db.Database
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.toolbar_detail.*
-import org.jetbrains.anko.toast
 import android.view.WindowManager
-import android.widget.Button
-import android.widget.EditText
 import com.himorfosis.kelolabelanja.database.entity.CategoryEntity
-import com.himorfosis.kelolabelanja.database.entity.FinancialEntitiy
 import com.himorfosis.kelolabelanja.financial.adapter.FinancialCategoryAdapter
-import com.himorfosis.kelolabelanja.homepage.HomepageActivity
-import java.text.SimpleDateFormat
-import java.util.*
+import com.himorfosis.kelolabelanja.homepage.activity.HomepageActivity
 
 
 class Category : AppCompatActivity() {

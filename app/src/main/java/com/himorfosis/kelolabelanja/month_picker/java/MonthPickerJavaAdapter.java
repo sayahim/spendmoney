@@ -104,11 +104,11 @@ public class MonthPickerJavaAdapter extends RecyclerView.Adapter<MonthPickerJava
 
                     if (monthPosition < 9) {
 
-                        callback.onItemSelected(yearSelected + ".0" + String.valueOf(monthPosition));
+                        callback.onItemSelected(yearSelected + "-0" + String.valueOf(monthPosition));
 
                     } else {
 
-                        callback.onItemSelected(yearSelected + "." + String.valueOf(monthPosition));
+                        callback.onItemSelected(yearSelected + "-" + String.valueOf(monthPosition));
 
                     }
 

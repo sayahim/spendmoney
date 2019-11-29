@@ -5,12 +5,11 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.himorfosis.kelolabelanja.R
-import com.himorfosis.kelolabelanja.database.entity.CategoryEntity
-import com.himorfosis.kelolabelanja.homepage.statistict.model.FinancialProgressModel
+import com.himorfosis.kelolabelanja.homepage.report.model.ReportFinanceModel
+import com.himorfosis.kelolabelanja.homepage.report.model.ReportsSpendingModel
+import com.himorfosis.kelolabelanja.homepage.statistict.model.FinancialProgressStatisticModel
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.item_progress_financial.view.*
 import java.util.ArrayList
@@ -22,7 +21,7 @@ class ReportsAdapter(private val context: Context)
 
     internal var progressStatusCounter = 0
     internal var progressHandler = Handler()
-    private var listData: MutableList<FinancialProgressModel>? = ArrayList<FinancialProgressModel>()
+    private var listData: MutableList<ReportsSpendingModel>? = ArrayList<ReportsSpendingModel>()
 
     override fun getItemCount() = listData!!.size
 
@@ -36,16 +35,19 @@ class ReportsAdapter(private val context: Context)
 
         val data = listData!!.get(position)
 
+        val maxNominal = Util.getDataInt("report", "income", context)
+
+
         Util.log(TAG, "name : " + data.category_name)
 
         holder.title_category_tv.setText(data.category_name)
         holder.total_nominal_tv.setText("Rp " + data.total_nominal_category.toString())
 
         Thread(Runnable {
-            while (progressStatusCounter < data.max_nominal) {
+            while (progressStatusCounter < maxNominal) {
                 progressHandler.post {
                     // set progress
-                    holder.total_progress.setProgress(data.total_nominal_category!!)
+                    holder.total_progress.setProgress(data.total_nominal_category)
 
                     //Status update in textview
                     //                            textView.setText("Status: " + progressStatusCounter + "/" + androidProgressBar.getMax());
@@ -61,12 +63,13 @@ class ReportsAdapter(private val context: Context)
 
     }
 
-    private fun add(data: FinancialProgressModel) {
-        listData!!.add(data)
+    private fun add(data: ReportsSpendingModel) {
+        listData?.add(data)
+
         notifyItemInserted(listData!!.size - 1)
     }
 
-    fun addAll(posItems: List<FinancialProgressModel>) {
+    fun addAll(posItems: List<ReportsSpendingModel>) {
         for (response in posItems) {
 
             add(response)
@@ -75,12 +78,11 @@ class ReportsAdapter(private val context: Context)
 
     fun removeListAdapter() {
 
-        listData!!.clear()
+        listData?.clear()
 
         notifyDataSetChanged()
 
     }
-
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val total_nominal_tv = itemView.total_nominal_tv

@@ -41,7 +41,7 @@ class MonthPickerLiveData {
             val nextYear = dialogView.findViewById(R.id.next_year_ll) as LinearLayout
             val yearSelected_tv = dialogView.findViewById(R.id.year_selected_tv) as TextView
 
-            yearSelected_tv.text = getYearSelected.toString()
+            yearSelected_tv.text = getYearSelected
 
             val alertAdapter = MonthPickerAdapter(context) { item ->
 
@@ -110,7 +110,6 @@ class MonthPickerLiveData {
         }
 
         fun getDataMonthPicker(): LiveData<String> {
-
 
             return dateSelected
         }

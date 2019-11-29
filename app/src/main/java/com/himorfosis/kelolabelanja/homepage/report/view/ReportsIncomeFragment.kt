@@ -7,11 +7,18 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.himorfosis.kelolabelanja.R
-import com.himorfosis.kelolabelanja.homepage.report.adapter.ReportsAdapter
-import com.himorfosis.kelolabelanja.homepage.statistict.model.FinancialProgressModel
+import com.himorfosis.kelolabelanja.homepage.report.adapter.ReportsIncomeAdapter
+import com.himorfosis.kelolabelanja.homepage.report.adapter.ReportsSpendingAdapter
+import com.himorfosis.kelolabelanja.homepage.report.repo.ReportsRepo
+import com.himorfosis.kelolabelanja.homepage.statistict.model.FinancialProgressStatisticModel
 import com.himorfosis.kelolabelanja.month_picker.MonthPickerLiveData
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.report_income_fragment.*
+import kotlinx.android.synthetic.main.report_income_fragment.month_selected_tv
+import kotlinx.android.synthetic.main.report_income_fragment.recycler_reports
+import kotlinx.android.synthetic.main.report_income_fragment.select_month_click_ll
+import kotlinx.android.synthetic.main.report_income_fragment.status_data_tv
+import kotlinx.android.synthetic.main.reports_spending_fragment.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -19,7 +26,7 @@ class ReportsIncomeFragment : Fragment() {
 
     private val TAG = "ReportsIncomeFragment"
 
-    lateinit var reportsAdapter: ReportsAdapter
+    lateinit var reportsIncomeAdapter: ReportsIncomeAdapter
 
     companion object {
 
@@ -43,11 +50,11 @@ class ReportsIncomeFragment : Fragment() {
 
         setDataDateToday()
 
-        getDataIncome()
+//        getDataIncome()
 
-        setAdapterFinancial()
+//        setAdapterFinancial()
 
-
+        getDataSelectedRepo()
 
     }
 
@@ -55,7 +62,7 @@ class ReportsIncomeFragment : Fragment() {
 
         select_month_click_ll.setOnClickListener {
 
-
+            setShowMonthPicker()
 
         }
 
@@ -63,7 +70,7 @@ class ReportsIncomeFragment : Fragment() {
 
     private fun setDataDateToday() {
 
-        val date = SimpleDateFormat("yyyy.MM.dd")
+        val date = SimpleDateFormat("yyyy-MM-dd")
 
         val dateMonth = SimpleDateFormat("MM")
         val dateYear = SimpleDateFormat("yyyy")
@@ -81,13 +88,65 @@ class ReportsIncomeFragment : Fragment() {
 
     }
 
-    private fun getDataIncome(): List<FinancialProgressModel> {
+    private fun getDataSelectedRepo() {
+
+        ReportsRepo.setDataIncome(requireContext())
+
+        ReportsRepo.getDataIncome().observe(this, androidx.lifecycle.Observer { response ->
+
+            Util.log(TAG, "response : $response")
+
+            if (response != null) {
+
+                reportsIncomeAdapter = ReportsIncomeAdapter(requireContext())
+
+                // clear cache
+                reportsIncomeAdapter.removeListAdapter()
+
+                if (response.isEmpty()) {
+
+                    frame_data_spending.visibility = View.INVISIBLE
+                    status_data_tv.visibility = View.VISIBLE
+                    status_data_tv.setText("Tidak Ada Transaksi Di Bulan Ini")
+
+                } else {
+
+                    // show data
+                    status_data_tv.visibility = View.INVISIBLE
+                    frame_data_spending.visibility = View.VISIBLE
+
+                    // sorted list
+                    var listData = response.sortedWith(compareByDescending { it.total_nominal_category })
+
+                    recycler_reports.apply {
+
+                        layoutManager = LinearLayoutManager(requireContext())
+                        reportsIncomeAdapter.addAll(listData)
+                        adapter = reportsIncomeAdapter
+
+                    }
+
+                }
+
+            } else {
+
+                frame_data_spending.visibility = View.INVISIBLE
+                status_data_tv.visibility = View.VISIBLE
+                status_data_tv.setText("Tidak Ada Transaksi Di Bulan Ini")
+
+            }
+
+        })
+
+    }
+
+    private fun getDataIncome(): List<FinancialProgressStatisticModel> {
 
         return listOf(
 
-                FinancialProgressModel("Gaji", 100, 100),
-                FinancialProgressModel("Penjualan", 60, 100),
-                FinancialProgressModel("Bonus", 20, 100)
+//                FinancialProgressStatisticModel("Gaji", 100),
+//                FinancialProgressStatisticModel("Penjualan", 60),
+//                FinancialProgressStatisticModel("Bonus", 20)
 
         )
 
@@ -109,23 +168,17 @@ class ReportsIncomeFragment : Fragment() {
 
                 if (getYearSelected.equals(year)) {
 
-                    val thisMonth = Util.convertCalendarMonth("$monthPicker.01")
+                    val thisMonth = Util.convertCalendarMonth("$monthPicker-01")
                     month_selected_tv.text = thisMonth
 
                 } else {
 
-                    val thisMonth = Util.convertCalendarMonth("$monthPicker.01")
+                    val thisMonth = Util.convertCalendarMonth("$monthPicker-01")
                     month_selected_tv.text = "$thisMonth  $getYearSelected"
 
                 }
 
-//                // remove data adapter
-//                adapterReportsGroup.removeListAdapter()
-//
-//                // get data month on year selected
-//                getAllDataSelectedMonth()
-//
-//                setAdapterGroup()
+                getDataSelectedRepo()
 
             }
 
@@ -138,7 +191,7 @@ class ReportsIncomeFragment : Fragment() {
         // get data spending
         val data = getDataIncome()
 
-        reportsAdapter = ReportsAdapter(requireContext())
+        reportsIncomeAdapter = ReportsIncomeAdapter(requireContext())
 
         if (data.isEmpty()) {
 
@@ -157,8 +210,8 @@ class ReportsIncomeFragment : Fragment() {
             recycler_reports.apply {
 
                 layoutManager = LinearLayoutManager(requireContext())
-                reportsAdapter.addAll(listData)
-                adapter = reportsAdapter
+//                reportsIncomeAdapter.addAll(listData)
+                adapter = reportsIncomeAdapter
 
             }
 

@@ -41,10 +41,6 @@ class FinancialCategoryAdapter(private val context: Context, val adapterCallback
 
             if (getIdSelected == convertID) {
 
-                Util.log(TAG, "pos : $position")
-                Util.log(TAG, "id selected : $getIdSelected" )
-                Util.log(TAG, "id  : $convertID")
-
                 holder.frame.setBackgroundResource(R.drawable.circle_gold)
 
             } else {

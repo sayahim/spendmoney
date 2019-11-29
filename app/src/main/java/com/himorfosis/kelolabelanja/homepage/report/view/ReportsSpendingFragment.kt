@@ -9,11 +9,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import com.himorfosis.kelolabelanja.R
 import com.himorfosis.kelolabelanja.database.entity.FinancialEntitiy
-import com.himorfosis.kelolabelanja.database.spending.Database
-import com.himorfosis.kelolabelanja.database.spending.DatabaseDao
-import com.himorfosis.kelolabelanja.homepage.report.adapter.ReportsAdapter
+import com.himorfosis.kelolabelanja.database.db.Database
+import com.himorfosis.kelolabelanja.database.db.DatabaseDao
+import com.himorfosis.kelolabelanja.homepage.report.adapter.ReportsSpendingAdapter
 import com.himorfosis.kelolabelanja.homepage.report.model.ReportFinanceModel
-import com.himorfosis.kelolabelanja.homepage.statistict.model.FinancialProgressModel
+import com.himorfosis.kelolabelanja.homepage.report.repo.ReportsRepo
 import com.himorfosis.kelolabelanja.month_picker.MonthPickerLiveData
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.reports_spending_fragment.*
@@ -24,12 +24,17 @@ class ReportsSpendingFragment : Fragment() {
 
     var TAG = "ReportsSpendingFragment"
 
-    lateinit var reportsAdapter: ReportsAdapter
+    lateinit var reportsAdapter: ReportsSpendingAdapter
     private var listDataFinancial: MutableList<FinancialEntitiy> = ArrayList()
     private var listDataReport: MutableList<ReportFinanceModel> = ArrayList()
 
     lateinit var databaseDao: DatabaseDao
 
+//    private var spendingDataRespons : MutableList<ReportsSpendingModel> = ArrayList()
+
+//    private val spendingDataResponse by lazy {
+//        ReportsRepo.getDataSpending()
+//    }
 
     companion object {
 
@@ -54,10 +59,9 @@ class ReportsSpendingFragment : Fragment() {
 
         setDataDateToday()
 
-        setDataDateToday()
+        getDataSelectedRepo()
 
         setAdapterFinancial()
-
 
     }
 
@@ -71,6 +75,58 @@ class ReportsSpendingFragment : Fragment() {
 
     }
 
+    private fun getDataSelectedRepo() {
+
+        ReportsRepo.setDataSpending(requireContext())
+
+        ReportsRepo.getDataSpending().observe(this, androidx.lifecycle.Observer { response ->
+
+            Util.log(TAG, "response : $response")
+
+            if (response != null) {
+
+                reportsAdapter = ReportsSpendingAdapter(requireContext())
+
+                // clear cache
+                reportsAdapter.removeListAdapter()
+
+                if (response.isEmpty()) {
+
+                    frame_data_spending.visibility = View.INVISIBLE
+                    status_data_tv.visibility = View.VISIBLE
+                    status_data_tv.text = "Tidak Ada Transaksi Di Bulan Ini"
+
+                } else {
+
+                    // show data
+                    status_data_tv.visibility = View.INVISIBLE
+                    frame_data_spending.visibility = View.VISIBLE
+
+                    // sorted list
+                    var listData = response.sortedWith(compareByDescending { it.total_nominal_category })
+
+                    recycler_reports.apply {
+
+                        layoutManager = LinearLayoutManager(requireContext())
+                        reportsAdapter.addAll(listData)
+                        adapter = reportsAdapter
+
+                    }
+
+                }
+
+            } else {
+
+                frame_data_spending.visibility = View.INVISIBLE
+                status_data_tv.visibility = View.VISIBLE
+                status_data_tv.setText("Tidak Ada Transaksi Di Bulan Ini")
+
+            }
+
+        })
+
+    }
+
     private fun getAllDataSelectedMonth() {
 
         val month = Util.getData("picker", "month",  requireContext())
@@ -81,7 +137,7 @@ class ReportsSpendingFragment : Fragment() {
         listDataFinancial.clear()
 //        listPerDayData.clear()
 
-        var monthOnYear = "$year.$month"
+        var monthOnYear = "$year-$month"
 
         val dayOfMonth = 32
 
@@ -91,17 +147,17 @@ class ReportsSpendingFragment : Fragment() {
 
             if (x < 10) {
 
-                thisMonth = "$monthOnYear.0$x"
+                thisMonth = "$monthOnYear-0$x"
 
             } else {
 
-                thisMonth = "$monthOnYear.$x"
+                thisMonth = "$monthOnYear-$x"
 
             }
 
             Util.log(TAG, "this month : $thisMonth")
 
-            val data = databaseDao.getReportFinanceMounth(thisMonth)
+            val data = databaseDao.getReportFinanceMonth(thisMonth)
 
             if (data.size != 0) {
 
@@ -160,7 +216,7 @@ class ReportsSpendingFragment : Fragment() {
 
     private fun setDataDateToday() {
 
-        val date = SimpleDateFormat("yyyy.MM.dd")
+        val date = SimpleDateFormat("yyyy-MM-dd")
 
         val dateMonth = SimpleDateFormat("MM")
         val dateYear = SimpleDateFormat("yyyy")
@@ -178,14 +234,15 @@ class ReportsSpendingFragment : Fragment() {
 
     }
 
-    private fun getDataSpending(): List<FinancialProgressModel> {
+    private fun getDataSpending(): List<ReportFinanceModel> {
 
         return listOf(
 
-                FinancialProgressModel("Makanan", 100, 100),
-                FinancialProgressModel("Hiburan", 70, 100),
-                FinancialProgressModel("Tiket", 30, 100),
-                FinancialProgressModel("Developer", 50, 100)
+                ReportFinanceModel(1, "makanan", 30),
+                ReportFinanceModel(1, "makanan", 30)
+//                ReportFinanceModel("Hiburan", 70),
+//                ReportFinanceModel("Tiket", 30),
+//                ReportFinanceModel("Developer", 50)
 
         )
 
@@ -193,36 +250,11 @@ class ReportsSpendingFragment : Fragment() {
 
     private fun setAdapterFinancial() {
 
-        Util.log(TAG, "adapter")
+//        Util.log(TAG, "adapter")
 
         // get data spending
-        val data = getDataSpending()
+//        val data = getDataSpending()
 
-        reportsAdapter = ReportsAdapter(requireContext())
-
-        if (data.isEmpty()) {
-
-            frame_data_spending.visibility = View.INVISIBLE
-            status_data_tv.visibility = View.VISIBLE
-            status_data_tv.setText("Tidak Ada Transaksi Di Bulan Ini")
-
-        } else {
-
-            // show frame data
-            frame_data_spending.visibility = View.VISIBLE
-
-            // sorted list
-            var listData = data.sortedWith(compareByDescending { it.total_nominal_category })
-
-            recycler_reports.apply {
-
-                layoutManager = LinearLayoutManager(requireContext())
-                reportsAdapter.addAll(listData)
-                adapter = reportsAdapter
-
-            }
-
-        }
 
     }
 
@@ -242,23 +274,17 @@ class ReportsSpendingFragment : Fragment() {
 
                 if (getYearSelected.equals(year)) {
 
-                    val thisMonth = Util.convertCalendarMonth("$monthPicker.01")
+                    val thisMonth = Util.convertCalendarMonth("$monthPicker-01")
                     month_selected_tv.text = thisMonth
 
                 } else {
 
-                    val thisMonth = Util.convertCalendarMonth("$monthPicker.01")
+                    val thisMonth = Util.convertCalendarMonth("$monthPicker-01")
                     month_selected_tv.text = "$thisMonth  $getYearSelected"
 
                 }
 
-//                // remove data adapter
-//                adapterReportsGroup.removeListAdapter()
-//
-//                // get data month on year selected
-//                getAllDataSelectedMonth()
-//
-//                setAdapterGroup()
+                getDataSelectedRepo()
 
             }
 

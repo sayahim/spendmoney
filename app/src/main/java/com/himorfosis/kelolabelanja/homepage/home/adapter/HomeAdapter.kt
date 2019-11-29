@@ -2,7 +2,6 @@ package com.himorfosis.kelolabelanja.homepage.home.adapter
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.himorfosis.kelolabelanja.R
 import com.himorfosis.kelolabelanja.database.entity.FinancialEntitiy
-import com.himorfosis.kelolabelanja.details.SpendingDetail
+import com.himorfosis.kelolabelanja.details.FinancialDetail
 import com.himorfosis.kelolabelanja.utilities.Util
 
 class HomeAdapter(var context: Context) : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
@@ -28,9 +27,7 @@ class HomeAdapter(var context: Context) : RecyclerView.Adapter<HomeAdapter.ViewH
     //this method is binding the data on the list
     override fun onBindViewHolder(holder: HomeAdapter.ViewHolder, position: Int) {
 
-        var data = listReportFinancial!!.get(position)
-
-//        holder.time_tv.text = data.time
+        var data = listReportFinancial!![position]
 
         if (data.note.equals("-")) {
 
@@ -45,12 +42,28 @@ class HomeAdapter(var context: Context) : RecyclerView.Adapter<HomeAdapter.ViewH
         if (data.type == "income") {
 
             holder.nominal_tv.setTextColor(ContextCompat.getColor(context, R.color.green))
-            holder.nominal_tv.text = Util.numberFormatMoney(data.nominal.toString())
+
+            if (data.nominal != "") {
+
+                holder.nominal_tv.text = Util.numberFormatMoney(data.nominal)
+
+            } else{
+
+                holder.nominal_tv.text = "Rp0"
+            }
 
         } else {
 
             holder.nominal_tv.setTextColor(ContextCompat.getColor(context, R.color.text_black))
-            holder.nominal_tv.text =  Util.numberFormatMoney(data.nominal.toString())
+
+            if (data.nominal != "") {
+
+                holder.nominal_tv.text =  Util.numberFormatMoney(data.nominal)
+
+            } else {
+
+                holder.nominal_tv.text = "Rp0"
+            }
 
         }
 
@@ -60,7 +73,7 @@ class HomeAdapter(var context: Context) : RecyclerView.Adapter<HomeAdapter.ViewH
 
         holder.itemView.setOnClickListener {
 
-            val intent = Intent(context, SpendingDetail::class.java)
+            val intent = Intent(context, FinancialDetail::class.java)
             intent.putExtra("id", data.id)
             context.startActivity(intent)
 

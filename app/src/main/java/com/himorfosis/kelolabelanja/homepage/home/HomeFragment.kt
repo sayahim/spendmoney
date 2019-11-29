@@ -1,27 +1,21 @@
 package com.himorfosis.kelolabelanja.homepage.home
 
-import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.himorfosis.kelolabelanja.R
-import com.himorfosis.kelolabelanja.database.spending.DatabaseDao
-import com.himorfosis.kelolabelanja.database.spending.Database
+import com.himorfosis.kelolabelanja.database.db.DatabaseDao
+import com.himorfosis.kelolabelanja.database.db.Database
 import com.himorfosis.kelolabelanja.database.entity.FinancialEntitiy
 import com.himorfosis.kelolabelanja.financial.InputFinancial
 import com.himorfosis.kelolabelanja.homepage.home.adapter.HomeGroupAdapter
 import com.himorfosis.kelolabelanja.homepage.home.model.HomeGroupDataModel
-import com.himorfosis.kelolabelanja.month_picker.MonthPickerAdapter
+import com.himorfosis.kelolabelanja.homepage.home.repo.HomeRepo
 import com.himorfosis.kelolabelanja.month_picker.MonthPickerLiveData
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.home_fragment.*
@@ -58,13 +52,14 @@ class HomeFragment : Fragment() {
 
         setActionClick()
 
-        setLocalDatabase()
+//        setLocalDatabase()
 
         setDataDateToday()
 
-        getAllDataSelectedMonth()
+        getDataMonthSelected()
 
-        setAdapterGroup()
+//        getAllDataSelectedMonth()
+
 
 //        setCategoryDB()
 
@@ -88,7 +83,7 @@ class HomeFragment : Fragment() {
 
     private fun setDataDateToday() {
 
-        val date = SimpleDateFormat("yyyy.MM.dd")
+        val date = SimpleDateFormat("yyyy-MM-dd")
 
         val dateMonth = SimpleDateFormat("MM")
         val dateYear = SimpleDateFormat("yyyy")
@@ -124,31 +119,78 @@ class HomeFragment : Fragment() {
                 setHasFixedSize(true)
                 adapter = adapterReportsGroup
 
-//                addOnScrollListener(object : RecyclerView.OnScrollListener() {
-//
-//                    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-//                        super.onScrollStateChanged(recyclerView, newState)
-//
-//                        val totalItemCount = recyclerView.layoutManager!!.itemCount
-//                        if ( totalItemCount == lastVisibleItemPosition + 1) {
-//
-//                            add_ll.visibility = View.INVISIBLE
-//
-//                        } else {
-//
-//                            add_ll.visibility = View.VISIBLE
-//
-//                        }
-//                    }
-//
-//                })
-
             }
 
         }
     }
 
-    private val lastVisibleItemPosition: Int get() = linearLayoutManager.findLastVisibleItemPosition()
+    private fun getDataMonthSelected() {
+
+        listPerDayData.clear()
+
+        HomeRepo.setDataFinancialDatabase(requireContext())
+
+        HomeRepo.getDataFinancialDatabase().observe(this, androidx.lifecycle.Observer { response ->
+
+            Util.log(TAG, "response list : $response")
+
+            if (response != null) {
+
+                status_tv.visibility = View.INVISIBLE
+                status_deskripsi_tv.visibility = View.INVISIBLE
+
+                listPerDayData = response
+
+                setAdapterGroup()
+
+            } else {
+
+                status_tv.text = "Tidak Ada Transaksi"
+                status_deskripsi_tv.text = "Ketuk + Tambah untuk menambakan transaksi"
+
+                status_tv.visibility = View.VISIBLE
+                status_deskripsi_tv.visibility = View.VISIBLE
+
+            }
+
+        })
+
+        HomeRepo.getTotalIncomeMonth().observe(this, androidx.lifecycle.Observer { response ->
+
+            Util.log(TAG, "response income : $response")
+
+            if (response != null) {
+
+                // set text data
+                total_income_month.text = Util.numberFormatMoney(response)
+
+            } else {
+
+                total_income_month.text = Util.numberFormatMoney("0")
+
+
+            }
+
+        })
+
+        HomeRepo.getTotalSpendMonth().observe(this, androidx.lifecycle.Observer { response ->
+
+            Util.log(TAG, "response spend : $response")
+
+            if (response != null) {
+
+                total_spend_today.text = Util.numberFormatMoney(response)
+
+            } else {
+
+                total_spend_today.text = Util.numberFormatMoney("0")
+
+            }
+
+        })
+
+
+    }
 
     private fun getAllDataSelectedMonth() {
 
@@ -160,7 +202,7 @@ class HomeFragment : Fragment() {
         listDataFinancial.clear()
         listPerDayData.clear()
 
-        var monthOnYear = "$year.$month"
+        var monthOnYear = "$year-$month"
 
         val dayOfMonth = 32
 
@@ -170,23 +212,41 @@ class HomeFragment : Fragment() {
 
             if (x < 10) {
 
-                    thisMonth = "$monthOnYear.0$x"
+                thisMonth = "$monthOnYear-0$x"
 
             } else {
 
-                thisMonth = "$monthOnYear.$x"
+                thisMonth = "$monthOnYear-$x"
 
             }
 
-            Util.log(TAG, "this month : $thisMonth")
+//            Util.log(TAG, "this month : $thisMonth")
 
-            val data = databaseDao.getReportFinanceMounth(thisMonth)
+            val data = databaseDao.getDataFinanceMonth(thisMonth)
 
-            if (data.size != 0) {
+            if (data.isNotEmpty()) {
+
+                var totalSpending = 0
+                var totalIncome = 0
+
+                for (x in 0 until data.size) {
+
+                    val item = data[x]
+
+                    if (item.type.equals("income")) {
+
+                        totalIncome += item.nominal.toInt()
+
+                    } else {
+
+                        totalSpending += item.nominal.toInt()
+
+                    }
+
+                }
 
                 listDataFinancial.addAll(data)
-
-                listPerDayData.add(HomeGroupDataModel(thisMonth, 0, 0, data))
+                listPerDayData.add(HomeGroupDataModel(thisMonth, totalSpending, totalIncome, data))
 
             }
 
@@ -197,12 +257,16 @@ class HomeFragment : Fragment() {
 
         if (listDataFinancial.size == 0) {
 
-            status_tv.text = "Tidak Ada Transaksi \n Ketuk + Tambah untuk menambakan satu"
+            status_tv.text = "Tidak Ada Transaksi"
+            status_deskripsi_tv.text = "Ketuk + Tambah untuk menambakan transaksi"
+
             status_tv.visibility = View.VISIBLE
+            status_deskripsi_tv.visibility = View.VISIBLE
 
         } else{
 
             status_tv.visibility = View.INVISIBLE
+            status_deskripsi_tv.visibility = View.INVISIBLE
 
             for (i in 0 until listDataFinancial.size) {
 
@@ -210,15 +274,22 @@ class HomeFragment : Fragment() {
 
                 if (item.type == ("spend")) {
 
-                    // type spending
-                    totalSpend_int += item.nominal!!.toInt()
+                    if (item.nominal != "") {
+
+                        // type spending
+                        totalSpend_int += item.nominal.toInt()
+
+                    }
 
                 } else {
 
-                    // income
-                    totalIncome_int += item.nominal!!.toInt()
-                }
+                    if (item.nominal != "") {
 
+                        // income
+                        totalIncome_int += item.nominal.toInt()
+
+                    }
+                }
 
             }
 
@@ -258,12 +329,12 @@ class HomeFragment : Fragment() {
 
                 if (getYearSelected.equals(year)) {
 
-                    val thisMonth = Util.convertCalendarMonth("$monthPicker.01")
+                    val thisMonth = Util.convertCalendarMonth("$monthPicker-01")
                     month_selected_tv.text = thisMonth
 
                 } else {
 
-                    val thisMonth = Util.convertCalendarMonth("$monthPicker.01")
+                    val thisMonth = Util.convertCalendarMonth("$monthPicker-01")
                     month_selected_tv.text = "$thisMonth  $getYearSelected"
 
                 }
@@ -272,9 +343,12 @@ class HomeFragment : Fragment() {
                 adapterReportsGroup.removeListAdapter()
 
                 // get data month on year selected
-                getAllDataSelectedMonth()
 
-                setAdapterGroup()
+                getDataMonthSelected()
+
+//                getAllDataSelectedMonth()
+
+//                setAdapterGroup()
 
             }
 

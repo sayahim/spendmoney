@@ -35,6 +35,10 @@
     <!--<color name="line">#B6B6B6</color>-->
     <color name="line_dark">#7C7F81</color>
 
+    <color name="button_ok">#2F7EB7</color>
+    <color name="button_cancel">#DEEEFD</color>
+
+
     <!--<color name="text_black">#030303</color>-->
     <!--<color name="text_second">#4A4A4A</color>-->
     <!--<color name="text_hint">#a6a6a6</color>-->

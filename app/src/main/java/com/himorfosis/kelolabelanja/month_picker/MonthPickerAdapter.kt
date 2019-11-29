@@ -65,11 +65,11 @@ class MonthPickerAdapter(private val context: Context, val adapterCallback: (Str
 
             if (monthPosition < 9) {
 
-                adapterCallback("$yearSelected.0$monthPosition")
+                adapterCallback("$yearSelected-0$monthPosition")
 
             } else{
 
-                adapterCallback("$yearSelected.$monthPosition")
+                adapterCallback("$yearSelected-$monthPosition")
 
             }
 

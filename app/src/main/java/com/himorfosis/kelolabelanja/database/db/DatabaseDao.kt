@@ -14,11 +14,10 @@ interface DatabaseDao {
     fun getSelectedCategory(category_id: String): List<FinancialEntitiy>
 
     @Query("SELECT * FROM financial_db WHERE date =:date ")
-    fun getTodaySpending(date: String): List<FinancialEntitiy>
+    fun getDataFinanceMonth(date: String): MutableList<FinancialEntitiy>
 
-
-    @Query("SELECT * FROM financial_db WHERE date =:date ")
-    fun getMonthSpending(date: String): List<FinancialEntitiy>
+    @Query("SELECT * FROM financial_db WHERE date BETWEEN :first AND :last")
+    fun getDataFinancial(first: String, last: String): List<FinancialEntitiy>
 
     @Query("SELECT * FROM financial_db WHERE id =:id ")
     fun getDetailSpending(id: Int): FinancialEntitiy
@@ -34,11 +33,14 @@ interface DatabaseDao {
 
     // report
 
-    @Query("SELECT * FROM financial_db WHERE date =:date ")
-    fun getReportSpendToday(date: String): List<FinancialEntitiy>
+    @Query("SELECT * FROM financial_db WHERE date =:date  AND type =:type AND category_id =:category_id")
+    fun getReportSpending(date: String, type: String, category_id: Int): List<FinancialEntitiy>
+
+    @Query("SELECT * FROM financial_db WHERE date BETWEEN :firstDate AND :lastDate  AND type =:type AND category_id =:category_id")
+    fun reportDataSpending(firstDate: String, lastDate: String, type: String, category_id: Int): List<FinancialEntitiy>
 
     @Query("SELECT * FROM financial_db WHERE date =:date ")
-    fun getReportFinanceMounth(date: String): MutableList<FinancialEntitiy>
+    fun getReportFinanceMonth(date: String): MutableList<FinancialEntitiy>
 
     // category
 

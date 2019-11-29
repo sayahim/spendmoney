@@ -5,11 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include
-        layout="@layout/tablayout_double"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
     <LinearLayout
         android:id="@+id/select_month_click_ll"
         android:layout_width="wrap_content"
@@ -44,14 +39,21 @@
         android:layout_marginRight="@dimen/_10sdp"
         android:background="@color/line" />
 
-    <androidx.core.widget.NestedScrollView
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/layout_chart_ll"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="invisible">
 
 
             <androidx.cardview.widget.CardView
@@ -96,7 +98,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/_10sdp"
                         android:fontFamily="@font/regular_opensans"
-                        android:text="Daftar Pengeluaran Teratas"
+                        android:text="Daftar Data Teratas"
                         android:textColor="@color/text_hint"
                         android:textSize="@dimen/_12ssp" />
 
@@ -115,5 +117,44 @@
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:layout_marginLeft="@dimen/_20sdp">
+
+            <TextView
+                android:id="@+id/status_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:fontFamily="@font/bold_opensans"
+                android:textColor="@color/text_hint"
+                android:textSize="@dimen/_16ssp"
+                android:text="Tidak Ada Transaksi"
+                android:visibility="invisible"
+                />
+
+            <TextView
+                android:id="@+id/status_deskripsi_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:fontFamily="@font/regular_opensans"
+                android:textColor="@color/text_hint"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:visibility="invisible"
+                android:text="-"
+                />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
 
 </LinearLayout>

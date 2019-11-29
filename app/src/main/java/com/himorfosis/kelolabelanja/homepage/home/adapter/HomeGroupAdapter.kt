@@ -1,15 +1,12 @@
 package com.himorfosis.kelolabelanja.homepage.home.adapter
 
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.himorfosis.kelolabelanja.R
-import com.himorfosis.kelolabelanja.details.SpendingDetail
 import com.himorfosis.kelolabelanja.homepage.home.model.HomeGroupDataModel
 import com.himorfosis.kelolabelanja.utilities.Util
 
@@ -17,7 +14,7 @@ class HomeGroupAdapter (var context: Context) : RecyclerView.Adapter<HomeGroupAd
 
     private val TAG = "HomeGroupAdapter"
 
-    private var listReportFinancial: MutableList<HomeGroupDataModel>? = ArrayList()
+    private var listReportFinancial: MutableList<HomeGroupDataModel> = ArrayList()
     private lateinit var adapterReports: HomeAdapter
 
 
@@ -30,38 +27,65 @@ class HomeGroupAdapter (var context: Context) : RecyclerView.Adapter<HomeGroupAd
     //this method is binding the data on the list
     override fun onBindViewHolder(holder: HomeGroupAdapter.ViewHolder, position: Int) {
 
-        var data = listReportFinancial!![position]
+        var data = listReportFinancial[position]
 
-        holder.day_date.text = Util.convertDateName(data.date)
+        if (data != null) {
 
-        Util.log(TAG, "date : " + data.date)
-        Util.log(TAG, "list : " + data.financialEntitiy.size)
+            holder.day_date.text = Util.convertDateSpecific(data.date)
 
-        if (data.financialEntitiy.size != 0) {
+            if (data.totalSpending != 0) {
 
-            holder.recycler_home_adapter.apply {
+                holder.spend_tv.visibility = View.VISIBLE
+                holder.spend_tv.text = "Out : " +  Util.numberFormatMoney(data.totalSpending.toString())
 
-                adapterReports = HomeAdapter(context)
+            } else {
 
-                // sorted list
-                var sortedListDescending = data.financialEntitiy.sortedWith(compareByDescending { it.time })
-
-                adapterReports.addAll(sortedListDescending)
-
-                layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
-                setHasFixedSize(true)
-                adapter = adapterReports
+                holder.spend_tv.visibility = View.INVISIBLE
 
             }
+
+            if (data.totalIncome != 0) {
+
+                holder.income_tv.visibility = View.VISIBLE
+                holder.income_tv.text = "In : " + Util.numberFormatMoney(data.totalIncome.toString())
+
+            } else {
+
+                holder.income_tv.visibility = View.INVISIBLE
+
+            }
+
+
+//            Util.log(TAG, "date : " + data.date)
+//            Util.log(TAG, "list : " + data.financialEntitiy.size)
+
+            if (data.financialEntitiy.size != 0) {
+
+                holder.recycler_home_adapter.apply {
+
+                    adapterReports = HomeAdapter(context)
+
+                    // sorted list
+                    var sortedListDescending = data.financialEntitiy.sortedWith(compareByDescending { it.time })
+
+                    adapterReports.addAll(sortedListDescending)
+
+                    layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
+                    setHasFixedSize(true)
+                    adapter = adapterReports
+
+                }
+            }
+
         }
 
     }
 
     private fun add(homeGroupDataModel: HomeGroupDataModel) {
 
-        listReportFinancial!!.add(homeGroupDataModel)
+        listReportFinancial.add(homeGroupDataModel)
 
-        notifyItemInserted(listReportFinancial!!.size - 1)
+        notifyItemInserted(listReportFinancial.size - 1)
 
     }
 
@@ -75,20 +99,22 @@ class HomeGroupAdapter (var context: Context) : RecyclerView.Adapter<HomeGroupAd
 
     fun removeListAdapter() {
 
-        listReportFinancial!!.clear()
+        listReportFinancial.clear()
         notifyDataSetChanged()
 
     }
 
     //this method is giving the size of the list
     override fun getItemCount(): Int {
-        return listReportFinancial!!.size
+        return listReportFinancial.size
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val recycler_home_adapter = itemView.findViewById(R.id.recycler_home_adapter) as RecyclerView
         val day_date = itemView.findViewById(R.id.day_date) as TextView
+        val spend_tv = itemView.findViewById(R.id.spend_tv) as TextView
+        val income_tv = itemView.findViewById(R.id.income_tv) as TextView
 
     }
 }

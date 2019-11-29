@@ -11,10 +11,6 @@ import com.anychart.charts.Pie
 import com.anychart.chart.common.dataentry.ValueDataEntry
 import com.anychart.chart.common.dataentry.DataEntry
 
-
-
-
-
 class StatisticFragment: Fragment() {
 
     companion object {

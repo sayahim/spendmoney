@@ -72,7 +72,7 @@
                         android:layout_marginRight="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:fontFamily="@font/regular_opensans"
-                        android:text="Daftar Pengeluaran"
+                        android:text="Daftar Pendapatan"
                         android:textColor="@color/text_second"
                         android:textSize="@dimen/_12sdp" />
 
@@ -88,20 +88,46 @@
 
             </androidx.cardview.widget.CardView>
 
+
         </FrameLayout>
 
     </androidx.core.widget.NestedScrollView>
 
-        <TextView
-            android:id="@+id/status_data_tv"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
             android:layout_gravity="center"
-            android:fontFamily="@font/bold_opensans"
-            android:text="Income Cooming Soon"
-            android:textColor="@color/text_hint"
-            android:textSize="@dimen/_14ssp"
-            android:visibility="invisible" />
+            android:layout_marginRight="@dimen/_20sdp"
+            android:layout_marginLeft="@dimen/_20sdp">
+
+            <TextView
+                android:id="@+id/status_data_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:fontFamily="@font/bold_opensans"
+                android:textColor="@color/text_hint"
+                android:textSize="@dimen/_16ssp"
+                android:text="Tidak Ada Transaksi"
+                android:visibility="invisible"
+                />
+
+            <TextView
+                android:id="@+id/status_deskripsi_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:fontFamily="@font/regular_opensans"
+                android:textColor="@color/text_hint"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:visibility="invisible"
+                android:text=""
+                />
+
+        </LinearLayout>
 
     </FrameLayout>
 

@@ -1,4 +1,4 @@
-package com.himorfosis.kelolabelanja.homepage.statistict;
+package com.himorfosis.kelolabelanja.homepage.statistict.view;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -17,17 +17,26 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.himorfosis.kelolabelanja.R;
-import com.himorfosis.kelolabelanja.homepage.statistict.adapter.FinancialProgressAdapter;
-import com.himorfosis.kelolabelanja.homepage.statistict.model.FinancialProgressModel;
+import com.himorfosis.kelolabelanja.homepage.report.model.ReportsSpendingModel;
+import com.himorfosis.kelolabelanja.homepage.statistict.adapter.StatisticChartAdapter;
+import com.himorfosis.kelolabelanja.homepage.statistict.model.ChartModel;
+import com.himorfosis.kelolabelanja.homepage.statistict.model.FinancialProgressStatisticModel;
+import com.himorfosis.kelolabelanja.homepage.statistict.model.StatistictModel;
+import com.himorfosis.kelolabelanja.homepage.statistict.repo.GrafikRepo;
+import com.himorfosis.kelolabelanja.homepage.statistict.viewmodel.StatistictViewModel;
 import com.himorfosis.kelolabelanja.month_picker.java.MonthPickerJavaViewModel;
 import com.himorfosis.kelolabelanja.utilities.Util;
 import com.himorfosis.kelolabelanja.utilities.UtilJava;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,13 +45,14 @@ public class PieChartView extends Fragment {
     String TAG = "PieChartView";
 
     private PieChart pieChart;
-    FinancialProgressAdapter adapterFinancial;
+    StatisticChartAdapter adapterFinancial;
     RecyclerView recyclerView;
-    LinearLayout selectMonthClick_ll;
-    TextView month_selected_tv;
+    LinearLayout selectMonthClick_ll,layout_chart_ll;
+    TextView month_selected_tv, status_tv, status_deskripsi_tv;
 
-    private float[] yData = {66.76f, 44.32f};
-    private String[] xData = {"Mitch", "Jessica" , "Mohammad" , "Kelsey", "Sam", "Robert", "Ashley"};
+    StatistictViewModel statistictViewModel;
+    List<ChartModel> dataStatistict = new ArrayList<>();
+    List<PieEntry> dataListChart = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -58,17 +68,13 @@ public class PieChartView extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         getActivity().invalidateOptionsMenu();
 
-        recyclerView = view.findViewById(R.id.recycler_report_cart);
-        pieChart = view.findViewById(R.id.pie_chart);
-        pieChart = view.findViewById(R.id.pie_chart);
-        selectMonthClick_ll = view.findViewById(R.id.select_month_click_ll);
-        month_selected_tv = view.findViewById(R.id.month_selected_tv);
+        setID(view);
 
         setDataDateToday();
 
-        setTablayoutAction(view);
+//        setTablayoutAction(view);
 
-        setPieChart();
+        getDataSpendingReport();
 
         selectMonthClick_ll.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,9 +87,82 @@ public class PieChartView extends Fragment {
 
     }
 
+    private void setID(View view) {
+
+        recyclerView = view.findViewById(R.id.recycler_report_cart);
+        pieChart = view.findViewById(R.id.pie_chart);
+        selectMonthClick_ll = view.findViewById(R.id.select_month_click_ll);
+        month_selected_tv = view.findViewById(R.id.month_selected_tv);
+        status_tv = view.findViewById(R.id.status_tv);
+        status_deskripsi_tv = view.findViewById(R.id.status_deskripsi_tv);
+        layout_chart_ll = view.findViewById(R.id.layout_chart_ll);
+
+        statistictViewModel = ViewModelProviders.of(this).get(StatistictViewModel.class);
+
+    }
+
+    private void getDataSpendingReport() {
+
+        dataStatistict.clear();
+        dataListChart.clear();
+
+        statistictViewModel.setDataSpending(getContext());
+
+        statistictViewModel.getDataSpending().observe(this, response -> {
+
+            Util.log(TAG, "getDataSpendingReport" + response);
+
+            if (response != null) {
+
+                status_tv.setVisibility(View.INVISIBLE);
+                status_deskripsi_tv.setVisibility(View.INVISIBLE);
+                layout_chart_ll.setVisibility(View.VISIBLE);
+
+                dataStatistict = response;
+
+                setDataSpendingOnChart();
+
+            } else {
+
+                layout_chart_ll.setVisibility(View.INVISIBLE);
+                status_tv.setText("Tidak Ada Transaksi");
+                status_deskripsi_tv.setText("Untuk bulan ini, tidak ada data yang dapat di tampilkan. Silahkan pilih bulan lain atau tambahkan transaksi");
+                status_tv.setVisibility(View.VISIBLE);
+                status_deskripsi_tv.setVisibility(View.VISIBLE);
+
+            }
+
+        });
+
+    }
+
+    private void setDataSpendingOnChart() {
+
+        statistictViewModel.setDataStatisticChart(getContext(), dataStatistict);
+
+        statistictViewModel.getDataStatisticChart().observe(this, response -> {
+
+            Util.log(TAG, "setDataSpendingOnChart" + response);
+
+            if (response != null) {
+
+                dataListChart = response;
+
+//                Collections.reverse(dataListChart);
+
+                setPieChart();
+
+                setAdapterFinancial();
+
+            }
+
+        });
+
+    }
+
     private void setDataDateToday() {
 
-        SimpleDateFormat date = new SimpleDateFormat("yyyy.MM.dd");
+        SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat dateMonth = new SimpleDateFormat("MM");
         SimpleDateFormat dateYear = new SimpleDateFormat("yyyy");
 
@@ -91,14 +170,9 @@ public class PieChartView extends Fragment {
         String yearToday = dateYear.format(new Date());
         String monthToday = dateMonth.format(new Date());
 
-        String[] monthArray = new String[ ]{"", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"};
+        String dateName = Util.convertCalendarMonth(month);
 
-        String monthConnvert = month.substring(month.indexOf(".") + 1);
-        String bulan = monthConnvert.substring(0, monthConnvert.indexOf("."));
-
-        Integer intMonth = Integer.parseInt(bulan);
-
-        month_selected_tv.setText(monthArray[intMonth]);
+        month_selected_tv.setText(dateName);
 
         UtilJava.saveData("picker", "month", monthToday, getContext());
         UtilJava.saveData("picker", "year", yearToday, getContext());
@@ -130,11 +204,11 @@ public class PieChartView extends Fragment {
 
                 if (getYearSelected.equals(year)) {
 
-                    month_selected_tv.setText(UtilJava.convertCalendarMonth(monthPicker + ".0.1"));
+                    month_selected_tv.setText(UtilJava.convertCalendarMonth(monthPicker + "-0-1"));
 
                 } else {
 
-                    String thisMonth = UtilJava.convertCalendarMonth(monthPicker + ".0.1");
+                    String thisMonth = UtilJava.convertCalendarMonth(monthPicker + "-0-1");
                     month_selected_tv.setText(thisMonth + getYearSelected);
 
                 }
@@ -143,10 +217,8 @@ public class PieChartView extends Fragment {
                 adapterFinancial.removeAdapter();
 
                 // get data month on year selected
+                getDataSpendingReport();
 
-                setPieChart();
-
-                setAdapterFinancial();
 
             }
 
@@ -155,6 +227,8 @@ public class PieChartView extends Fragment {
     }
 
     private void setPieChart() {
+
+        Util.log(TAG, "setPieChart");
 
         pieChart.getDescription().setText("Data teratas");
         //pieChart.setUsePercentValues(true);
@@ -169,8 +243,10 @@ public class PieChartView extends Fragment {
         //More options just check out the documentation!
 
         pieChart.setRotationEnabled(true);
-        PieDataSet pieDataSet = new PieDataSet(getData(),"");
-        pieDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+        PieDataSet pieDataSet = new PieDataSet(dataListChart,"");
+        pieDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+
+//        pieDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
 //        pieDataSet.setColors(ColorTemplate.PASTEL_COLORS);
 //        pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
 
@@ -179,13 +255,20 @@ public class PieChartView extends Fragment {
         pieChart.animateXY(50, 50);
         pieChart.invalidate();
 
-        setAdapterFinancial();
+//        setAdapterFinancial();
 
     }
 
     private void setAdapterFinancial() {
 
-        adapterFinancial = new FinancialProgressAdapter(getDataProgress());
+        // sort by descending
+
+        Collections.sort(dataStatistict, (o1, o2) ->
+                o1.getTotal_nominal_category() - o2.getTotal_nominal_category());
+
+        Collections.reverse(dataStatistict);
+
+        adapterFinancial = new StatisticChartAdapter(getContext(), dataStatistict);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -193,73 +276,6 @@ public class PieChartView extends Fragment {
         recyclerView.setAdapter(adapterFinancial);
 
     }
-
-    private ArrayList getData(){
-
-        ArrayList<PieEntry> entries = new ArrayList<>();
-        entries.add(new PieEntry(945f, "Makanan"));
-        entries.add(new PieEntry(530f, "Hiburan"));
-        entries.add(new PieEntry(1143f, "Tiket"));
-        entries.add(new PieEntry(1050f, "Jalan"));
-        entries.add(new PieEntry(750f, "Developer"));
-        return entries;
-
-    }
-
-    private ArrayList getDataProgress() {
-
-        ArrayList<FinancialProgressModel> data = new ArrayList<>();
-        data.add(new FinancialProgressModel("Makanan", 100, 100));
-        data.add(new FinancialProgressModel("Hiburan", 70, 100));
-        data.add(new FinancialProgressModel("Tiket", 30, 100));
-        data.add(new FinancialProgressModel("Developer", 50, 100));
-
-        return data;
-
-    }
-
-    private void addDataSet() {
-        Log.d(TAG, "addDataSet started");
-        ArrayList<PieEntry> yEntrys = new ArrayList<>();
-        ArrayList<String> xEntrys = new ArrayList<>();
-
-        for(int i = 0; i < yData.length; i++){
-            yEntrys.add(new PieEntry(yData[i] , i));
-        }
-
-        for(int i = 1; i < xData.length; i++){
-            xEntrys.add(xData[i]);
-        }
-
-        //create the data set
-//        PieDataSet pieDataSet = new PieDataSet(yEntrys, "Employee Sales");
-//        pieDataSet.setSliceSpace(2);
-//        pieDataSet.setValueTextSize(12);
-
-        //add colors to dataset
-        ArrayList<Integer> colors = new ArrayList<>();
-//        colors.add(Color.GRAY);
-//        colors.add(Color.BLUE);
-//        colors.add(Color.RED);
-//        colors.add(Color.GREEN);
-        colors.add(Color.CYAN);
-        colors.add(Color.YELLOW);
-//        colors.add(Color.MAGENTA);
-
-//        pieDataSet.setColors(colors);
-
-        //add legend to chart
-        Legend legend = pieChart.getLegend();
-        legend.setForm(Legend.LegendForm.CIRCLE);
-//        legend.setPosition(Legend.LegendPosition.LEFT_OF_CHART);
-
-        //create pie data object
-//        PieData pieData = new PieData(pieDataSet);
-//        pieChart.setData(pieData);
-//        pieChart.invalidate();
-
-    }
-
 
     private void setTablayoutAction(View view) {
 
@@ -297,9 +313,6 @@ public class PieChartView extends Fragment {
             }
         });
 
-
-
     }
-
 
 }

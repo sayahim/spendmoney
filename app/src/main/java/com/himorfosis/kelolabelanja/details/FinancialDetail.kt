@@ -9,9 +9,9 @@ import androidx.appcompat.app.ActionBar
 import androidx.core.content.ContextCompat
 import androidx.room.Room
 import com.himorfosis.kelolabelanja.R
-import com.himorfosis.kelolabelanja.database.spending.DatabaseDao
-import com.himorfosis.kelolabelanja.database.spending.Database
-import com.himorfosis.kelolabelanja.homepage.HomepageActivity
+import com.himorfosis.kelolabelanja.database.db.DatabaseDao
+import com.himorfosis.kelolabelanja.database.db.Database
+import com.himorfosis.kelolabelanja.homepage.activity.HomepageActivity
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.activity_spending_detail.*
 import kotlinx.android.synthetic.main.toolbar_detail.*
@@ -20,6 +20,8 @@ import org.jetbrains.anko.toast
 class SpendingDetail : AppCompatActivity() {
 
     lateinit var databaseDao: DatabaseDao
+
+    var getId = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,14 +39,23 @@ class SpendingDetail : AppCompatActivity() {
 
         val data = intent
 
-        val getId = data.getIntExtra("id", 0)
+        getId = data.getIntExtra("id", 0)
 
         val details = databaseDao.getDetailSpending(getId)
 
-        nominal_tv.setText(Util.numberFormatMoney(details.nominal!!.toString()))
-        category_tv.setText(details.category_name)
-        date_tv.setText(details.date)
-        note_tv.setText(details.note)
+        category_tv.text = details.category_name
+        date_tv.text = Util.convertCalendarMonth(details.date)
+        note_tv.text = details.note
+
+        if (details.nominal != "") {
+
+            nominal_tv.text = Util.numberFormatMoney(details.nominal)
+
+        } else {
+
+            nominal_tv.text = "Rp 0"
+
+        }
 
     }
 
@@ -55,6 +66,16 @@ class SpendingDetail : AppCompatActivity() {
                 .fallbackToDestructiveMigration()
                 .build()
                 .spendingDao()
+
+    }
+
+    private fun deleteDataSelected() {
+
+        databaseDao.deleteDataFinancialItem(getId)
+
+        toast("Hapus Data Sukses")
+
+        startActivity(Intent(this, HomepageActivity::class.java))
 
     }
 
@@ -78,7 +99,7 @@ class SpendingDetail : AppCompatActivity() {
 
         delete_btn.setOnClickListener {
 
-            toast("delete")
+           deleteDataSelected()
 
         }
 

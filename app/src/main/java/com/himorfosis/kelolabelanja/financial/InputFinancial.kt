@@ -1,5 +1,6 @@
 package com.himorfosis.kelolabelanja.financial
 
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
@@ -17,17 +18,22 @@ import com.himorfosis.kelolabelanja.R
 import com.himorfosis.kelolabelanja.financial.adapter.FinancialCategoryAdapter
 import com.himorfosis.kelolabelanja.database.entity.CategoryEntity
 import com.himorfosis.kelolabelanja.database.entity.FinancialEntitiy
-import com.himorfosis.kelolabelanja.database.spending.DatabaseDao
-import com.himorfosis.kelolabelanja.database.spending.Database
-import com.himorfosis.kelolabelanja.homepage.HomepageActivity
+import com.himorfosis.kelolabelanja.database.db.DatabaseDao
+import com.himorfosis.kelolabelanja.database.db.Database
+import com.himorfosis.kelolabelanja.homepage.activity.HomepageActivity
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.activity_input_financial.*
 import kotlinx.android.synthetic.main.layout_input_data.*
 import kotlinx.android.synthetic.main.toolbar_detail.*
 import org.jetbrains.anko.toast
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+import java.text.DecimalFormat
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 
 
 class InputFinancial : AppCompatActivity() {
@@ -36,11 +42,10 @@ class InputFinancial : AppCompatActivity() {
 
     lateinit var financialCategoryAdapter: FinancialCategoryAdapter
 
-    var recycler_category = null
-    var getNominal: String? = null
+    var getTypeInputData = "income"
 
     // data
-    var listCategory :List<CategoryEntity> = ArrayList<CategoryEntity>()
+    var listCategory: List<CategoryEntity> = ArrayList<CategoryEntity>()
 
     // database
     lateinit var databaseDao: DatabaseDao
@@ -54,24 +59,123 @@ class InputFinancial : AppCompatActivity() {
 
         setDatabase()
 
-        // set data category to list
         setDataCategorySpending()
 
         setAdapterCategory()
 
         setActionClick()
 
-        setActionSearchCategory()
+//        setSearchCategory()
+
+        setNumberFormatNominal()
+
+        setNoteLength()
 
         setTabLayout()
 
-        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
+    }
+
+    private fun setNumberFormatNominal() {
+
+        val decimalFormat = DecimalFormat("#,###,###,###,##")
+        decimalFormat.isDecimalSeparatorAlwaysShown = true
+        val decimalFormatNotEdit = DecimalFormat("#,###")
+        var hasFractionalPart = false
+
+        nominal_et.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(s: Editable) {
+
+                nominal_et.removeTextChangedListener(this)
+
+                try {
+
+                    var nominalSize = nominal_et.text.toString().length
+
+                    var originalString = s.toString()
+
+                    originalString = originalString.replace(decimalFormat.decimalFormatSymbols.groupingSeparator.toString(), "")
+
+                    var number: Number = decimalFormat.parse(originalString)
+
+                    var selectionNominal = nominal_et.selectionStart
+
+                    if (hasFractionalPart) {
+
+                        nominal_et.setText(decimalFormat.format(number))
+
+                    } else {
+
+                        nominal_et.setText(decimalFormatNotEdit.format(number))
+
+                    }
+
+                    val endSize = nominal_et.text.toString().length
+
+                    var setIndicatorEditText = (selectionNominal + (endSize - nominalSize))
+
+                    if (setIndicatorEditText in 1..endSize) {
+
+                        nominal_et.setSelection(setIndicatorEditText)
+
+                    } else {
+
+                        nominal_et.setSelection(endSize - 1)
+
+                    }
+
+                } catch (e : java.lang.NumberFormatException) {
+                    // do nothing?
+                }
+
+                nominal_et.addTextChangedListener(this)
+
+            }
+
+            override fun beforeTextChanged(s: CharSequence, start: Int,
+                                           count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int,
+                                       before: Int, count: Int) {
+
+
+            }
+
+        })
 
     }
 
-    private fun setActionSearchCategory() {
 
-        search_category_et.addTextChangedListener(object : TextWatcher {
+
+    private fun setNoteLength() {
+
+        note_et.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(s: Editable) {
+
+                var noteSize = note_et.text.toString().length
+
+                note_length_tv.setText("$noteSize/50")
+
+            }
+
+            override fun beforeTextChanged(s: CharSequence, start: Int,
+                                           count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+
+
+            }
+
+        })
+
+    }
+
+    private fun setSearchCategory() {
+
+        note_length_tv.addTextChangedListener(object : TextWatcher {
 
             override fun afterTextChanged(s: Editable) {}
 
@@ -101,43 +205,12 @@ class InputFinancial : AppCompatActivity() {
 
         spend_ll.setOnClickListener {
 
-            spend_tv.setTextColor(resources.getColor(R.color.text_blue_dark))
-            income_tv.setTextColor(resources.getColor(R.color.text_hint))
-
-            // set indicator
-            income_indicator.visibility = View.INVISIBLE
-            spend_indicator.visibility = View.VISIBLE
-
-            search_category_et.setText("")
-            delete_search_btn.visibility = View.INVISIBLE
-
-            // delete cache data
-            Util.deleteData("category", this)
-
-            deleteTextSearch()
-
-            hideLayoutInputData()
-
             // set data category to list
             setDataCategorySpending()
 
         }
 
         income_ll.setOnClickListener {
-
-            income_tv.setTextColor(resources.getColor(R.color.text_blue_dark))
-            spend_tv.setTextColor(resources.getColor(R.color.text_hint))
-
-            // set indicator
-            income_indicator.visibility = View.VISIBLE
-            spend_indicator.visibility = View.INVISIBLE
-
-            // delete cache data
-            Util.deleteData("category", this)
-
-            deleteTextSearch()
-
-            hideLayoutInputData()
 
             // set data category to list
             setDataCategoryIncome()
@@ -177,40 +250,46 @@ class InputFinancial : AppCompatActivity() {
 
         save_btn.setOnClickListener {
 
-            val getNominal = nominal_et.text.toString()
-            var note_str = note_et.text.toString()
-            val getIdSelected = Util.getData("category", "selected", this)
+            var getNominal = nominal_et.text.toString()
+            var getNote = note_et.text.toString()
+            var getIdSelected = Util.getData("category", "selected", this)
 
-            if (note_str.equals("")) {
+            if (getNote == "") {
 
-                note_str = "-"
+                getNote = "-"
 
             }
 
-            Util.log(TAG, "id selected " + getIdSelected)
-            Util.log(TAG, "nominal " + getNominal)
-            Util.log(TAG, "note " + note_str)
+            getNominal = getNominal.replace(".", "")
 
-            if (getNominal != null && getIdSelected != null) {
+            Util.log(TAG, "id selected $getIdSelected")
+            Util.log(TAG, "nominal :$getNominal:")
+            Util.log(TAG, "note $getNote")
+
+            if (getNominal == "" || getIdSelected == "") {
+
+                toast("Harap Lengkapi Data")
+
+            } else {
 
                 val time = SimpleDateFormat("HH:mm")
-                val date = SimpleDateFormat("yyyy.MM.dd")
+                val date = SimpleDateFormat("yyyy-MM-dd")
                 val dateNow = date.format(Date())
                 val timeNow = time.format(Date())
 
-                Util.log(TAG, "date : " + dateNow)
-                Util.log(TAG, "time : " + timeNow)
-                Util.log(TAG, "getIdSelected : " + getIdSelected)
+                Util.log(TAG, "date : $dateNow")
+                Util.log(TAG, "time : $timeNow")
+                Util.log(TAG, "getIdSelected : $getIdSelected")
 
 //                val listCategory = databaseDao.getAllCategory()
 
-                for (i in 0 until listCategory.size) {
+                for (i in listCategory.indices) {
 
-                    val item = listCategory.get(i)
+                    val item = listCategory[i]
 
                     if (item.id == getIdSelected.toInt()) {
 
-                        insertToDatabase(FinancialEntitiy(null, getIdSelected.toInt(), item.name, item.image_category, typeDataFinancial, getNominal, note_str, dateNow, timeNow))
+                        insertIntoDatabase(FinancialEntitiy(null, getIdSelected.toInt(), item.name, item.image_category, typeDataFinancial, getNominal, getNote, dateNow, timeNow))
 
                         break
 
@@ -218,19 +297,33 @@ class InputFinancial : AppCompatActivity() {
 
                 }
 
-
-            } else {
-
-                toast("Harap Lengkapi Data")
-
             }
+
+        }
+
+        select_date_ll.setOnClickListener {
+
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+
+            val dateDialog = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+
+                val dateSelected = "$dayOfMonth.${monthOfYear + 1}.$year"
+
+                Util.log(TAG, "date selected : $dateSelected")
+
+
+            }, year, month, day)
+            dateDialog.show()
 
         }
 
     }
 
 
-    private fun insertToDatabase(data: FinancialEntitiy) {
+    private fun insertIntoDatabase(data: FinancialEntitiy) {
 
         databaseDao.insertSpending(data)
 
@@ -242,17 +335,52 @@ class InputFinancial : AppCompatActivity() {
 
     private fun setDataCategorySpending() {
 
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
+
+        spend_tv.setTextColor(resources.getColor(R.color.text_blue_dark))
+        income_tv.setTextColor(resources.getColor(R.color.text_second))
+
+        // set indicator
+        income_indicator.visibility = View.INVISIBLE
+        spend_indicator.visibility = View.VISIBLE
+
+        search_category_et.setText("")
+        delete_search_btn.visibility = View.INVISIBLE
+
+        // delete cache data
+        Util.saveData("category", "selected", "0", this)
+
+        deleteTextSearch()
+
+        hideLayoutInputData()
+
         Util.saveData("category", "selected", "0", this)
 
         typeDataFinancial = "spend"
 
-        listCategory = Util.getDataCategorySpending();
+        listCategory = Util.getDataCategorySpending()
 
         setAdapterCategory()
 
     }
 
     private fun setDataCategoryIncome() {
+
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
+
+        income_tv.setTextColor(resources.getColor(R.color.text_blue_dark))
+        spend_tv.setTextColor(resources.getColor(R.color.text_second))
+
+        // set indicator
+        income_indicator.visibility = View.VISIBLE
+        spend_indicator.visibility = View.INVISIBLE
+
+        // delete cache data
+        Util.saveData("category", "selected", "0", this)
+
+        deleteTextSearch()
+
+        hideLayoutInputData()
 
         Util.saveData("category", "selected", "0", this)
 
@@ -319,6 +447,8 @@ class InputFinancial : AppCompatActivity() {
 
         Util.deleteData("category", this)
 
+        Util.saveData("category", "selected", "0", this)
+
     }
 
     private fun setToolbar() {
@@ -335,24 +465,32 @@ class InputFinancial : AppCompatActivity() {
 
         }
 
-        titleBar_tv.setText("Input Kategori")
+        titleBar_tv.text = "Input Data"
 
     }
 
     override fun onBackPressed() {
 
-        val selected = Util.getData("category", "selected", this)
+        getTypeInputData = "spend"
 
-        Util.log(TAG, "category selected : " + selected)
+        if (getTypeInputData == "spend") {
 
-        if (selected == null) {
-
-            startActivity(Intent(this, HomepageActivity::class.java))
+            setDataCategorySpending()
 
         } else {
 
-            frame_input_data.visibility = View.GONE
-            Util.deleteData("category", this)
+            val selected = Util.getData("category", "selected", this)
+
+            if (selected == null) {
+
+                startActivity(Intent(this, HomepageActivity::class.java))
+
+            } else {
+
+                hideLayoutInputData()
+                Util.deleteData("category", this)
+
+            }
 
         }
 
