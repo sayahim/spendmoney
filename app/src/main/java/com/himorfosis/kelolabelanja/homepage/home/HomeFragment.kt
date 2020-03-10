@@ -14,7 +14,7 @@ import com.himorfosis.kelolabelanja.database.db.Database
 import com.himorfosis.kelolabelanja.database.entity.FinancialEntitiy
 import com.himorfosis.kelolabelanja.financial.InputFinancial
 import com.himorfosis.kelolabelanja.homepage.home.adapter.HomeGroupAdapter
-import com.himorfosis.kelolabelanja.homepage.home.model.HomeGroupDataModel
+import com.himorfosis.kelolabelanja.model.HomeGroupDataModel
 import com.himorfosis.kelolabelanja.homepage.home.repo.HomeRepo
 import com.himorfosis.kelolabelanja.month_picker.MonthPickerLiveData
 import com.himorfosis.kelolabelanja.utilities.Util
@@ -52,7 +52,7 @@ class HomeFragment : Fragment() {
 
         setActionClick()
 
-//        setLocalDatabase()
+        setAdapterGroup()
 
         setDataDateToday()
 
@@ -103,9 +103,9 @@ class HomeFragment : Fragment() {
 
     private fun setAdapterGroup() {
 
-        if (listPerDayData.size != 0) {
+        adapterReportsGroup = HomeGroupAdapter(requireContext())
 
-            adapterReportsGroup = HomeGroupAdapter(requireContext())
+        if (listPerDayData.size != 0) {
 
             recycler.apply {
 
@@ -213,14 +213,10 @@ class HomeFragment : Fragment() {
             if (x < 10) {
 
                 thisMonth = "$monthOnYear-0$x"
-
             } else {
 
                 thisMonth = "$monthOnYear-$x"
-
             }
-
-//            Util.log(TAG, "this month : $thisMonth")
 
             val data = databaseDao.getDataFinanceMonth(thisMonth)
 
@@ -299,17 +295,6 @@ class HomeFragment : Fragment() {
         total_spend_today.text = Util.numberFormatMoney(totalSpend_int.toString())
         total_income_month.text = Util.numberFormatMoney(totalIncome_int.toString())
 
-
-    }
-
-
-    fun setLocalDatabase() {
-
-        databaseDao = Room.databaseBuilder(requireContext(), Database::class.java, Database.DB_NAME)
-                .allowMainThreadQueries()
-                .fallbackToDestructiveMigration()
-                .build()
-                .spendingDao()
 
     }
 

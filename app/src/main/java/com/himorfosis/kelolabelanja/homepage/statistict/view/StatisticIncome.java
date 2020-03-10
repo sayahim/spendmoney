@@ -65,6 +65,8 @@ public class StatisticIncome extends Fragment {
 
         setViewModelStatistict();
 
+        setShowOnAdapterFinancial();
+
         setDataDateToday();
 
 //        setTablayoutAction(view);

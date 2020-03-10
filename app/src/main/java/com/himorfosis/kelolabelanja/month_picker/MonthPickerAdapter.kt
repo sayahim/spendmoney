@@ -73,7 +73,6 @@ class MonthPickerAdapter(private val context: Context, val adapterCallback: (Str
 
             }
 
-
         }
 
 

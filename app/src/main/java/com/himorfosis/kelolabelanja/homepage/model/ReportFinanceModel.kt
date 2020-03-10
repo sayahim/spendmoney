@@ -1,4 +1,4 @@
-package com.himorfosis.kelolabelanja.homepage.report.model
+package com.himorfosis.kelolabelanja.homepage.model
 
 class ReportFinanceModel (
 

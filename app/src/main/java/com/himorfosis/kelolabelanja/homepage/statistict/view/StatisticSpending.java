@@ -1,27 +1,21 @@
 package com.himorfosis.kelolabelanja.homepage.statistict.view;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.himorfosis.kelolabelanja.R;
-import com.himorfosis.kelolabelanja.homepage.report.model.ReportsSpendingModel;
 import com.himorfosis.kelolabelanja.homepage.statistict.adapter.StatisticChartAdapter;
 import com.himorfosis.kelolabelanja.homepage.statistict.model.ChartModel;
-import com.himorfosis.kelolabelanja.homepage.statistict.model.FinancialProgressStatisticModel;
-import com.himorfosis.kelolabelanja.homepage.statistict.model.StatistictModel;
 import com.himorfosis.kelolabelanja.homepage.statistict.viewmodel.StatistictViewModel;
 import com.himorfosis.kelolabelanja.month_picker.java.MonthPickerJavaViewModel;
 import com.himorfosis.kelolabelanja.utilities.Util;
@@ -30,7 +24,6 @@ import com.himorfosis.kelolabelanja.utilities.UtilJava;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 

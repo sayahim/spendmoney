@@ -31,7 +31,7 @@ class FinancialCategoryAdapter(private val context: Context, val adapterCallback
 
         val getIdSelected = Util.getData("category", "selected", context)
 
-        var data = listData!!.get(position)
+        var data = listData!![position]
 
         // check selected
 

@@ -49,13 +49,16 @@ class InputFinancial : AppCompatActivity() {
 
     // database
     lateinit var databaseDao: DatabaseDao
-    lateinit var typeDataFinancial: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_input_financial)
 
         setToolbar()
+
+        setTabLayout()
+
+        setHandleBackpressed()
 
         setDatabase()
 
@@ -71,7 +74,6 @@ class InputFinancial : AppCompatActivity() {
 
         setNoteLength()
 
-        setTabLayout()
 
     }
 
@@ -156,7 +158,7 @@ class InputFinancial : AppCompatActivity() {
 
                 var noteSize = note_et.text.toString().length
 
-                note_length_tv.setText("$noteSize/50")
+                note_length_tv.text = "$noteSize/50"
 
             }
 
@@ -261,6 +263,7 @@ class InputFinancial : AppCompatActivity() {
             }
 
             getNominal = getNominal.replace(".", "")
+            getNominal = getNominal.replace(",", "")
 
             Util.log(TAG, "id selected $getIdSelected")
             Util.log(TAG, "nominal :$getNominal:")
@@ -289,7 +292,7 @@ class InputFinancial : AppCompatActivity() {
 
                     if (item.id == getIdSelected.toInt()) {
 
-                        insertIntoDatabase(FinancialEntitiy(null, getIdSelected.toInt(), item.name, item.image_category, typeDataFinancial, getNominal, getNote, dateNow, timeNow))
+                        insertIntoDatabase(FinancialEntitiy(null, getIdSelected.toInt(), item.name, item.image_category, getTypeInputData, getNominal, getNote, dateNow, timeNow))
 
                         break
 
@@ -335,6 +338,8 @@ class InputFinancial : AppCompatActivity() {
 
     private fun setDataCategorySpending() {
 
+        getTypeInputData = "spend"
+
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
 
         spend_tv.setTextColor(resources.getColor(R.color.text_blue_dark))
@@ -354,10 +359,6 @@ class InputFinancial : AppCompatActivity() {
 
         hideLayoutInputData()
 
-        Util.saveData("category", "selected", "0", this)
-
-        typeDataFinancial = "spend"
-
         listCategory = Util.getDataCategorySpending()
 
         setAdapterCategory()
@@ -365,6 +366,8 @@ class InputFinancial : AppCompatActivity() {
     }
 
     private fun setDataCategoryIncome() {
+
+        getTypeInputData = "income"
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
 
@@ -382,9 +385,6 @@ class InputFinancial : AppCompatActivity() {
 
         hideLayoutInputData()
 
-        Util.saveData("category", "selected", "0", this)
-
-        typeDataFinancial = "income"
 
         listCategory = Util.getDataCategoryIncome()
 
@@ -402,7 +402,6 @@ class InputFinancial : AppCompatActivity() {
 
         financialCategoryAdapter = FinancialCategoryAdapter(this) { item ->
             actionCallbackAdapter(item)
-
         }
 
         recycler_category.apply {
@@ -469,11 +468,15 @@ class InputFinancial : AppCompatActivity() {
 
     }
 
+    private fun setHandleBackpressed() {
+
+        Util.saveData("category", "selected", "0", this)
+
+    }
+
     override fun onBackPressed() {
 
-        getTypeInputData = "spend"
-
-        if (getTypeInputData == "spend") {
+        if (getTypeInputData == "income") {
 
             setDataCategorySpending()
 
@@ -481,19 +484,19 @@ class InputFinancial : AppCompatActivity() {
 
             val selected = Util.getData("category", "selected", this)
 
-            if (selected == null) {
+            if (selected == "0") {
 
                 startActivity(Intent(this, HomepageActivity::class.java))
 
             } else {
 
+                Util.saveData("category", "selected", "0", this)
+
                 hideLayoutInputData()
-                Util.deleteData("category", this)
 
             }
 
         }
-
 
     }
 

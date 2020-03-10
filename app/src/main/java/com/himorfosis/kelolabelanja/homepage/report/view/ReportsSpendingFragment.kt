@@ -12,8 +12,8 @@ import com.himorfosis.kelolabelanja.database.entity.FinancialEntitiy
 import com.himorfosis.kelolabelanja.database.db.Database
 import com.himorfosis.kelolabelanja.database.db.DatabaseDao
 import com.himorfosis.kelolabelanja.homepage.report.adapter.ReportsSpendingAdapter
-import com.himorfosis.kelolabelanja.homepage.report.model.ReportFinanceModel
-import com.himorfosis.kelolabelanja.homepage.report.repo.ReportsRepo
+import com.himorfosis.kelolabelanja.homepage.model.ReportFinanceModel
+import com.himorfosis.kelolabelanja.homepage.repo.ReportsRepo
 import com.himorfosis.kelolabelanja.month_picker.MonthPickerLiveData
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.reports_spending_fragment.*

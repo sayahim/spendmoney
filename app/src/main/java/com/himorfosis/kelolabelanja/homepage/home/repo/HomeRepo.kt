@@ -7,7 +7,7 @@ import androidx.room.Room
 import com.himorfosis.kelolabelanja.database.db.Database
 import com.himorfosis.kelolabelanja.database.db.DatabaseDao
 import com.himorfosis.kelolabelanja.database.entity.FinancialEntitiy
-import com.himorfosis.kelolabelanja.homepage.home.model.HomeGroupDataModel
+import com.himorfosis.kelolabelanja.model.HomeGroupDataModel
 import com.himorfosis.kelolabelanja.utilities.Util
 import java.util.ArrayList
 
@@ -48,36 +48,48 @@ class HomeRepo {
             val month = Util.getData("picker", "month", context)
             val year = Util.getData("picker", "year", context)
 
-            var monthOnYear = "$year-$month"
+            Util.log(TAG, "date select : $month-$year")
 
-            val dayOfMonth = 32
+//            var monthOnYear = "$year-$month"
+//
+//            val dayOfMonth = 32
 
-            var thisMonth: String
+//            var thisMonth: String
 
-            for (x in 1 until dayOfMonth) {
+//            for (x in 1 until dayOfMonth) {
 
-                if (x < 10) {
-
-                    thisMonth = "$monthOnYear-0$x"
-
-                } else {
-
-                    thisMonth = "$monthOnYear-$x"
-
-                }
+//                if (x < 10) {
+//
+//                    thisMonth = "$monthOnYear-0$x"
+//
+//                } else {
+//
+//                    thisMonth = "$monthOnYear-$x"
+//
+//                }
 
 //            Util.log(TAG, "this month : $thisMonth")
 
-                val data = databaseDao.getDataFinanceMonth(thisMonth)
+//                val data = databaseDao.getDataFinanceMonth(thisMonth)
 
-                if (data.isNotEmpty()) {
+                val dateStart:String = "01-$year-$month"
+                val dateFinish:String = "32-$year-$month"
+
+                val dataDate = databaseDao.getDataFinancialDate(dateStart, dateFinish)
+
+                if (dateStart.isNotEmpty()) {
 
                     var totalSpending = 0
                     var totalIncome = 0
 
-                    for (x in 0 until data.size) {
+//                    for (item in 0 until dataDate.size) {
+//
+//
+//                    }
 
-                        val item = data[x]
+                    for (item in 0 until dataDate.size) {
+
+                        val item = dataDate[item]
 
                         if (item.type == "income") {
 
@@ -91,12 +103,12 @@ class HomeRepo {
 
                     }
 
-                    listDataFinancial.addAll(data)
-                    listPerDayData.add(HomeGroupDataModel(thisMonth, totalSpending, totalIncome, data))
+                    listDataFinancial.addAll(dataDate)
+                    listPerDayData.add(HomeGroupDataModel("$year-$month", totalSpending, totalIncome, dataDate))
 
                 }
 
-            }
+//            }
 
             var totalSpend_int = 0
             var totalIncome_int = 0
@@ -165,13 +177,11 @@ class HomeRepo {
         fun getDataFinancialDatabase(): LiveData<MutableList<HomeGroupDataModel>> {
 
             return dataFinancial
-
         }
 
         fun getTotalIncomeMonth(): LiveData<String> {
 
             return total_income_month
-
         }
 
         fun getTotalSpendMonth(): LiveData<String> {

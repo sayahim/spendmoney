@@ -8,8 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.himorfosis.kelolabelanja.R
 import com.himorfosis.kelolabelanja.homepage.report.adapter.ReportsIncomeAdapter
-import com.himorfosis.kelolabelanja.homepage.report.repo.ReportsRepo
-import com.himorfosis.kelolabelanja.homepage.statistict.model.FinancialProgressStatisticModel
+import com.himorfosis.kelolabelanja.homepage.repo.ReportsRepo
 import com.himorfosis.kelolabelanja.month_picker.MonthPickerLiveData
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.report_income_fragment.*
@@ -18,7 +17,6 @@ import kotlinx.android.synthetic.main.report_income_fragment.recycler_reports
 import kotlinx.android.synthetic.main.report_income_fragment.select_month_click_ll
 import kotlinx.android.synthetic.main.report_income_fragment.status_data_tv
 import kotlinx.android.synthetic.main.report_income_fragment.status_deskripsi_tv
-import kotlinx.android.synthetic.main.reports_spending_fragment.*
 import java.text.SimpleDateFormat
 import java.util.*
 

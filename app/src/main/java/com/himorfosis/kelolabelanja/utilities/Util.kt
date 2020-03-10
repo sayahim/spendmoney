@@ -212,26 +212,6 @@ class Util {
 
         }
 
-        fun getDataListMonth(): MutableList<String> {
-
-            var dataMonth: MutableList<String> = ArrayList<String>()
-            dataMonth.add("Januari")
-            dataMonth.add("Februari")
-            dataMonth.add("Maret")
-            dataMonth.add("April")
-            dataMonth.add("Mei")
-            dataMonth.add("Juni")
-            dataMonth.add("Juli")
-            dataMonth.add("Agustus")
-            dataMonth.add("September")
-            dataMonth.add("Oktober")
-            dataMonth.add("November")
-            dataMonth.add("Desember")
-
-            return dataMonth
-
-        }
-
         fun getDataCategoryIncome(): List<CategoryEntity> {
 
             var data: List<CategoryEntity> = ArrayList<CategoryEntity>()
@@ -256,28 +236,31 @@ class Util {
 
                     CategoryEntity(1, "Makanan", "ic_eat"),
                     CategoryEntity(2, "Belanja", "ic_belanja"),
-                    CategoryEntity(3, "Hiburan", "ic_acoustic_guitar"),
-                    CategoryEntity(4, "Kendaraan", "ic_scooter"),
+                    CategoryEntity(3, "Pakaian", "ic_hanger"),
+                    CategoryEntity(4, "Dapur", "ic_baker"),
 
-                    CategoryEntity(5, "Tiket", "ic_ticket"),
-                    CategoryEntity(6, "Keluarga", "ic_family"),
-                    CategoryEntity(7, "Elektronik", "ic_laptop"),
+                    CategoryEntity(5, "Kendaraan", "ic_scooter"),
+                    CategoryEntity(6, "Rumah", "ic_house"),
+                    CategoryEntity(7, "Kesehatan", "ic_medical"),
                     CategoryEntity(8, "Pendidikan", "ic_toga"),
 
-                    CategoryEntity(9, "Rumah", "ic_house"),
-                    CategoryEntity(10, "Buku", "ic_open_book"),
-                    CategoryEntity(11, "Traveling", "ic_mountains"),
-                    CategoryEntity(12, "Utilitas", "ic_utilities"),
+                    CategoryEntity(9, "Tiket", "ic_ticket"),
+                    CategoryEntity(10, "Rekreasi", "ic_mountains"),
+                    CategoryEntity(11, "Furnitur", "ic_sofa"),
+                    CategoryEntity(12, "Elektronik", "ic_laptop"),
 
-                    CategoryEntity(13, "Kesehatan", "ic_medical"),
+                    CategoryEntity(13, "Sedekah", "ic_payment"),
                     CategoryEntity(14, "Pajak", "ic_tax"),
-                    CategoryEntity(15, "Kopi", "ic_coffee"),
-                    CategoryEntity(16, "Peliharaan", "ic_cat"),
+                    CategoryEntity(15, "Peliharaan", "ic_cat"),
+                    CategoryEntity(16, "Tanaman", "ic_plant"),
 
-                    CategoryEntity(17, "Furnitur", "ic_sofa"),
-                    CategoryEntity(18, "Sumbangan", "ic_payment"),
-                    CategoryEntity(19, "Dapur", "ic_baker"),
-                    CategoryEntity(20, "Tanaman", "ic_plant")
+
+                    CategoryEntity(17, "Utilitas", "ic_utilities"),
+                    CategoryEntity(18, "Keluarga", "ic_family"),
+                    CategoryEntity(19, "Buku", "ic_open_book"),
+                    CategoryEntity(20, "Kopi", "ic_coffee")
+
+//                            CategoryEntity(3, "Hiburan", "ic_acoustic_guitar")
 
             )
 

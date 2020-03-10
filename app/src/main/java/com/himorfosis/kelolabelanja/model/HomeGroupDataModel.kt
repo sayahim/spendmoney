@@ -1,4 +1,4 @@
-package com.himorfosis.kelolabelanja.homepage.home.model
+package com.himorfosis.kelolabelanja.model
 
 import com.himorfosis.kelolabelanja.database.entity.FinancialEntitiy
 

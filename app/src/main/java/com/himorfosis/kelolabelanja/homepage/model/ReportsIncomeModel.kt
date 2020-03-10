@@ -1,4 +1,4 @@
-package com.himorfosis.kelolabelanja.homepage.report.model
+package com.himorfosis.kelolabelanja.homepage.model
 
 data class ReportsIncomeModel (
         var id_category : Int,

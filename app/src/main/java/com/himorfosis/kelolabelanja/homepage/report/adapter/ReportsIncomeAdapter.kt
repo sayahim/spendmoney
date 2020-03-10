@@ -7,8 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.himorfosis.kelolabelanja.R
-import com.himorfosis.kelolabelanja.homepage.report.model.ReportsIncomeModel
-import com.himorfosis.kelolabelanja.homepage.report.model.ReportsSpendingModel
+import com.himorfosis.kelolabelanja.homepage.model.ReportsIncomeModel
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.item_progress_financial.view.*
 import java.util.ArrayList

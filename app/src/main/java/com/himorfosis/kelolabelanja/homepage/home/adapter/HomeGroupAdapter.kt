@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.himorfosis.kelolabelanja.R
-import com.himorfosis.kelolabelanja.homepage.home.model.HomeGroupDataModel
+import com.himorfosis.kelolabelanja.model.HomeGroupDataModel
 import com.himorfosis.kelolabelanja.utilities.Util
 
 class HomeGroupAdapter (var context: Context) : RecyclerView.Adapter<HomeGroupAdapter.ViewHolder>() {

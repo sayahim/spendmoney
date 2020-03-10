@@ -1,4 +1,4 @@
-package com.himorfosis.kelolabelanja.homepage.report.repo
+package com.himorfosis.kelolabelanja.homepage.repo
 
 import android.content.Context
 import androidx.lifecycle.LiveData
@@ -6,8 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.room.Room
 import com.himorfosis.kelolabelanja.database.db.Database
 import com.himorfosis.kelolabelanja.database.db.DatabaseDao
-import com.himorfosis.kelolabelanja.homepage.report.model.ReportsIncomeModel
-import com.himorfosis.kelolabelanja.homepage.report.model.ReportsSpendingModel
+import com.himorfosis.kelolabelanja.homepage.model.ReportsIncomeModel
+import com.himorfosis.kelolabelanja.homepage.model.ReportsSpendingModel
 import com.himorfosis.kelolabelanja.utilities.Util
 import java.util.*
 

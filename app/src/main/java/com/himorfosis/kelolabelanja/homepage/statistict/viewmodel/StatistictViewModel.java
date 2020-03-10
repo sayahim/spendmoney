@@ -3,9 +3,7 @@ package com.himorfosis.kelolabelanja.homepage.statistict.viewmodel;
 import android.content.Context;
 
 import com.github.mikephil.charting.data.PieEntry;
-import com.himorfosis.kelolabelanja.homepage.report.model.ReportsSpendingModel;
 import com.himorfosis.kelolabelanja.homepage.statistict.model.ChartModel;
-import com.himorfosis.kelolabelanja.homepage.statistict.model.StatistictModel;
 
 import java.util.List;
 

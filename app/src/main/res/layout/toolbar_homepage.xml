@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/_20sdp"
         android:layout_gravity="left"
-        android:text="Dashboard"
+        android:text="Start Money"
         android:textSize="18dp"
         android:textColor="@color/text_white"
         android:fontFamily="@font/bold_opensans"/>

@@ -93,26 +93,23 @@ public class MonthPickerJavaAdapter extends RecyclerView.Adapter<MonthPickerJava
 
             }
 
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            holder.itemView.setOnClickListener(v -> {
 
-                    UtilJava.saveData("picker", "year", yearSelected, context);
-                    UtilJava.saveData("picker", "month", monthPosition.toString(), context);
+                UtilJava.saveData("picker", "year", yearSelected, context);
+                UtilJava.saveData("picker", "month", monthPosition.toString(), context);
 
-                    holder.bg_month_ll.setBackgroundResource(R.drawable.circle_gold);
+                holder.bg_month_ll.setBackgroundResource(R.drawable.circle_gold);
 
-                    if (monthPosition < 9) {
+                if (monthPosition < 9) {
 
-                        callback.onItemSelected(yearSelected + "-0" + String.valueOf(monthPosition));
+                    callback.onItemSelected(yearSelected + "-0" + String.valueOf(monthPosition));
 
-                    } else {
+                } else {
 
-                        callback.onItemSelected(yearSelected + "-" + String.valueOf(monthPosition));
-
-                    }
+                    callback.onItemSelected(yearSelected + "-" + String.valueOf(monthPosition));
 
                 }
+
             });
 
         }

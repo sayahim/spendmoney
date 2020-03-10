@@ -110,7 +110,7 @@ class HomepageActivity : AppCompatActivity() {
 
         } else {
 
-            navigation.setSelectedItemId(R.id.nav_home)
+            navigation.selectedItemId = R.id.nav_home
             fragmentActive = 0
 
             val fragment = HomeFragment()
