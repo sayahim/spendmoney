@@ -11,6 +11,7 @@ import com.himorfosis.kelolabelanja.R
 import com.himorfosis.kelolabelanja.database.entity.FinancialEntitiy
 import com.himorfosis.kelolabelanja.database.db.Database
 import com.himorfosis.kelolabelanja.database.db.DatabaseDao
+import com.himorfosis.kelolabelanja.dialog.DialogShow
 import com.himorfosis.kelolabelanja.homepage.report.adapter.ReportsSpendingAdapter
 import com.himorfosis.kelolabelanja.homepage.model.ReportFinanceModel
 import com.himorfosis.kelolabelanja.homepage.repo.ReportsRepo
@@ -67,9 +68,24 @@ class ReportsSpendingFragment : Fragment() {
 
         select_month_click_ll.setOnClickListener {
 
-            setShowMonthPicker()
-
+//            setShowMonthPicker()
+            dialogMonthPicker()
         }
+
+    }
+
+    private fun dialogMonthPicker() {
+
+        val dialog = DialogShow.MonthPicker(context!!)
+        dialog.show(childFragmentManager, "dialog")
+
+        dialog.setOnclick(object: DialogShow.MonthPicker.OnClickItem {
+            override fun onItemClicked(data: Boolean) {
+                if (data) {
+                    // reload data
+                }
+            }
+        })
 
     }
 

@@ -1,5 +1,6 @@
 package com.himorfosis.kelolabelanja.month_picker.adapter
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,11 +15,9 @@ class PickerMonthAdapter : RecyclerView.Adapter<PickerMonthAdapter.ViewHolder>()
 
     private var listData: MutableList<String> = ArrayList()
     lateinit var onClickItem: OnClickItem
-<<<<<<< HEAD:app/src/main/java/com/himorfosis/kelolabelanja/month_picker/PickerMonthAdapter.kt
     private var yearSelected = ""
     private val TAG = "PickerMonthAdapter"
-=======
->>>>>>> development:app/src/main/java/com/himorfosis/kelolabelanja/month_picker/adapter/PickerMonthAdapter.kt
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
@@ -34,63 +33,44 @@ class PickerMonthAdapter : RecyclerView.Adapter<PickerMonthAdapter.ViewHolder>()
 
         val data = listData[position]
 
-        val getMonthSelected = Util.getData("picker", "month", holder.itemView.context)
-<<<<<<< HEAD:app/src/main/java/com/himorfosis/kelolabelanja/month_picker/PickerMonthAdapter.kt
-        val getYearSelected = Util.getData("picker", "year", holder.itemView.context)
-
         holder.month_tv.text = data
 
-        if (getMonthSelected == null) {
+        var monthValue = "0"
 
-            val date = SimpleDateFormat("yyyy-MM-dd")
+        if (position < 10) {
 
-            val dateMonth = SimpleDateFormat("MM")
-            val dateYear = SimpleDateFormat("yyyy")
+            val monthPosition = position + 1
+            monthValue += monthPosition.toString()
 
-            val today = date.format(Date())
-            val yearToday = dateYear.format(Date())
-            val monthToday = dateMonth.format(Date())
+        }
 
-            Util.log(TAG, "today : $today")
-            Util.log(TAG, "year : $yearToday")
-            Util.log(TAG, "month : $monthToday")
+        val getMonthSelected = Util.getData("picker", "month", holder.itemView.context)
+        val getYearSelected = Util.getData("picker", "year", holder.itemView.context)
 
-            val monthPosition = position +1
-            Util.log(TAG, "month potition : $monthPosition")
+        Util.log(TAG, "monthValue $monthValue")
+        Util.log(TAG, "getYearSelected $getMonthSelected")
+
+        if (getMonthSelected == monthValue && yearSelected == getYearSelected) {
+
+            // set background
+            holder.bg_month_ll.setBackgroundResource(R.drawable.circle_gold)
+            holder.month_tv.setTextColor(holder.itemView.context.resources.getColor(R.color.text_black))
 
         } else {
 
-            val monthPosition = position +1
-
-            if (getMonthSelected == monthPosition.toString() && yearSelected == getYearSelected) {
-
-                // set background
-                holder.bg_month_ll.setBackgroundResource(R.drawable.circle_gold)
-                holder.month_tv.setBackgroundResource(R.color.text_black)
-
-            } else {
-
-                // delete background
-                holder.bg_month_ll.setBackgroundResource(0)
-            }
-
-            if (getMonthSelected.toInt() == position+1) {
-                // set background
-                holder.bg_month_ll.setBackgroundResource(R.drawable.circle_gold)
-                holder.month_tv.setBackgroundResource(R.color.text_black)
-
-            }
+            // delete background
+            holder.bg_month_ll.setBackgroundResource(0)
         }
 
-=======
-        val monthPosition = position + 1
 
-//        if (getMonthSelected != null) {
-//
-//            if (getMonthSelected == monthPosition.toString())
-//        }
->>>>>>> development:app/src/main/java/com/himorfosis/kelolabelanja/month_picker/adapter/PickerMonthAdapter.kt
         holder.itemView.setOnClickListener {
+
+            // delete background
+            holder.bg_month_ll.setBackgroundResource(0)
+
+            // set background
+            holder.bg_month_ll.setBackgroundResource(R.drawable.circle_gold)
+            holder.month_tv.setTextColor(holder.itemView.context.resources.getColor(R.color.text_black))
 
             onClickItem.onItemClicked(data)
 

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.himorfosis.kelolabelanja.R
+import com.himorfosis.kelolabelanja.dialog.DialogShow
 import com.himorfosis.kelolabelanja.homepage.report.adapter.ReportsIncomeAdapter
 import com.himorfosis.kelolabelanja.homepage.repo.ReportsRepo
 import com.himorfosis.kelolabelanja.month_picker.MonthPickerLiveData
@@ -56,9 +57,26 @@ class ReportsIncomeFragment : Fragment() {
 
         select_month_click_ll.setOnClickListener {
 
-            setShowMonthPicker()
+//            setShowMonthPicker()
+
+            dialogMonthPicker()
 
         }
+
+    }
+
+    private fun dialogMonthPicker() {
+
+        val dialog = DialogShow.MonthPicker(context!!)
+        dialog.show(childFragmentManager, "dialog")
+
+        dialog.setOnclick(object: DialogShow.MonthPicker.OnClickItem {
+            override fun onItemClicked(data: Boolean) {
+                if (data) {
+                    // reload data
+                }
+            }
+        })
 
     }
 
