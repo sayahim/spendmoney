@@ -1,4 +1,4 @@
-package com.himorfosis.kelolabelanja.month_picker
+package com.himorfosis.kelolabelanja.month_picker.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -14,8 +14,11 @@ class PickerMonthAdapter : RecyclerView.Adapter<PickerMonthAdapter.ViewHolder>()
 
     private var listData: MutableList<String> = ArrayList()
     lateinit var onClickItem: OnClickItem
+<<<<<<< HEAD:app/src/main/java/com/himorfosis/kelolabelanja/month_picker/PickerMonthAdapter.kt
     private var yearSelected = ""
     private val TAG = "PickerMonthAdapter"
+=======
+>>>>>>> development:app/src/main/java/com/himorfosis/kelolabelanja/month_picker/adapter/PickerMonthAdapter.kt
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
@@ -32,6 +35,7 @@ class PickerMonthAdapter : RecyclerView.Adapter<PickerMonthAdapter.ViewHolder>()
         val data = listData[position]
 
         val getMonthSelected = Util.getData("picker", "month", holder.itemView.context)
+<<<<<<< HEAD:app/src/main/java/com/himorfosis/kelolabelanja/month_picker/PickerMonthAdapter.kt
         val getYearSelected = Util.getData("picker", "year", holder.itemView.context)
 
         holder.month_tv.text = data
@@ -78,6 +82,14 @@ class PickerMonthAdapter : RecyclerView.Adapter<PickerMonthAdapter.ViewHolder>()
             }
         }
 
+=======
+        val monthPosition = position + 1
+
+//        if (getMonthSelected != null) {
+//
+//            if (getMonthSelected == monthPosition.toString())
+//        }
+>>>>>>> development:app/src/main/java/com/himorfosis/kelolabelanja/month_picker/adapter/PickerMonthAdapter.kt
         holder.itemView.setOnClickListener {
 
             onClickItem.onItemClicked(data)
