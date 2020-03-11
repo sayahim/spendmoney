@@ -5,14 +5,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.himorfosis.kelolabelanja.R
+import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.item_calendar_month.view.*
-import java.util.ArrayList
+import java.text.SimpleDateFormat
+import java.util.*
 
 class PickerMonthAdapter : RecyclerView.Adapter<PickerMonthAdapter.ViewHolder>() {
 
     private var listData: MutableList<String> = ArrayList()
     lateinit var onClickItem: OnClickItem
-
+    private var yearSelected = ""
+    private val TAG = "PickerMonthAdapter"
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
@@ -27,6 +30,53 @@ class PickerMonthAdapter : RecyclerView.Adapter<PickerMonthAdapter.ViewHolder>()
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val data = listData[position]
+
+        val getMonthSelected = Util.getData("picker", "month", holder.itemView.context)
+        val getYearSelected = Util.getData("picker", "year", holder.itemView.context)
+
+        holder.month_tv.text = data
+
+        if (getMonthSelected == null) {
+
+            val date = SimpleDateFormat("yyyy-MM-dd")
+
+            val dateMonth = SimpleDateFormat("MM")
+            val dateYear = SimpleDateFormat("yyyy")
+
+            val today = date.format(Date())
+            val yearToday = dateYear.format(Date())
+            val monthToday = dateMonth.format(Date())
+
+            Util.log(TAG, "today : $today")
+            Util.log(TAG, "year : $yearToday")
+            Util.log(TAG, "month : $monthToday")
+
+            val monthPosition = position +1
+            Util.log(TAG, "month potition : $monthPosition")
+
+        } else {
+
+            val monthPosition = position +1
+
+            if (getMonthSelected == monthPosition.toString() && yearSelected == getYearSelected) {
+
+                // set background
+                holder.bg_month_ll.setBackgroundResource(R.drawable.circle_gold)
+                holder.month_tv.setBackgroundResource(R.color.text_black)
+
+            } else {
+
+                // delete background
+                holder.bg_month_ll.setBackgroundResource(0)
+            }
+
+            if (getMonthSelected.toInt() == position+1) {
+                // set background
+                holder.bg_month_ll.setBackgroundResource(R.drawable.circle_gold)
+                holder.month_tv.setBackgroundResource(R.color.text_black)
+
+            }
+        }
 
         holder.itemView.setOnClickListener {
 
@@ -51,12 +101,21 @@ class PickerMonthAdapter : RecyclerView.Adapter<PickerMonthAdapter.ViewHolder>()
         notifyItemInserted(listData.size - 1)
     }
 
-    fun addAll(posItems: Array<String>) {
+    fun addAll(posItems: Array<String>, getYear: String) {
         for (response in posItems) {
             add(response)
         }
+
+        yearSelected = getYear
     }
 
+    fun removeListAdapter() {
+
+        listData.clear()
+
+        notifyDataSetChanged()
+
+    }
 
     interface OnClickItem {
         fun onItemClicked(data: String)

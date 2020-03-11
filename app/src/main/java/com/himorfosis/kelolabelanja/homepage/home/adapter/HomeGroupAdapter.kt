@@ -17,7 +17,6 @@ class HomeGroupAdapter (var context: Context) : RecyclerView.Adapter<HomeGroupAd
     private var listReportFinancial: MutableList<HomeGroupDataModel> = ArrayList()
     private lateinit var adapterReports: HomeAdapter
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeGroupAdapter.ViewHolder {
         val v = LayoutInflater.from(context).inflate(R.layout.item_group_home, parent, false)
         return ViewHolder(v)
@@ -25,11 +24,13 @@ class HomeGroupAdapter (var context: Context) : RecyclerView.Adapter<HomeGroupAd
     }
 
     //this method is binding the data on the list
-    override fun onBindViewHolder(holder: HomeGroupAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         var data = listReportFinancial[position]
 
         if (data != null) {
+
+            Util.log(TAG, "date : " + data.date)
 
             holder.day_date.text = Util.convertDateSpecific(data.date)
 
@@ -91,9 +92,7 @@ class HomeGroupAdapter (var context: Context) : RecyclerView.Adapter<HomeGroupAd
 
     fun addAll(posItems: List<HomeGroupDataModel>) {
         for (response in posItems) {
-
             add(response)
-
         }
     }
 

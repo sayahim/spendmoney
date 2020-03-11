@@ -12,6 +12,7 @@ import com.himorfosis.kelolabelanja.R
 import com.himorfosis.kelolabelanja.database.db.DatabaseDao
 import com.himorfosis.kelolabelanja.database.db.Database
 import com.himorfosis.kelolabelanja.database.entity.FinancialEntitiy
+import com.himorfosis.kelolabelanja.dialog.DialogShow
 import com.himorfosis.kelolabelanja.financial.InputFinancial
 import com.himorfosis.kelolabelanja.homepage.home.adapter.HomeGroupAdapter
 import com.himorfosis.kelolabelanja.model.HomeGroupDataModel
@@ -75,7 +76,10 @@ class HomeFragment : Fragment() {
 
         select_month_click_ll.setOnClickListener {
 
-            setShowMonthPicker()
+            //            setShowMonthPicker()
+
+            val dialog = DialogShow.MonthPicker(context!!)
+            dialog.show(childFragmentManager, "dialog")
 
         }
 
@@ -109,16 +113,26 @@ class HomeFragment : Fragment() {
 
             recycler.apply {
 
-                // sorted list
-                var sortedListDescending = listPerDayData.sortedWith(compareByDescending { it.date })
+                layoutManager = LinearLayoutManager(requireContext())
+                setHasFixedSize(true)
+                adapter = adapterReportsGroup
+            }
+
+            // sorted list
+            var sortedListDescending = listPerDayData.sortedWith(compareByDescending { it.date })
+
+            if (sortedListDescending.isNotEmpty()) {
 
                 // add data in adapter
                 adapterReportsGroup.addAll(sortedListDescending)
 
-                layoutManager = LinearLayoutManager(requireContext())
-                setHasFixedSize(true)
-                adapter = adapterReportsGroup
+            } else {
 
+                status_tv.text = "Tidak Ada Transaksi"
+                status_deskripsi_tv.text = "Ketuk + Tambah untuk menambakan transaksi"
+
+                status_tv.visibility = View.VISIBLE
+                status_deskripsi_tv.visibility = View.VISIBLE
             }
 
         }
@@ -194,8 +208,8 @@ class HomeFragment : Fragment() {
 
     private fun getAllDataSelectedMonth() {
 
-        val month = Util.getData("picker", "month",  requireContext())
-        val year = Util.getData("picker", "year",  requireContext())
+        val month = Util.getData("picker", "month", requireContext())
+        val year = Util.getData("picker", "year", requireContext())
 
         Util.log(TAG, "month selected : $month")
 
@@ -206,7 +220,7 @@ class HomeFragment : Fragment() {
 
         val dayOfMonth = 32
 
-        var thisMonth : String
+        var thisMonth: String
 
         for (x in 1 until dayOfMonth) {
 
@@ -259,7 +273,7 @@ class HomeFragment : Fragment() {
             status_tv.visibility = View.VISIBLE
             status_deskripsi_tv.visibility = View.VISIBLE
 
-        } else{
+        } else {
 
             status_tv.visibility = View.INVISIBLE
             status_deskripsi_tv.visibility = View.INVISIBLE
@@ -302,7 +316,7 @@ class HomeFragment : Fragment() {
 
         MonthPickerLiveData.setMonthPicker(requireContext())
 
-        MonthPickerLiveData.getDataMonthPicker().observe(this, androidx.lifecycle.Observer{ monthPicker ->
+        MonthPickerLiveData.getDataMonthPicker().observe(this, androidx.lifecycle.Observer { monthPicker ->
 
             Util.log(TAG, "month picker : $monthPicker")
 

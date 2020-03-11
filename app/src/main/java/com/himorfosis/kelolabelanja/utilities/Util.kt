@@ -171,28 +171,34 @@ class Util {
 
             var nameDateFinal = "-"
 
-            if (date.equals(getDateToday)) {
-
-                nameDateFinal = "Hari Ini"
-
-            } else {
-
-                val cal = Calendar.getInstance()
-                val monthArray = arrayOf("", "Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des")
-
-                val dateMonth = date.substring(date.indexOf("-") + 1)
-                val tanggal = dateMonth.substring(dateMonth.lastIndexOf("-") + 1)
-                val bulan = dateMonth.substring(0, dateMonth.indexOf("-"))
-                val tahun = date.substring(0, date.indexOf("-"))
+            try {
 
 
-                val intDay = cal.get(Calendar.DAY_OF_WEEK)
-                val intMonth = Integer.parseInt(bulan)
-                val nameMonth = monthArray[intMonth]
+                if (date.equals(getDateToday)) {
 
-                nameDateFinal = "$tanggal $nameMonth $tahun"
+                    nameDateFinal = "Hari Ini"
+
+                } else {
+
+                    val cal = Calendar.getInstance()
+                    val monthArray = arrayOf("", "Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des")
+
+                    val dateMonth = date.substring(date.indexOf("-") + 1)
+                    val tanggal = dateMonth.substring(dateMonth.lastIndexOf("-") + 1)
+                    val bulan = dateMonth.substring(0, dateMonth.indexOf("-"))
+                    val tahun = date.substring(0, date.indexOf("-"))
+
+                    val intDay = cal.get(Calendar.DAY_OF_WEEK)
+                    val intMonth = Integer.parseInt(bulan)
+                    val nameMonth = monthArray[intMonth]
+
+                    nameDateFinal = "$tanggal $nameMonth $tahun"
+
+                }
 
 
+            } catch (e: Exception) {
+                log("convertDateSpecific", "message : $e.message")
             }
 
             return nameDateFinal
