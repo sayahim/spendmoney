@@ -31,6 +31,8 @@ class HomeGroupAdapter (var context: Context) : RecyclerView.Adapter<HomeGroupAd
 
         if (data != null) {
 
+            Util.log(TAG, "date : ${data.date}")
+
             holder.day_date.text = Util.convertDateSpecific(data.date)
 
             if (data.totalSpending != 0) {

@@ -1,10 +1,11 @@
-package com.himorfosis.kelolabelanja.month_picker
+package com.himorfosis.kelolabelanja.month_picker.adapter
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.himorfosis.kelolabelanja.R
+import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.item_calendar_month.view.*
 import java.util.ArrayList
 
@@ -12,7 +13,6 @@ class PickerMonthAdapter : RecyclerView.Adapter<PickerMonthAdapter.ViewHolder>()
 
     private var listData: MutableList<String> = ArrayList()
     lateinit var onClickItem: OnClickItem
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
@@ -28,6 +28,13 @@ class PickerMonthAdapter : RecyclerView.Adapter<PickerMonthAdapter.ViewHolder>()
 
         val data = listData[position]
 
+        val getMonthSelected = Util.getData("picker", "month", holder.itemView.context)
+        val monthPosition = position + 1
+
+//        if (getMonthSelected != null) {
+//
+//            if (getMonthSelected == monthPosition.toString())
+//        }
         holder.itemView.setOnClickListener {
 
             onClickItem.onItemClicked(data)

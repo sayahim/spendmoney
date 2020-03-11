@@ -14,7 +14,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.himorfosis.kelolabelanja.R
-import com.himorfosis.kelolabelanja.month_picker.PickerMonthAdapter
+import com.himorfosis.kelolabelanja.month_picker.adapter.PickerMonthAdapter
 import com.himorfosis.kelolabelanja.utilities.Util
 
 class DialogShow {
@@ -111,7 +111,7 @@ class DialogShow {
 
             adapterPicker.addAll(resources.getStringArray(R.array.month_list))
 
-            adapterPicker.setOnclick(object :PickerMonthAdapter.OnClickItem{
+            adapterPicker.setOnclick(object : PickerMonthAdapter.OnClickItem{
                 override fun onItemClicked(data: String) {
 
                 }
