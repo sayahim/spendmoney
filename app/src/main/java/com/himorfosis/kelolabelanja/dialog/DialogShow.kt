@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.himorfosis.kelolabelanja.R
 import com.himorfosis.kelolabelanja.month_picker.MonthPickerLiveData.Companion.TAG
-import com.himorfosis.kelolabelanja.month_picker.PickerMonthAdapter
+import com.himorfosis.kelolabelanja.month_picker.adapter.PickerMonthAdapter
 import com.himorfosis.kelolabelanja.utilities.Util
 
 class DialogShow {
@@ -92,6 +92,7 @@ class DialogShow {
     class MonthPicker(internal var context: Context) : DialogFragment() {
 
         val adapterPicker = PickerMonthAdapter()
+        lateinit var onClickItem: OnClickItem
 
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
             return inflater.inflate(R.layout.calendar_month_picker, container)
@@ -124,8 +125,6 @@ class DialogShow {
 
             }
 
-            Util.log(TAG, "year selected : $getYearSelected")
-
             previousYear.setOnClickListener {
 
                 yearSelected -= 1
@@ -142,7 +141,6 @@ class DialogShow {
                 yearSelected_tv.text = yearSelected.toString()
                 refreshDataPicker(yearSelected.toString())
 
-
             }
 
             recyclerView.apply {
@@ -153,10 +151,17 @@ class DialogShow {
                 adapter = adapterPicker
             }
 
-            adapterPicker.addAll(resources.getStringArray(R.array.month_list), "2019")
+            adapterPicker.addAll(resources.getStringArray(R.array.month_list), getYearSelected)
 
             adapterPicker.setOnclick(object : PickerMonthAdapter.OnClickItem {
                 override fun onItemClicked(data: String) {
+
+                    Util.saveData("picker", "month", data, context)
+                    Util.saveData("picker", "year", yearSelected.toString(), context)
+
+                    dismiss()
+
+                    onClickItem.onItemClicked(true)
 
                 }
             })
@@ -171,6 +176,16 @@ class DialogShow {
 
             // refresh adapter
             adapterPicker.addAll(resources.getStringArray(R.array.month_list), yearSelected)
+        }
+
+        interface OnClickItem {
+            fun onItemClicked(data: Boolean)
+
+        }
+
+        fun setOnclick(onClickItem: OnClickItem) {
+            this.onClickItem = onClickItem
+
         }
 
     }

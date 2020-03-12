@@ -6,6 +6,9 @@ import android.os.Bundle
 import android.os.Handler
 import com.himorfosis.kelolabelanja.homepage.activity.HomepageActivity
 import com.himorfosis.kelolabelanja.utilities.Util
+import kotlinx.android.synthetic.main.home_fragment.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class SplashScreen : AppCompatActivity() {
 
@@ -16,7 +19,7 @@ class SplashScreen : AppCompatActivity() {
         Handler().postDelayed(object : Thread() {
             override fun run() {
 
-                deleteCachePicker()
+                setDataDateToday()
                 startActivity(Intent(this@SplashScreen, HomepageActivity::class.java))
             }
 
@@ -24,9 +27,20 @@ class SplashScreen : AppCompatActivity() {
 
     }
 
-    private fun deleteCachePicker() {
+    private fun setDataDateToday() {
 
-        Util.deleteData("picker", this@SplashScreen)
+        val date = SimpleDateFormat("yyyy-MM-dd")
+
+        val dateMonth = SimpleDateFormat("MM")
+        val dateYear = SimpleDateFormat("yyyy")
+
+        val today = date.format(Date())
+        val yearToday = dateYear.format(Date())
+        val monthToday = dateMonth.format(Date())
+
+        Util.saveData("picker", "month", monthToday, this)
+        Util.saveData("picker", "year", yearToday, this)
+
     }
 
 }

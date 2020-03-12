@@ -57,10 +57,9 @@ class HomeFragment : Fragment() {
 
         setDataDateToday()
 
-        getDataMonthSelected()
+//        getDataMonthSelected()
 
 //        getAllDataSelectedMonth()
-
 
 //        setCategoryDB()
 
@@ -78,45 +77,30 @@ class HomeFragment : Fragment() {
 
             //            setShowMonthPicker()
 
-            val dialog = DialogShow.MonthPicker(context!!)
-            dialog.show(childFragmentManager, "dialog")
+            dialogMonthPicker()
 
         }
 
     }
 
-    private fun setDataDateToday() {
+    private fun dialogMonthPicker() {
 
-        val date = SimpleDateFormat("yyyy-MM-dd")
+        val dialog = DialogShow.MonthPicker(context!!)
+        dialog.show(childFragmentManager, "dialog")
 
-        val dateMonth = SimpleDateFormat("MM")
-        val dateYear = SimpleDateFormat("yyyy")
-
-        val today = date.format(Date())
-        val yearToday = dateYear.format(Date())
-        val monthToday = dateMonth.format(Date())
-
-        Util.saveData("picker", "month", monthToday, requireContext())
-        Util.saveData("picker", "year", yearToday, requireContext())
-
-        val thisMonth = Util.convertCalendarMonth(today)
-
-        month_selected_tv.text = thisMonth
+        dialog.setOnclick(object: DialogShow.MonthPicker.OnClickItem {
+            override fun onItemClicked(data: Boolean) {
+                if (data) {
+                    // reload data
+                }
+            }
+        })
 
     }
 
-    private fun setAdapterGroup() {
+    private fun fetchFinancialsData() {
 
-        adapterReportsGroup = HomeGroupAdapter(requireContext())
-
-        if (listPerDayData.size != 0) {
-
-            recycler.apply {
-
-                layoutManager = LinearLayoutManager(requireContext())
-                setHasFixedSize(true)
-                adapter = adapterReportsGroup
-            }
+        if (listPerDayData.isNotEmpty()) {
 
             // sorted list
             var sortedListDescending = listPerDayData.sortedWith(compareByDescending { it.date })
@@ -135,7 +119,46 @@ class HomeFragment : Fragment() {
                 status_deskripsi_tv.visibility = View.VISIBLE
             }
 
+        } else {
+
+            status_tv.text = "Tidak Ada Transaksi"
+            status_deskripsi_tv.text = "Ketuk + Tambah untuk menambakan transaksi"
+
+            status_tv.visibility = View.VISIBLE
+            status_deskripsi_tv.visibility = View.VISIBLE
         }
+    }
+
+    private fun setDataDateToday() {
+
+        val date = SimpleDateFormat("yyyy-MM-dd")
+
+        val dateMonth = SimpleDateFormat("MM")
+        val dateYear = SimpleDateFormat("yyyy")
+
+        val today = date.format(Date())
+        val yearToday = dateYear.format(Date())
+        val monthToday = dateMonth.format(Date())
+
+//        Util.saveData("picker", "month", monthToday, requireContext())
+//        Util.saveData("picker", "year", yearToday, requireContext())
+
+        val thisMonth = Util.convertCalendarMonth(today)
+
+        month_selected_tv.text = thisMonth
+
+    }
+
+    private fun setAdapterGroup() {
+
+        adapterReportsGroup = HomeGroupAdapter(requireContext())
+        recycler.apply {
+
+            layoutManager = LinearLayoutManager(requireContext())
+            setHasFixedSize(true)
+            adapter = adapterReportsGroup
+        }
+
     }
 
     private fun getDataMonthSelected() {
@@ -326,7 +349,7 @@ class HomeFragment : Fragment() {
                 val dateYear = SimpleDateFormat("yyyy")
                 val year = dateYear.format(Date())
 
-                if (getYearSelected.equals(year)) {
+                if (getYearSelected == year) {
 
                     val thisMonth = Util.convertCalendarMonth("$monthPicker-01")
                     month_selected_tv.text = thisMonth

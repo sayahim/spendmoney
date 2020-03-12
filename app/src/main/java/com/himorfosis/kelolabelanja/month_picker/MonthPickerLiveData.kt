@@ -51,7 +51,6 @@ class MonthPickerLiveData {
                 dateSelected.value = item
 
                 dialogView.dismiss()
-
             }
 
             recyclerView.apply {

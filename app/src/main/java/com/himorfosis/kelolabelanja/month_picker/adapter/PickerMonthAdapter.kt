@@ -1,5 +1,6 @@
-package com.himorfosis.kelolabelanja.month_picker
+package com.himorfosis.kelolabelanja.month_picker.adapter
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ class PickerMonthAdapter : RecyclerView.Adapter<PickerMonthAdapter.ViewHolder>()
     private var yearSelected = ""
     private val TAG = "PickerMonthAdapter"
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         val v = LayoutInflater.from(parent.context).inflate(R.layout.item_calendar_month, parent, false)
@@ -31,54 +33,44 @@ class PickerMonthAdapter : RecyclerView.Adapter<PickerMonthAdapter.ViewHolder>()
 
         val data = listData[position]
 
+        holder.month_tv.text = data
+
+        var monthValue = "0"
+
+        if (position < 10) {
+
+            val monthPosition = position + 1
+            monthValue += monthPosition.toString()
+
+        }
+
         val getMonthSelected = Util.getData("picker", "month", holder.itemView.context)
         val getYearSelected = Util.getData("picker", "year", holder.itemView.context)
 
-        holder.month_tv.text = data
+        Util.log(TAG, "monthValue $monthValue")
+        Util.log(TAG, "getYearSelected $getMonthSelected")
 
-        if (getMonthSelected == null) {
+        if (getMonthSelected == monthValue && yearSelected == getYearSelected) {
 
-            val date = SimpleDateFormat("yyyy-MM-dd")
-
-            val dateMonth = SimpleDateFormat("MM")
-            val dateYear = SimpleDateFormat("yyyy")
-
-            val today = date.format(Date())
-            val yearToday = dateYear.format(Date())
-            val monthToday = dateMonth.format(Date())
-
-            Util.log(TAG, "today : $today")
-            Util.log(TAG, "year : $yearToday")
-            Util.log(TAG, "month : $monthToday")
-
-            val monthPosition = position +1
-            Util.log(TAG, "month potition : $monthPosition")
+            // set background
+            holder.bg_month_ll.setBackgroundResource(R.drawable.circle_gold)
+            holder.month_tv.setTextColor(holder.itemView.context.resources.getColor(R.color.text_black))
 
         } else {
 
-            val monthPosition = position +1
-
-            if (getMonthSelected == monthPosition.toString() && yearSelected == getYearSelected) {
-
-                // set background
-                holder.bg_month_ll.setBackgroundResource(R.drawable.circle_gold)
-                holder.month_tv.setBackgroundResource(R.color.text_black)
-
-            } else {
-
-                // delete background
-                holder.bg_month_ll.setBackgroundResource(0)
-            }
-
-            if (getMonthSelected.toInt() == position+1) {
-                // set background
-                holder.bg_month_ll.setBackgroundResource(R.drawable.circle_gold)
-                holder.month_tv.setBackgroundResource(R.color.text_black)
-
-            }
+            // delete background
+            holder.bg_month_ll.setBackgroundResource(0)
         }
 
+
         holder.itemView.setOnClickListener {
+
+            // delete background
+            holder.bg_month_ll.setBackgroundResource(0)
+
+            // set background
+            holder.bg_month_ll.setBackgroundResource(R.drawable.circle_gold)
+            holder.month_tv.setTextColor(holder.itemView.context.resources.getColor(R.color.text_black))
 
             onClickItem.onItemClicked(data)
 
