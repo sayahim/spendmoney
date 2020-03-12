@@ -17,7 +17,8 @@ import com.himorfosis.kelolabelanja.R;
 import com.himorfosis.kelolabelanja.homepage.statistict.adapter.StatisticChartAdapter;
 import com.himorfosis.kelolabelanja.homepage.statistict.model.ChartModel;
 import com.himorfosis.kelolabelanja.homepage.statistict.viewmodel.StatistictViewModel;
-import com.himorfosis.kelolabelanja.month_picker.java.MonthPickerJavaViewModel;
+import com.himorfosis.kelolabelanja.month_picker.DialogMonthPicker;
+import com.himorfosis.kelolabelanja.utilities.DateSet;
 import com.himorfosis.kelolabelanja.utilities.Util;
 import com.himorfosis.kelolabelanja.utilities.UtilJava;
 
@@ -62,17 +63,19 @@ public class StatisticSpending extends Fragment {
 
         setID(view);
 
-        setDataDateToday();
+        month_selected_tv.setText(DateSet.getMonthSelected(requireContext()));
+
+//        setDataDateToday();
+
+//        getMonthSelected();
 
         getDataSpendingReport();
 
-        selectMonthClick_ll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        selectMonthClick_ll.setOnClickListener(v -> {
 
-                setShowMonthPicker();
+//                setShowMonthPicker();
+            dialogMonthPicker();
 
-            }
         });
 
     }
@@ -90,6 +93,41 @@ public class StatisticSpending extends Fragment {
         statistictViewModel = ViewModelProviders.of(this).get(StatistictViewModel.class);
 
     }
+
+    private void getMonthSelected() {
+
+        String monthSelected = Util.getData("picker", "month", requireContext());
+        month_selected_tv.setText(Util.convertMonthName(monthSelected));
+    }
+
+    private void dialogMonthPicker() {
+
+        DialogMonthPicker dialog = new DialogMonthPicker(getContext());
+        dialog.show(getChildFragmentManager(), "dialog");
+
+        dialog.setOnclick(data -> {
+            String getYearSelected = Util.getData("picker", "year", requireContext());
+            String getMonthSelected = Util.getData("picker", "month", requireContext());
+            SimpleDateFormat dateYear = new SimpleDateFormat("yyyy");
+            String year = dateYear.format(new Date());
+
+            Util.log(TAG, "get month : $getMonthSelected");
+            Util.log(TAG, "get year : $getYearSelected");
+
+            // show data
+            if (getYearSelected.equals(year)) {
+                String thisMonth = Util.convertMonthName(getMonthSelected);
+                month_selected_tv.setText(thisMonth);
+            } else {
+                String thisMonth = Util.convertMonthName(getMonthSelected);
+                month_selected_tv.setText(thisMonth + " " + getYearSelected);
+            }
+
+            // reload data
+        });
+
+    }
+
 
     private void getDataSpendingReport() {
 
@@ -173,48 +211,48 @@ public class StatisticSpending extends Fragment {
 
     }
 
-    private void setShowMonthPicker() {
-
-        MonthPickerJavaViewModel data = new MonthPickerJavaViewModel();
-
-        data.setDataMonth(getContext());
-
-        data.getDataMonth().observe(getActivity(), monthPicker -> {
-
-            if (monthPicker != null) {
-
-                UtilJava.log(TAG, "callback : " + monthPicker);
-
-                String getYearSelected = UtilJava.getData("picker", "year", getContext());
-
-                SimpleDateFormat date = new SimpleDateFormat("yyyy");
-
-                String year = date.format(new Date());
-
-
-                if (getYearSelected.equals(year)) {
-
-                    month_selected_tv.setText(UtilJava.convertCalendarMonth(monthPicker + "-0-1"));
-
-                } else {
-
-                    String thisMonth = UtilJava.convertCalendarMonth(monthPicker + "-0-1");
-                    month_selected_tv.setText(thisMonth + getYearSelected);
-
-                }
-
-                // remove data adapter
-                adapterFinancial.removeAdapter();
-
-                // get data month on year selected
-                getDataSpendingReport();
-
-
-            }
-
-        });
-
-    }
+//    private void setShowMonthPicker() {
+//
+//        MonthPickerJavaViewModel data = new MonthPickerJavaViewModel();
+//
+//        data.setDataMonth(getContext());
+//
+//        data.getDataMonth().observe(getActivity(), monthPicker -> {
+//
+//            if (monthPicker != null) {
+//
+//                UtilJava.log(TAG, "callback : " + monthPicker);
+//
+//                String getYearSelected = UtilJava.getData("picker", "year", getContext());
+//
+//                SimpleDateFormat date = new SimpleDateFormat("yyyy");
+//
+//                String year = date.format(new Date());
+//
+//
+//                if (getYearSelected.equals(year)) {
+//
+//                    month_selected_tv.setText(UtilJava.convertCalendarMonth(monthPicker + "-0-1"));
+//
+//                } else {
+//
+//                    String thisMonth = UtilJava.convertCalendarMonth(monthPicker + "-0-1");
+//                    month_selected_tv.setText(thisMonth + getYearSelected);
+//
+//                }
+//
+//                // remove data adapter
+//                adapterFinancial.removeAdapter();
+//
+//                // get data month on year selected
+//                getDataSpendingReport();
+//
+//
+//            }
+//
+//        });
+//
+//    }
 
     private void setPieChart() {
 

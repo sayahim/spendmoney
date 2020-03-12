@@ -72,7 +72,21 @@ class PickerMonthAdapter : RecyclerView.Adapter<PickerMonthAdapter.ViewHolder>()
             holder.bg_month_ll.setBackgroundResource(R.drawable.circle_gold)
             holder.month_tv.setTextColor(holder.itemView.context.resources.getColor(R.color.text_black))
 
-            onClickItem.onItemClicked(data)
+            Util.log(TAG, "data click : " + data)
+            Util.log(TAG, "position : " + position)
+
+            var monthValue = "0"
+
+            if (position < 10) {
+
+                val monthPosition = position + 1
+                monthValue += monthPosition.toString()
+            } else {
+                val monthPosition = position + 1
+                monthValue = monthPosition.toString()
+            }
+
+            onClickItem.onItemClicked(monthValue)
 
         }
 

@@ -7,19 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.room.Room
 import com.himorfosis.kelolabelanja.R
 import com.himorfosis.kelolabelanja.database.db.DatabaseDao
-import com.himorfosis.kelolabelanja.database.db.Database
 import com.himorfosis.kelolabelanja.database.entity.FinancialEntitiy
-import com.himorfosis.kelolabelanja.dialog.DialogShow
 import com.himorfosis.kelolabelanja.financial.InputFinancial
 import com.himorfosis.kelolabelanja.homepage.home.adapter.HomeGroupAdapter
 import com.himorfosis.kelolabelanja.model.HomeGroupDataModel
 import com.himorfosis.kelolabelanja.homepage.home.repo.HomeRepo
+import com.himorfosis.kelolabelanja.month_picker.DialogMonthPicker
 import com.himorfosis.kelolabelanja.month_picker.MonthPickerLiveData
+import com.himorfosis.kelolabelanja.utilities.DateSet
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.home_fragment.*
+import kotlinx.android.synthetic.main.home_fragment.month_selected_tv
+import kotlinx.android.synthetic.main.home_fragment.select_month_click_ll
+import kotlinx.android.synthetic.main.home_fragment.status_deskripsi_tv
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -55,9 +57,11 @@ class HomeFragment : Fragment() {
 
         setAdapterGroup()
 
-        setDataDateToday()
+        month_selected_tv.text = DateSet.getMonthSelected(requireContext())
 
-//        getDataMonthSelected()
+//        setDataDateToday()
+
+        getDataMonthSelected()
 
 //        getAllDataSelectedMonth()
 
@@ -85,13 +89,33 @@ class HomeFragment : Fragment() {
 
     private fun dialogMonthPicker() {
 
-        val dialog = DialogShow.MonthPicker(context!!)
+        val dialog = DialogMonthPicker(context!!)
         dialog.show(childFragmentManager, "dialog")
 
-        dialog.setOnclick(object: DialogShow.MonthPicker.OnClickItem {
+        dialog.setOnclick(object: DialogMonthPicker.OnClickItem {
             override fun onItemClicked(data: Boolean) {
                 if (data) {
+
+                    val getYearSelected = Util.getData("picker", "year", requireContext())
+                    val getMonthSelected = Util.getData("picker", "month", requireContext())
+                    val dateYear = SimpleDateFormat("yyyy")
+                    val year = dateYear.format(Date())
+
+                    Util.log(TAG, "get month : $getMonthSelected")
+                    Util.log(TAG, "get year : $getYearSelected")
+
+                    // show data
+                    if (getYearSelected == year) {
+                        val thisMonth = Util.convertMonthName(getMonthSelected)
+                        month_selected_tv.text = thisMonth
+                    } else {
+                        val thisMonth = Util.convertMonthName(getMonthSelected)
+                        month_selected_tv.text = "$thisMonth  $getYearSelected"
+                    }
+
                     // reload data
+                    getDataMonthSelected()
+
                 }
             }
         })
@@ -129,26 +153,6 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun setDataDateToday() {
-
-        val date = SimpleDateFormat("yyyy-MM-dd")
-
-        val dateMonth = SimpleDateFormat("MM")
-        val dateYear = SimpleDateFormat("yyyy")
-
-        val today = date.format(Date())
-        val yearToday = dateYear.format(Date())
-        val monthToday = dateMonth.format(Date())
-
-//        Util.saveData("picker", "month", monthToday, requireContext())
-//        Util.saveData("picker", "year", yearToday, requireContext())
-
-        val thisMonth = Util.convertCalendarMonth(today)
-
-        month_selected_tv.text = thisMonth
-
-    }
-
     private fun setAdapterGroup() {
 
         adapterReportsGroup = HomeGroupAdapter(requireContext())
@@ -176,9 +180,10 @@ class HomeFragment : Fragment() {
                 status_tv.visibility = View.INVISIBLE
                 status_deskripsi_tv.visibility = View.INVISIBLE
 
-                listPerDayData = response
+//                listPerDayData = response
 
-                setAdapterGroup()
+                adapterReportsGroup.removeListAdapter()
+                adapterReportsGroup.addAll(response)
 
             } else {
 
@@ -351,12 +356,12 @@ class HomeFragment : Fragment() {
 
                 if (getYearSelected == year) {
 
-                    val thisMonth = Util.convertCalendarMonth("$monthPicker-01")
+                    val thisMonth = Util.convertMonthName(monthPicker)
                     month_selected_tv.text = thisMonth
 
                 } else {
 
-                    val thisMonth = Util.convertCalendarMonth("$monthPicker-01")
+                    val thisMonth = Util.convertMonthName(monthPicker)
                     month_selected_tv.text = "$thisMonth  $getYearSelected"
 
                 }

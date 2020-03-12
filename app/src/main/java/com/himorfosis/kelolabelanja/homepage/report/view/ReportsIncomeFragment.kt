@@ -7,10 +7,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.himorfosis.kelolabelanja.R
-import com.himorfosis.kelolabelanja.dialog.DialogShow
 import com.himorfosis.kelolabelanja.homepage.report.adapter.ReportsIncomeAdapter
 import com.himorfosis.kelolabelanja.homepage.repo.ReportsRepo
+import com.himorfosis.kelolabelanja.month_picker.DialogMonthPicker
 import com.himorfosis.kelolabelanja.month_picker.MonthPickerLiveData
+import com.himorfosis.kelolabelanja.utilities.DateSet
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.report_income_fragment.*
 import kotlinx.android.synthetic.main.report_income_fragment.month_selected_tv
@@ -47,7 +48,9 @@ class ReportsIncomeFragment : Fragment() {
 
         setActionClick()
 
-        setDataDateToday()
+        month_selected_tv.text = DateSet.getMonthSelected(requireContext())
+
+//        setDataDateToday()
 
         getDataSelectedRepo()
 
@@ -67,13 +70,32 @@ class ReportsIncomeFragment : Fragment() {
 
     private fun dialogMonthPicker() {
 
-        val dialog = DialogShow.MonthPicker(context!!)
+        val dialog = DialogMonthPicker(context!!)
         dialog.show(childFragmentManager, "dialog")
 
-        dialog.setOnclick(object: DialogShow.MonthPicker.OnClickItem {
+        dialog.setOnclick(object: DialogMonthPicker.OnClickItem {
             override fun onItemClicked(data: Boolean) {
                 if (data) {
+
+                    val getYearSelected = Util.getData("picker", "year", requireContext())
+                    val getMonthSelected = Util.getData("picker", "month", requireContext())
+                    val dateYear = SimpleDateFormat("yyyy")
+                    val year = dateYear.format(Date())
+
+                    Util.log(TAG, "get month : $getMonthSelected")
+                    Util.log(TAG, "get year : $getYearSelected")
+
+                    // show data
+                    if (getYearSelected == year) {
+                        val thisMonth = Util.convertMonthName(getMonthSelected)
+                        month_selected_tv.text = thisMonth
+                    } else {
+                        val thisMonth = Util.convertMonthName(getMonthSelected)
+                        month_selected_tv.text = "$thisMonth  $getYearSelected"
+                    }
+
                     // reload data
+
                 }
             }
         })

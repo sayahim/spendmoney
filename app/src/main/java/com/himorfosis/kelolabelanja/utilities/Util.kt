@@ -205,6 +205,22 @@ class Util {
 
         }
 
+        @JvmStatic fun convertMonthName(month: String) :String {
+
+            val monthArray = arrayOf("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember")
+
+            var intMonth:Int
+
+            if (month[0].equals("0")) {
+                val monthValue = month.replaceBefore("0", "")
+                intMonth = Integer.parseInt(monthValue)
+            } else {
+                intMonth = Integer.parseInt(month)
+            }
+            return monthArray[intMonth]
+
+        }
+
         @JvmStatic fun convertCalendarMonth(month: String): String {
 
             val monthArray = arrayOf("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember")

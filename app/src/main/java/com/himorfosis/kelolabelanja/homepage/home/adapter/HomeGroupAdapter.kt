@@ -109,12 +109,13 @@ class HomeGroupAdapter (var context: Context) : RecyclerView.Adapter<HomeGroupAd
 
     fun removeListAdapter() {
 
-        listData.clear()
-        notifyDataSetChanged()
+        if (listData.isNotEmpty()) {
+
+            listData.clear()
+            notifyDataSetChanged()
+        }
 
     }
-
-
 
 
 }

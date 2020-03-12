@@ -11,13 +11,19 @@ import com.himorfosis.kelolabelanja.R
 import com.himorfosis.kelolabelanja.database.entity.FinancialEntitiy
 import com.himorfosis.kelolabelanja.database.db.Database
 import com.himorfosis.kelolabelanja.database.db.DatabaseDao
-import com.himorfosis.kelolabelanja.dialog.DialogShow
 import com.himorfosis.kelolabelanja.homepage.report.adapter.ReportsSpendingAdapter
 import com.himorfosis.kelolabelanja.homepage.model.ReportFinanceModel
 import com.himorfosis.kelolabelanja.homepage.repo.ReportsRepo
+import com.himorfosis.kelolabelanja.month_picker.DialogMonthPicker
 import com.himorfosis.kelolabelanja.month_picker.MonthPickerLiveData
+import com.himorfosis.kelolabelanja.utilities.DateSet
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.reports_spending_fragment.*
+import kotlinx.android.synthetic.main.reports_spending_fragment.month_selected_tv
+import kotlinx.android.synthetic.main.reports_spending_fragment.recycler_reports
+import kotlinx.android.synthetic.main.reports_spending_fragment.select_month_click_ll
+import kotlinx.android.synthetic.main.reports_spending_fragment.status_data_tv
+import kotlinx.android.synthetic.main.reports_spending_fragment.status_deskripsi_tv
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -58,7 +64,11 @@ class ReportsSpendingFragment : Fragment() {
 
         setLocalDatabase()
 
-        setDataDateToday()
+        month_selected_tv.text = DateSet.getMonthSelected(requireContext())
+
+//        getMonthSelected()
+
+//        setDataDateToday()
 
         getDataSpendingUser()
 
@@ -68,7 +78,6 @@ class ReportsSpendingFragment : Fragment() {
 
         select_month_click_ll.setOnClickListener {
 
-//            setShowMonthPicker()
             dialogMonthPicker()
         }
 
@@ -76,13 +85,31 @@ class ReportsSpendingFragment : Fragment() {
 
     private fun dialogMonthPicker() {
 
-        val dialog = DialogShow.MonthPicker(context!!)
+        val dialog = DialogMonthPicker(context!!)
         dialog.show(childFragmentManager, "dialog")
 
-        dialog.setOnclick(object: DialogShow.MonthPicker.OnClickItem {
+        dialog.setOnclick(object: DialogMonthPicker.OnClickItem {
             override fun onItemClicked(data: Boolean) {
                 if (data) {
+                    val getYearSelected = Util.getData("picker", "year", requireContext())
+                    val getMonthSelected = Util.getData("picker", "month", requireContext())
+                    val dateYear = SimpleDateFormat("yyyy")
+                    val year = dateYear.format(Date())
+
+                    Util.log(TAG, "get month : $getMonthSelected")
+                    Util.log(TAG, "get year : $getYearSelected")
+
+                    // show data
+                    if (getYearSelected == year) {
+                        val thisMonth = Util.convertMonthName(getMonthSelected)
+                        month_selected_tv.text = thisMonth
+                    } else {
+                        val thisMonth = Util.convertMonthName(getMonthSelected)
+                        month_selected_tv.text = "$thisMonth  $getYearSelected"
+                    }
+
                     // reload data
+
                 }
             }
         })
@@ -160,6 +187,12 @@ class ReportsSpendingFragment : Fragment() {
 
     }
 
+    private fun getMonthSelected() {
+
+        val monthSelected = Util.getData("picker", "month", requireContext())
+        month_selected_tv.text = Util.convertMonthName(monthSelected)
+    }
+
     private fun setDataDateToday() {
 
         val date = SimpleDateFormat("yyyy-MM-dd")
@@ -174,9 +207,6 @@ class ReportsSpendingFragment : Fragment() {
         Util.saveData("picker", "month", monthToday, requireContext())
         Util.saveData("picker", "year", yearToday, requireContext())
 
-        val thisMonth = Util.convertCalendarMonth(today)
-
-        month_selected_tv.text = thisMonth
 
     }
 
