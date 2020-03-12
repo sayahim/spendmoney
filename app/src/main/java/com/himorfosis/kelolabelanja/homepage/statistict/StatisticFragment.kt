@@ -25,13 +25,10 @@ class StatisticFragment: Fragment() {
         return inflater.inflate(R.layout.statistic_fragment, container, false)
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
 
-
     }
-
 
 }

@@ -10,7 +10,7 @@ import com.himorfosis.kelolabelanja.database.entity.CategoryEntity
 @Database(entities = [FinancialEntitiy::class, CategoryEntity::class], version = 1)
 abstract class AppDatabase:RoomDatabase() {
 
-    abstract fun databaseDao(): DatabaseDao
+    abstract fun dbDao(): DatabaseDao
 
     companion object {
 

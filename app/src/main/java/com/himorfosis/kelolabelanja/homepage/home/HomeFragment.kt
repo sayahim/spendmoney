@@ -6,11 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.himorfosis.kelolabelanja.R
+import com.himorfosis.kelolabelanja.database.db.AppDatabase
 import com.himorfosis.kelolabelanja.database.db.DatabaseDao
 import com.himorfosis.kelolabelanja.database.entity.FinancialEntitiy
 import com.himorfosis.kelolabelanja.financial.InputFinancial
+import com.himorfosis.kelolabelanja.financial.repo.FinancialRepo
+import com.himorfosis.kelolabelanja.financial.repo.FinancialViewModel
 import com.himorfosis.kelolabelanja.homepage.home.adapter.HomeGroupAdapter
 import com.himorfosis.kelolabelanja.model.HomeGroupDataModel
 import com.himorfosis.kelolabelanja.homepage.home.repo.HomeRepo
@@ -38,6 +43,8 @@ class HomeFragment : Fragment() {
     lateinit var adapterReportsGroup: HomeGroupAdapter
     lateinit var linearLayoutManager: LinearLayoutManager
 
+    lateinit var financeViewModel: FinancialViewModel
+
     companion object {
 
         fun newInstance(): HomeFragment {
@@ -57,6 +64,8 @@ class HomeFragment : Fragment() {
 
         setAdapterGroup()
 
+        setViewModel()
+
         month_selected_tv.text = DateSet.getMonthSelected(requireContext())
 
 //        setDataDateToday()
@@ -66,6 +75,18 @@ class HomeFragment : Fragment() {
 //        getAllDataSelectedMonth()
 
 //        setCategoryDB()
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        AppDatabase.destroyInstance()
+
+    }
+
+    private fun setViewModel() {
+
+        financeViewModel = ViewModelProviders.of(this)[FinancialViewModel::class.java]
 
     }
 
@@ -162,6 +183,33 @@ class HomeFragment : Fragment() {
             setHasFixedSize(true)
             adapter = adapterReportsGroup
         }
+
+    }
+
+    private fun fetchDataMonth() {
+
+        financeViewModel.fetchAllFinancials(requireContext())
+        financeViewModel.financialUserResponse.observe(this, Observer {
+
+            if (it != null) {
+
+                status_tv.visibility = View.INVISIBLE
+                status_deskripsi_tv.visibility = View.INVISIBLE
+
+//                listPerDayData = response
+
+                adapterReportsGroup.removeListAdapter()
+//                adapterReportsGroup.addAll(it)
+
+            } else {
+
+                status_tv.text = "Tidak Ada Transaksi"
+                status_deskripsi_tv.text = "Ketuk + Tambah untuk menambakan transaksi"
+
+                status_tv.visibility = View.VISIBLE
+                status_deskripsi_tv.visibility = View.VISIBLE
+            }
+        })
 
     }
 

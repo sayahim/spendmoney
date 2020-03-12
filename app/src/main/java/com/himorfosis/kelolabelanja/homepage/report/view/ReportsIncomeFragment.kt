@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.himorfosis.kelolabelanja.R
+import com.himorfosis.kelolabelanja.database.db.AppDatabase
 import com.himorfosis.kelolabelanja.homepage.report.adapter.ReportsIncomeAdapter
 import com.himorfosis.kelolabelanja.homepage.repo.ReportsRepo
 import com.himorfosis.kelolabelanja.month_picker.DialogMonthPicker
@@ -53,6 +54,12 @@ class ReportsIncomeFragment : Fragment() {
 //        setDataDateToday()
 
         getDataSelectedRepo()
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        AppDatabase.destroyInstance()
 
     }
 
