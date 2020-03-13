@@ -1,6 +1,5 @@
 package com.himorfosis.kelolabelanja.month_picker.adapter
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.himorfosis.kelolabelanja.R
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.item_calendar_month.view.*
-import java.text.SimpleDateFormat
 import java.util.*
 
 class PickerMonthAdapter : RecyclerView.Adapter<PickerMonthAdapter.ViewHolder>() {
@@ -54,7 +52,7 @@ class PickerMonthAdapter : RecyclerView.Adapter<PickerMonthAdapter.ViewHolder>()
 
             // set background
             holder.bg_month_ll.setBackgroundResource(R.drawable.circle_gold)
-            holder.month_tv.setTextColor(holder.itemView.context.resources.getColor(R.color.text_black))
+            holder.month_tv.setTextColor(holder.itemView.context.resources.getColor(R.color.text_black_primary))
 
         } else {
 
@@ -70,7 +68,7 @@ class PickerMonthAdapter : RecyclerView.Adapter<PickerMonthAdapter.ViewHolder>()
 
             // set background
             holder.bg_month_ll.setBackgroundResource(R.drawable.circle_gold)
-            holder.month_tv.setTextColor(holder.itemView.context.resources.getColor(R.color.text_black))
+            holder.month_tv.setTextColor(holder.itemView.context.resources.getColor(R.color.text_black_primary))
 
             Util.log(TAG, "data click : " + data)
             Util.log(TAG, "position : " + position)

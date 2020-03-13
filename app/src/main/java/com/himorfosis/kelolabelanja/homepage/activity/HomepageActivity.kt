@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.himorfosis.kelolabelanja.R
+import com.himorfosis.kelolabelanja.homepage.chart.ChartReport
 import com.himorfosis.kelolabelanja.homepage.home.HomeFragment
 import com.himorfosis.kelolabelanja.homepage.report.view.ReportsFragment
 import com.himorfosis.kelolabelanja.homepage.statistict.view.StatisticFragment
@@ -36,7 +37,7 @@ class HomepageActivity : AppCompatActivity() {
             }
             R.id.nav_reports -> {
 
-                val fragment = ReportsFragment()
+                val fragment = ChartReport()
                 replaceFragment(fragment)
 
                 Util.log(TAG, "nav_reports")

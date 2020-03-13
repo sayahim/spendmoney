@@ -49,7 +49,7 @@
                     android:maxLines="2"
                     android:ellipsize="end"
                     android:textSize="@dimen/_14ssp"
-                    android:textColor="@color/text_black"
+                    android:textColor="@color/text_black_primary"
                     android:fontFamily="@font/semi_bold_opensans"/>
 
             </LinearLayout>
@@ -68,7 +68,7 @@
                     android:layout_height="wrap_content"
                     android:text="Rp0"
                     android:textSize="@dimen/_14ssp"
-                    android:textColor="@color/text_black"
+                    android:textColor="@color/text_black_primary"
                     android:gravity="right|center"
                     android:fontFamily="@font/semi_bold_opensans"/>
 

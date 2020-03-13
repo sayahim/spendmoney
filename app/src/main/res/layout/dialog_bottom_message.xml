@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_10sdp"
+        android:orientation="vertical">
+
+
+        <ImageView
+            android:id="@+id/close_message_img"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_gravity="left"
+            android:src="@drawable/ic_close_black" />
+
+        <TextView
+            android:id="@+id/title_message_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_10sdp"
+            android:textColor="@color/text_black"
+            android:gravity="center"
+            android:text="Title Message"
+            android:fontFamily="@font/semi_bold_opensans"
+            android:textSize="@dimen/_12ssp"
+            />
+
+        <TextView
+            android:id="@+id/description_message_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:textColor="@color/text_black_primary"
+            android:gravity="center"
+            android:text="Title Message"
+            android:fontFamily="@font/regular_opensans"
+            android:textSize="@dimen/_12ssp"
+            />
+
+        <Button
+            android:id="@+id/action_btn"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/corner_green"
+            android:fontFamily="@font/semi_bold_opensans"
+            android:text="@string/oke"
+            android:textAllCaps="false"
+            android:textColor="@color/text_white"
+            android:textSize="@dimen/_14sdp" />
+
+
+    </LinearLayout>
+
+</LinearLayout>

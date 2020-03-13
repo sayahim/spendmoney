@@ -13,6 +13,7 @@ import com.himorfosis.kelolabelanja.R
 import com.himorfosis.kelolabelanja.database.db.AppDatabase
 import com.himorfosis.kelolabelanja.database.db.DatabaseDao
 import com.himorfosis.kelolabelanja.database.entity.FinancialEntitiy
+import com.himorfosis.kelolabelanja.dialog.BottomSheetDialog
 import com.himorfosis.kelolabelanja.financial.InputFinancial
 import com.himorfosis.kelolabelanja.financial.repo.FinancialRepo
 import com.himorfosis.kelolabelanja.financial.repo.FinancialViewModel
@@ -94,7 +95,9 @@ class HomeFragment : Fragment() {
 
         add_ll.setOnClickListener {
 
-            startActivity(Intent(context, InputFinancial::class.java))
+//            startActivity(Intent(context, InputFinancial::class.java))
+
+            BottomSheetDialog.InputFinance(requireContext()).show()
 
         }
 

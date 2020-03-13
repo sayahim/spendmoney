@@ -111,7 +111,7 @@
                                     android:layout_gravity="center"
                                     android:fontFamily="@font/bold_opensans"
                                     android:text="Rp 0"
-                                    android:textColor="@color/text_black"
+                                    android:textColor="@color/text_black_primary"
                                     android:textSize="@dimen/_18ssp" />
 
 
@@ -146,7 +146,7 @@
                                     android:fontFamily="@font/bold_opensans"
                                     android:text="Rp 0"
                                     android:layout_gravity="center"
-                                    android:textColor="@color/text_black"
+                                    android:textColor="@color/text_black_primary"
                                     android:textSize="@dimen/_18ssp" />
 
 

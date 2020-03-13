@@ -1,28 +1,26 @@
-package com.himorfosis.kelolabelanja.homepage.statistict
+package com.himorfosis.kelolabelanja.homepage.chart
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.himorfosis.kelolabelanja.R
-import com.anychart.AnyChart
-import com.anychart.charts.Pie
-import com.anychart.chart.common.dataentry.ValueDataEntry
-import com.anychart.chart.common.dataentry.DataEntry
 
-class StatisticFragment: Fragment() {
+class ChartFragment: Fragment() {
 
     companion object {
 
-        fun newInstance(): StatisticFragment {
-            return StatisticFragment()
+        fun newInstance(): ChartFragment {
+            return ChartFragment()
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.statistic_fragment, container, false)
+        return inflater.inflate(R.layout.chart_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

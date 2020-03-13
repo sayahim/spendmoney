@@ -54,7 +54,7 @@ class HomeAdapter(var context: Context) : RecyclerView.Adapter<HomeAdapter.ViewH
 
         } else {
 
-            holder.nominal_tv.setTextColor(ContextCompat.getColor(context, R.color.text_black))
+            holder.nominal_tv.setTextColor(ContextCompat.getColor(context, R.color.text_black_primary))
 
             if (data.nominal != "") {
 
