@@ -75,7 +75,7 @@ class HomeRepo {
                 val dateStart:String = "01-$year-$month"
                 val dateFinish:String = "32-$year-$month"
 
-                val dataDate = databaseDao.getDataFinancialDate(dateStart, dateFinish)
+                val dataDate = databaseDao.getDataFinanceByDate(dateStart, dateFinish)
 
                 if (dateStart.isNotEmpty()) {
 

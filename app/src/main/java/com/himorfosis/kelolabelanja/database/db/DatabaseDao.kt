@@ -9,17 +9,17 @@ interface DatabaseDao {
 
     // data financial
 
-    @Query("SELECT * FROM financial_db")
-    fun getAllSpending(): List<FinancialEntitiy>
-
     @Query("SELECT * FROM financial_db WHERE category_id =:category_id")
     fun getSelectedCategory(category_id: String): List<FinancialEntitiy>
 
     @Query("SELECT * FROM financial_db WHERE date =:date ")
     fun getDataFinanceMonth(date: String): MutableList<FinancialEntitiy>
 
+    @Query("SELECT * FROM financial_db")
+    fun getAllDataFinance(): MutableList<FinancialEntitiy>
+
     @Query("SELECT * FROM financial_db WHERE date  BETWEEN:dateStart AND :dateFinish ")
-    fun getDataFinancialDate(dateStart: String, dateFinish: String): MutableList<FinancialEntitiy>
+    fun getDataFinanceByDate(dateStart: String, dateFinish: String): MutableList<FinancialEntitiy>
 
     @Query("SELECT * FROM financial_db WHERE date BETWEEN :first AND :last")
     fun getDataFinancial(first: String, last: String): List<FinancialEntitiy>

@@ -14,6 +14,7 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.himorfosis.kelolabelanja.R;
+import com.himorfosis.kelolabelanja.database.db.AppDatabase;
 import com.himorfosis.kelolabelanja.homepage.statistict.adapter.StatisticChartAdapter;
 import com.himorfosis.kelolabelanja.homepage.statistict.model.ChartModel;
 import com.himorfosis.kelolabelanja.homepage.statistict.viewmodel.StatistictViewModel;
@@ -94,11 +95,6 @@ public class StatisticSpending extends Fragment {
 
     }
 
-    private void getMonthSelected() {
-
-        String monthSelected = Util.getData("picker", "month", requireContext());
-        month_selected_tv.setText(Util.convertMonthName(monthSelected));
-    }
 
     private void dialogMonthPicker() {
 
