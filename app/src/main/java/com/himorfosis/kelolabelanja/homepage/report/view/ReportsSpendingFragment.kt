@@ -15,7 +15,6 @@ import com.himorfosis.kelolabelanja.homepage.report.adapter.ReportsSpendingAdapt
 import com.himorfosis.kelolabelanja.homepage.model.ReportFinanceModel
 import com.himorfosis.kelolabelanja.homepage.repo.ReportsRepo
 import com.himorfosis.kelolabelanja.month_picker.DialogMonthPicker
-import com.himorfosis.kelolabelanja.month_picker.MonthPickerLiveData
 import com.himorfosis.kelolabelanja.utilities.DateSet
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.reports_spending_fragment.*
@@ -67,8 +66,6 @@ class ReportsSpendingFragment : Fragment() {
         month_selected_tv.text = DateSet.getMonthSelected(requireContext())
 
 //        getMonthSelected()
-
-//        setDataDateToday()
 
         getDataSpendingUser()
 
@@ -191,57 +188,6 @@ class ReportsSpendingFragment : Fragment() {
 
         val monthSelected = Util.getData("picker", "month", requireContext())
         month_selected_tv.text = Util.convertMonthName(monthSelected)
-    }
-
-    private fun setDataDateToday() {
-
-        val date = SimpleDateFormat("yyyy-MM-dd")
-
-        val dateMonth = SimpleDateFormat("MM")
-        val dateYear = SimpleDateFormat("yyyy")
-
-        val today = date.format(Date())
-        val yearToday = dateYear.format(Date())
-        val monthToday = dateMonth.format(Date())
-
-        Util.saveData("picker", "month", monthToday, requireContext())
-        Util.saveData("picker", "year", yearToday, requireContext())
-
-
-    }
-
-    private fun setShowMonthPicker() {
-
-        MonthPickerLiveData.setMonthPicker(requireContext())
-
-        MonthPickerLiveData.getDataMonthPicker().observe(this, androidx.lifecycle.Observer{ monthPicker ->
-
-            Util.log(TAG, "month picker : $monthPicker")
-
-            if (monthPicker != null) {
-
-                val getYearSelected = Util.getData("picker", "year", requireContext())
-                val dateYear = SimpleDateFormat("yyyy")
-                val year = dateYear.format(Date())
-
-                if (getYearSelected.equals(year)) {
-
-                    val thisMonth = Util.convertCalendarMonth("$monthPicker-01")
-                    month_selected_tv.text = thisMonth
-
-                } else {
-
-                    val thisMonth = Util.convertCalendarMonth("$monthPicker-01")
-                    month_selected_tv.text = "$thisMonth  $getYearSelected"
-
-                }
-
-                getDataSpendingUser()
-
-            }
-
-        })
-
     }
 
 }

@@ -1,26 +1,21 @@
 package com.himorfosis.kelolabelanja.homepage.chart
 
-import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.himorfosis.kelolabelanja.homepage.chart.adapter.ChartPagerAdapter
-import kotlinx.android.synthetic.main.chart_fragment.*
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.himorfosis.kelolabelanja.R
-import com.himorfosis.kelolabelanja.homepage.activity.HomepageActivity
 import kotlinx.android.synthetic.main.chart_viewpager.*
+import kotlinx.android.synthetic.main.toolbar_title.*
 
-class ChartReport: Fragment() {
+class ChartMain: Fragment() {
 
     companion object {
 
-        fun newInstance(): ChartFragment {
-            return ChartFragment()
+        fun newInstance(): ChartSpendFragment {
+            return ChartSpendFragment()
         }
     }
 
@@ -32,8 +27,16 @@ class ChartReport: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setToolbar()
+
         chart_pager.adapter = ChartPagerAdapter(childFragmentManager)
         chart_tablayout.setupWithViewPager(chart_pager)
 
     }
+
+    private fun setToolbar() {
+
+        titleBar_tv.text = "Report"
+    }
+
 }

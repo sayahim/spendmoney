@@ -108,26 +108,6 @@ class Util {
             return id
         }
 
-        fun convertDateNumber(date:String):String {
-
-            val dateToday = SimpleDateFormat("yyyy-MM-dd")
-            val getDateToday = dateToday.format(Date())
-
-            var nameDateFinal = "-"
-
-            if (date.equals(getDateToday)) {
-
-                nameDateFinal = "Hari Ini"
-
-            } else {
-
-
-            }
-
-            return nameDateFinal
-
-        }
-
         @JvmStatic fun convertDateName(date: String): String {
 
             val dateToday = SimpleDateFormat("yyyy-MM-dd")
@@ -221,19 +201,6 @@ class Util {
 
         }
 
-        @JvmStatic fun convertCalendarMonth(month: String): String {
-
-            val monthArray = arrayOf("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember")
-
-            val dateMonth = month.substring(month.indexOf("-") + 1)
-            val bulan = dateMonth.substring(0, dateMonth.indexOf("-"))
-
-            val intMonth = Integer.parseInt(bulan)
-
-            return monthArray[intMonth]
-
-        }
-
         fun getDataCategoryIncome(): List<CategoryEntity> {
 
             var data: List<CategoryEntity> = ArrayList<CategoryEntity>()
@@ -288,37 +255,6 @@ class Util {
 
             return data
 
-        }
-
-        fun createMonthSelectedDialog(context: Context): DatePickerDialog {
-
-            Util.log("create month", "hiya")
-
-            val dpd = DatePickerDialog(context, null, 2019, 1, 24)
-
-            try {
-                val datePickerDialogFields = dpd.javaClass.declaredFields
-                for (datePickerDialogField in datePickerDialogFields) {
-
-                    if (datePickerDialogField.name == "mDatePicker") {
-
-                        datePickerDialogField.isAccessible = true
-                        val datePicker = datePickerDialogField.get(dpd) as DatePicker
-                        val datePickerFields = datePickerDialogField.type.declaredFields
-                        for (datePickerField in datePickerFields) {
-                            Log.i("test", datePickerField.name)
-                            if ("mDaySpinner" == datePickerField.name) {
-                                datePickerField.isAccessible = true
-                                val dayPicker = datePickerField.get(datePicker)
-                                (dayPicker as View).visibility = View.GONE
-                            }
-                        }
-                    }
-                }
-            } catch (ex: Exception) {
-            }
-
-            return dpd
         }
 
     }

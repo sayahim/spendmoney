@@ -5,16 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.himorfosis.kelolabelanja.R
 
-class ChartFragment: Fragment() {
+class ChartSpendFragment: Fragment() {
 
     companion object {
 
-        fun newInstance(): ChartFragment {
-            return ChartFragment()
+        fun newInstance(): ChartSpendFragment {
+            return ChartSpendFragment()
         }
     }
 

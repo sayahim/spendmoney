@@ -25,7 +25,6 @@ class BottomSheetDialog {
 
             save_btn.setOnClickListener {
 
-
             }
 
         }
