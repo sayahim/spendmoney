@@ -48,7 +48,7 @@
                     android:textSize="@dimen/_14ssp"
                     android:fontFamily="@font/regular_opensans"
                     android:text=""
-                    android:textColor="@color/text_black"
+                    android:textColor="@color/text_black_primary"
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:layout_marginRight="@dimen/_10sdp"/>
@@ -69,7 +69,7 @@
                     android:textSize="@dimen/_12ssp"
                     android:fontFamily="@font/regular_opensans"
                     android:text="Rp 0"
-                    android:textColor="@color/text_black"
+                    android:textColor="@color/text_black_primary"
                     android:layout_gravity="right"/>
 
             </LinearLayout>

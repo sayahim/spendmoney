@@ -32,7 +32,7 @@
                 android:text="Rp 1.000.000.000"
                 android:fontFamily="@font/bold_opensans"
                 android:layout_gravity="center"
-                android:textColor="@color/text_black"/>
+                android:textColor="@color/text_black_primary"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -93,7 +93,7 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_marginBottom="@dimen/_5sdp"
                         android:fontFamily="@font/regular_opensans"
-                        android:textColor="@color/text_black"/>
+                        android:textColor="@color/text_black_primary"/>
 
                     <TextView
                         android:id="@+id/date_tv"
@@ -104,7 +104,7 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_marginBottom="@dimen/_5sdp"
                         android:fontFamily="@font/regular_opensans"
-                        android:textColor="@color/text_black"/>
+                        android:textColor="@color/text_black_primary"/>
 
                     <TextView
                         android:id="@+id/note_tv"
@@ -115,7 +115,7 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_marginBottom="@dimen/_5sdp"
                         android:fontFamily="@font/regular_opensans"
-                        android:textColor="@color/text_black"/>
+                        android:textColor="@color/text_black_primary"/>
 
 
                 </LinearLayout>

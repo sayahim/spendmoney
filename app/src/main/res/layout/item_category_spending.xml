@@ -41,7 +41,7 @@
             android:fontFamily="@font/regular_opensans"
             android:layout_gravity="center"
             android:text="Contoh"
-            android:textColor="@color/text_black"
+            android:textColor="@color/text_black_primary"
             android:textSize="@dimen/_10sdp" />
 
     </LinearLayout>

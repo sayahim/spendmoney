@@ -8,8 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.himorfosis.kelolabelanja.R
+import com.himorfosis.kelolabelanja.homepage.chart.ChartMain
 import com.himorfosis.kelolabelanja.homepage.home.HomeFragment
-import com.himorfosis.kelolabelanja.homepage.report.view.ReportsFragment
 import com.himorfosis.kelolabelanja.homepage.statistict.view.StatisticFragment
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.activity_homepage.*
@@ -36,7 +36,7 @@ class HomepageActivity : AppCompatActivity() {
             }
             R.id.nav_reports -> {
 
-                val fragment = ReportsFragment()
+                val fragment = ChartMain()
                 replaceFragment(fragment)
 
                 Util.log(TAG, "nav_reports")

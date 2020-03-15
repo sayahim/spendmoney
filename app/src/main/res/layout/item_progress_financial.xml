@@ -55,7 +55,7 @@
                 android:gravity="left"
                 android:maxLines="1"
                 android:text="Title Category"
-                android:textColor="@color/text_black"
+                android:textColor="@color/text_black_primary"
                 android:textSize="@dimen/_12ssp" />
 
             <TextView
@@ -66,7 +66,7 @@
                 android:fontFamily="@font/regular_opensans"
                 android:gravity="right"
                 android:text="Rp 100.000.000"
-                android:textColor="@color/text_black"
+                android:textColor="@color/text_black_primary"
                 android:textSize="@dimen/_10ssp" />
 
         </LinearLayout>
