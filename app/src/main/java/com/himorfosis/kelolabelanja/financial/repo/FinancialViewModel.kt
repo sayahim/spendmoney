@@ -11,7 +11,7 @@ class FinancialViewModel: ViewModel() {
 
     fun fetchAllFinancials(context: Context) {
 
-        financialUserResponse = FinancialRepo.getInstance().fetchAllFinanceFatabase(context)
+        financialUserResponse = FinancialLiveData.getInstance().fetchAllFinanceFatabase(context)
 
     }
 

@@ -1,5 +1,6 @@
 package com.himorfosis.kelolabelanja.homepage.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import com.himorfosis.kelolabelanja.database.db.AppDatabase
 import com.himorfosis.kelolabelanja.database.db.DatabaseDao
 import com.himorfosis.kelolabelanja.database.entity.FinancialEntitiy
 import com.himorfosis.kelolabelanja.dialog.BottomSheetDialog
+import com.himorfosis.kelolabelanja.financial.InputFinancial
 import com.himorfosis.kelolabelanja.financial.repo.FinancialViewModel
 import com.himorfosis.kelolabelanja.homepage.home.adapter.HomeGroupAdapter
 import com.himorfosis.kelolabelanja.model.HomeGroupDataModel
@@ -67,7 +69,7 @@ class HomeFragment : Fragment() {
 
 //        setDataDateToday()
 
-        getDataMonthSelected()
+//        getDataMonthSelected()
 
 //        getAllDataSelectedMonth()
 
@@ -91,9 +93,7 @@ class HomeFragment : Fragment() {
 
         add_ll.setOnClickListener {
 
-//            startActivity(Intent(context, InputFinancial::class.java))
-
-            BottomSheetDialog.InputFinance(requireContext()).show()
+            startActivity(Intent(context, InputFinancial::class.java))
 
         }
 
@@ -112,7 +112,7 @@ class HomeFragment : Fragment() {
         val dialog = DialogMonthPicker(context!!)
         dialog.show(childFragmentManager, "dialog")
 
-        dialog.setOnclick(object: DialogMonthPicker.OnClickItem {
+        dialog.setOnclick(object : DialogMonthPicker.OnClickItem {
             override fun onItemClicked(data: Boolean) {
                 if (data) {
 
@@ -134,7 +134,7 @@ class HomeFragment : Fragment() {
                     }
 
                     // reload data
-                    getDataMonthSelected()
+//                    getDataMonthSelected()
 
                 }
             }

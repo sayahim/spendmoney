@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import com.himorfosis.kelolabelanja.R
 import com.himorfosis.kelolabelanja.database.entity.FinancialEntitiy
-import com.himorfosis.kelolabelanja.database.db.Database
 import com.himorfosis.kelolabelanja.database.db.DatabaseDao
 import com.himorfosis.kelolabelanja.homepage.report.adapter.ReportsSpendingAdapter
 import com.himorfosis.kelolabelanja.homepage.model.ReportFinanceModel
@@ -176,11 +175,6 @@ class ReportsSpendingFragment : Fragment() {
 
     fun setLocalDatabase() {
 
-        databaseDao = Room.databaseBuilder(requireContext(), Database::class.java, Database.DB_NAME)
-                .allowMainThreadQueries()
-                .fallbackToDestructiveMigration()
-                .build()
-                .spendingDao()
 
     }
 

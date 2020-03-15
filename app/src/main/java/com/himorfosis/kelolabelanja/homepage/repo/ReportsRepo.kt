@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.room.Room
-import com.himorfosis.kelolabelanja.database.db.Database
 import com.himorfosis.kelolabelanja.database.db.DatabaseDao
 import com.himorfosis.kelolabelanja.homepage.model.ReportsIncomeModel
 import com.himorfosis.kelolabelanja.homepage.model.ReportsSpendingModel
@@ -27,11 +26,6 @@ class ReportsRepo {
 
         private fun setDatabaseLocal(context: Context) {
 
-            databaseDao = Room.databaseBuilder(context, Database::class.java, Database.DB_NAME)
-                    .allowMainThreadQueries()
-                    .fallbackToDestructiveMigration()
-                    .build()
-                    .spendingDao()
 
         }
 

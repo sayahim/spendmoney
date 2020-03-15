@@ -6,6 +6,15 @@ import java.util.*
 
 object DateSet {
 
+    fun getDateToday(): String {
+
+        val date = SimpleDateFormat("yyyy-MM-dd")
+        val today = date.format(Date())
+
+        return today.toString()
+
+    }
+
     @JvmStatic fun getMonthSelected(context: Context): String {
 
         var monthValue: String

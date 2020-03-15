@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.room.Room
-import com.himorfosis.kelolabelanja.database.db.Database
 import com.himorfosis.kelolabelanja.database.db.DatabaseDao
 import com.himorfosis.kelolabelanja.database.entity.FinancialEntitiy
 import com.himorfosis.kelolabelanja.details.category.model.FinancialPerCategoryModel
@@ -20,22 +19,7 @@ class FinancialCategoryRepo {
 
         private val dataFinancialCategory = MutableLiveData<MutableList<FinancialPerCategoryModel>>()
 
-        private lateinit var databaseDao: DatabaseDao
-
-
-        private fun setDatabaseLocal(context: Context) {
-
-            databaseDao = Room.databaseBuilder(context, Database::class.java, Database.DB_NAME)
-                    .allowMainThreadQueries()
-                    .fallbackToDestructiveMigration()
-                    .build()
-                    .spendingDao()
-
-        }
-
         fun setDataFinancialCategoryDatabase(context: Context, type: String, categoryId: String) {
-
-            setDatabaseLocal(context)
 
             val month = Util.getData("picker", "month", context)
             val year = Util.getData("picker", "year", context)
@@ -61,24 +45,24 @@ class FinancialCategoryRepo {
 
                 }
 
-                val data = databaseDao.reportDataDetailFinancial(type, categoryId.toInt(), thisMonth)
-
-                if (data.isNotEmpty()) {
-
-                    var totalNominal = 0
-
-                    for (y in 0 until data.size) {
-
-                        val item = data[y]
-
-                        totalNominal += item.nominal.toInt()
-
-                    }
-
-                    listDataFinancial.addAll(data)
-                    listPerDayData.add(FinancialPerCategoryModel(thisMonth, totalNominal, data))
-
-                }
+//                val data = databaseDao.reportDataDetailFinancial(type, categoryId.toInt(), thisMonth)
+//
+//                if (data.isNotEmpty()) {
+//
+//                    var totalNominal = 0
+//
+//                    for (y in 0 until data.size) {
+//
+//                        val item = data[y]
+//
+//                        totalNominal += item.nominal.toInt()
+//
+//                    }
+//
+//                    listDataFinancial.addAll(data)
+//                    listPerDayData.add(FinancialPerCategoryModel(thisMonth, totalNominal, data))
+//
+//                }
 
             }
 

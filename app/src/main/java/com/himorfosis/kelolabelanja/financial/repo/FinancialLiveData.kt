@@ -6,7 +6,7 @@ import com.himorfosis.kelolabelanja.database.db.AppDatabase
 import com.himorfosis.kelolabelanja.database.db.StateDB
 import com.himorfosis.kelolabelanja.database.entity.FinancialEntitiy
 
-class FinancialRepo {
+class FinancialLiveData {
 
     companion object {
 
@@ -14,9 +14,9 @@ class FinancialRepo {
 
         private var appDatabase: AppDatabase? = null
 
-        private var INSTANCE: FinancialRepo? = null
+        private var INSTANCE: FinancialLiveData? = null
         fun getInstance() = INSTANCE
-                ?: FinancialRepo().also {
+                ?: FinancialLiveData().also {
                     INSTANCE = it
 
                 }

@@ -14,7 +14,6 @@ import com.himorfosis.kelolabelanja.homepage.statistict.view.StatisticFragment
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.activity_homepage.*
 import kotlinx.android.synthetic.main.toolbar_homepage.*
-import me.anwarshahriar.calligrapher.Calligrapher
 
 class HomepageActivity : AppCompatActivity() {
 
@@ -97,8 +96,8 @@ class HomepageActivity : AppCompatActivity() {
 
     private fun setFontType() {
 
-        val calligrapher = Calligrapher(this)
-        calligrapher.setFont(this@HomepageActivity, Util.regularOpenSans, true)
+//        val calligrapher = Calligrapher(this)
+//        calligrapher.setFont(this@HomepageActivity, Util.regularOpenSans, true)
 
     }
 

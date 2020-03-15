@@ -9,28 +9,28 @@ interface DatabaseDao {
 
     // data financial
 
-    @Query("SELECT * FROM financial_db WHERE category_id =:category_id")
+    @Query("SELECT * FROM financials WHERE category_id =:category_id")
     fun getSelectedCategory(category_id: String): List<FinancialEntitiy>
 
-    @Query("SELECT * FROM financial_db WHERE date =:date ")
+    @Query("SELECT * FROM financials WHERE date =:date ")
     fun getDataFinanceMonth(date: String): MutableList<FinancialEntitiy>
 
-    @Query("SELECT * FROM financial_db")
+    @Query("SELECT * FROM financials")
     fun getAllDataFinance(): MutableList<FinancialEntitiy>
 
-    @Query("SELECT * FROM financial_db WHERE date  BETWEEN:dateStart AND :dateFinish ")
+    @Query("SELECT * FROM financials WHERE date  BETWEEN:dateStart AND :dateFinish ")
     fun getDataFinanceByDate(dateStart: String, dateFinish: String): MutableList<FinancialEntitiy>
 
-    @Query("SELECT * FROM financial_db WHERE date BETWEEN :first AND :last")
+    @Query("SELECT * FROM financials WHERE date BETWEEN :first AND :last")
     fun getDataFinancial(first: String, last: String): List<FinancialEntitiy>
 
-    @Query("SELECT * FROM financial_db WHERE id =:id ")
+    @Query("SELECT * FROM financials WHERE id =:id ")
     fun getDetailDataFinancial(id: Int): FinancialEntitiy
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertSpending(financial_db: FinancialEntitiy)
 
-    @Query("DELETE FROM financial_db WHERE id =:id")
+    @Query("DELETE FROM financials WHERE id =:id")
     fun deleteDataFinancialItem(id: Int?)
 
     @Update
@@ -38,16 +38,16 @@ interface DatabaseDao {
 
     // report
 
-    @Query("SELECT * FROM financial_db WHERE date =:date  AND type =:type AND category_id =:category_id")
+    @Query("SELECT * FROM financials WHERE date =:date  AND type =:type AND category_id =:category_id")
     fun getReportSpending(date: String, type: String, category_id: Int): List<FinancialEntitiy>
 
-    @Query("SELECT * FROM financial_db WHERE type =:type AND category_id =:category_id And date BETWEEN :firstDate AND :lastDate")
+    @Query("SELECT * FROM financials WHERE type =:type AND category_id =:category_id And date BETWEEN :firstDate AND :lastDate")
     fun reportDataSpending(firstDate: String, lastDate: String, type: String, category_id: Int): List<FinancialEntitiy>
 
-    @Query("SELECT * FROM financial_db WHERE date =:date ")
+    @Query("SELECT * FROM financials WHERE date =:date ")
     fun getReportFinanceMonth(date: String): MutableList<FinancialEntitiy>
 
-    @Query("SELECT * FROM financial_db WHERE type =:type AND category_id =:category_id And date =:date")
+    @Query("SELECT * FROM financials WHERE type =:type AND category_id =:category_id And date =:date")
     fun reportDataDetailFinancial(type: String, category_id: Int, date: String): MutableList<FinancialEntitiy>
 
     // category
@@ -55,13 +55,13 @@ interface DatabaseDao {
     @Insert
     fun insertCategory(category_db: CategoryEntity)
 
-    @Query("SELECT * FROM category_db")
+    @Query("SELECT * FROM category")
     fun getAllCategory(): List<CategoryEntity>
 
-    @Query("SELECT * FROM category_db WHERE id =:id")
+    @Query("SELECT * FROM category WHERE id =:id")
     fun getSelectedCategory(id: Int?): List<CategoryEntity>
 
-    @Query("SELECT * FROM category_db WHERE id =:id")
+    @Query("SELECT * FROM category WHERE id =:id")
     fun getImageSelectedCategory(id: Int?): List<CategoryEntity>
 
 }

@@ -163,7 +163,7 @@
                 android:id="@+id/status_data_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Cooming Soon"
+                android:text=""
                 android:fontFamily="@font/bold_opensans"
                 android:textSize="@dimen/_14ssp"
                 android:textColor="@color/text_hint"
@@ -173,21 +173,6 @@
 
         </FrameLayout>
 
-
     </LinearLayout>
-
-    <FrameLayout
-        android:id="@+id/frame_input_data"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:visibility="gone">
-
-        <include
-            layout="@layout/layout_input_data"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
-
-    </FrameLayout>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

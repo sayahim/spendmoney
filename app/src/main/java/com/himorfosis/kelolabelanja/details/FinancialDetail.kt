@@ -1,7 +1,6 @@
 package com.himorfosis.kelolabelanja.details
 
 import android.app.Dialog
-import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
@@ -15,7 +14,6 @@ import androidx.core.content.ContextCompat
 import androidx.room.Room
 import com.himorfosis.kelolabelanja.R
 import com.himorfosis.kelolabelanja.database.db.DatabaseDao
-import com.himorfosis.kelolabelanja.database.db.Database
 import com.himorfosis.kelolabelanja.homepage.activity.HomepageActivity
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.activity_spending_detail.*
@@ -33,8 +31,6 @@ class FinancialDetail : AppCompatActivity() {
         setContentView(R.layout.activity_spending_detail)
 
         setToolbar()
-
-        setDatabase()
 
         getDataDetail()
 
@@ -66,16 +62,6 @@ class FinancialDetail : AppCompatActivity() {
         val data = intent
 
         getId = data.getIntExtra("id", 0)
-
-    }
-
-    private fun setDatabase() {
-
-        databaseDao = Room.databaseBuilder(this, Database::class.java, Database.DB_NAME)
-                .allowMainThreadQueries()
-                .fallbackToDestructiveMigration()
-                .build()
-                .spendingDao()
 
     }
 

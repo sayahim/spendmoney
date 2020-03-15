@@ -3,8 +3,7 @@ package com.himorfosis.kelolabelanja.homepage.home.repo
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.room.Room
-import com.himorfosis.kelolabelanja.database.db.Database
+import com.himorfosis.kelolabelanja.database.db.AppDatabase
 import com.himorfosis.kelolabelanja.database.db.DatabaseDao
 import com.himorfosis.kelolabelanja.database.entity.FinancialEntitiy
 import com.himorfosis.kelolabelanja.model.HomeGroupDataModel
@@ -23,6 +22,7 @@ class HomeRepo {
         private val dataFinancial = MutableLiveData<MutableList<HomeGroupDataModel>>()
         private val total_spend_month = MutableLiveData<String>()
         private val total_income_month = MutableLiveData<String>()
+        private var appDatabase: AppDatabase? = null
 
 
         private lateinit var databaseDao: DatabaseDao
@@ -30,11 +30,7 @@ class HomeRepo {
 
         private fun setDatabaseLocal(context: Context) {
 
-            databaseDao = Room.databaseBuilder(context, Database::class.java, Database.DB_NAME)
-                    .allowMainThreadQueries()
-                    .fallbackToDestructiveMigration()
-                    .build()
-                    .spendingDao()
+            appDatabase = AppDatabase.getInstance(context)
 
         }
 

@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.himorfosis.kelolabelanja.R
 import com.himorfosis.kelolabelanja.database.db.DatabaseDao
-import com.himorfosis.kelolabelanja.database.db.Database
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.toolbar_detail.*
 import android.view.WindowManager
@@ -119,10 +118,7 @@ class Category : AppCompatActivity() {
 
         )
 
-        financialCategoryAdapter = FinancialCategoryAdapter(this, { item ->
-            actionCallbackAdapter(item)
-
-        })
+        financialCategoryAdapter = FinancialCategoryAdapter()
 
         recycler_category.apply {
 
@@ -131,6 +127,12 @@ class Category : AppCompatActivity() {
             adapter = financialCategoryAdapter
 
         }
+
+        financialCategoryAdapter.setOnclick(object : FinancialCategoryAdapter.AdapterOnClickItem {
+            override fun onItemClicked(data: CategoryEntity) {
+                actionCallbackAdapter(data)
+            }
+        })
 
     }
 
@@ -150,12 +152,6 @@ class Category : AppCompatActivity() {
     }
 
     private fun setDatabase() {
-
-        databaseDao = Room.databaseBuilder(this, Database::class.java, Database.DB_NAME)
-                .allowMainThreadQueries()
-                .fallbackToDestructiveMigration()
-                .build()
-                .spendingDao()
 
         Util.deleteData("category", this)
 

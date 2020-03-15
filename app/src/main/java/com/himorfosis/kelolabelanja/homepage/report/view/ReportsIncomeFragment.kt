@@ -50,7 +50,8 @@ class ReportsIncomeFragment : Fragment() {
 
         month_selected_tv.text = DateSet.getMonthSelected(requireContext())
 
-        getDataSelectedRepo()
+        // error local database
+//        getDataSelectedRepo()
 
     }
 

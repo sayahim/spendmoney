@@ -1,6 +1,5 @@
 package com.himorfosis.kelolabelanja.details.category
 
-import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,16 +8,13 @@ import androidx.appcompat.app.ActionBar
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.room.Room
 import com.himorfosis.kelolabelanja.R
-import com.himorfosis.kelolabelanja.database.db.Database
 import com.himorfosis.kelolabelanja.database.db.DatabaseDao
 import com.himorfosis.kelolabelanja.details.category.adapter.FinancialCategoryGroupAdapter
 import com.himorfosis.kelolabelanja.details.category.model.FinancialPerCategoryModel
 import com.himorfosis.kelolabelanja.details.category.repo.FinancialCategoryRepo
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.activity_financial_category_detail.*
-import kotlinx.android.synthetic.main.home_fragment.*
 import kotlinx.android.synthetic.main.toolbar_detail.*
 
 class FinancialCategoryDetail : AppCompatActivity() {

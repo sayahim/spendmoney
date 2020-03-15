@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-@Entity(tableName = "financial_db")
+@Entity(tableName = "financials")
 data class FinancialEntitiy (
 
         @PrimaryKey(autoGenerate = true) var id: Int?,

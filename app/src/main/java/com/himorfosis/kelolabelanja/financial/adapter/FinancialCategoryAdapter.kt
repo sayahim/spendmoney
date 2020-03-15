@@ -13,25 +13,26 @@ import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.item_category_spending.view.*
 import java.util.ArrayList
 
-class FinancialCategoryAdapter(private val context: Context, val adapterCallback: (CategoryEntity) -> Unit)
-    : RecyclerView.Adapter<FinancialCategoryAdapter.ViewHolder>(), Filterable {
+class FinancialCategoryAdapter : RecyclerView.Adapter<FinancialCategoryAdapter.ViewHolder>(), Filterable {
 
     private val TAG = "FinancialCategoryAdapter"
 
-    private var dataListFilter: MutableList<CategoryEntity>? = null
-    private var listData: MutableList<CategoryEntity>? = ArrayList<CategoryEntity>()
+    private var dataListFilter: MutableList<CategoryEntity> = ArrayList<CategoryEntity>()
+    private var listData: MutableList<CategoryEntity> = ArrayList<CategoryEntity>()
+
+    lateinit var onClickItem: AdapterOnClickItem
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_category_spending, parent, false))
+        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_category_spending, parent, false))
     }
 
-    override fun getItemCount() = listData!!.size
+    override fun getItemCount() = listData.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        val getIdSelected = Util.getData("category", "selected", context)
+        val getIdSelected = Util.getData("category", "selected", holder.itemView.context)
 
-        var data = listData!![position]
+        var data = listData[position]
 
         // check selected
 
@@ -42,11 +43,9 @@ class FinancialCategoryAdapter(private val context: Context, val adapterCallback
             if (getIdSelected == convertID) {
 
                 holder.frame.setBackgroundResource(R.drawable.circle_gold)
-
             } else {
 
                 holder.frame.setBackgroundResource(R.drawable.border_line)
-
             }
 
         } else {
@@ -55,7 +54,7 @@ class FinancialCategoryAdapter(private val context: Context, val adapterCallback
 
         }
 
-        val imageAssets = Util.convertImageDrawable(context, data.image_category)
+        val imageAssets = Util.convertImageDrawable(holder.itemView.context, data.image_category)
 
         holder.name_tv.text = data.name
 
@@ -63,10 +62,18 @@ class FinancialCategoryAdapter(private val context: Context, val adapterCallback
 
         holder.itemView.setOnClickListener {
 
+//            if (getIdSelected != null) {
+//
+//                holder.frame.setBackgroundResource(0)
+//            }
+
+            holder.frame.setBackgroundResource(R.drawable.circle_gold)
+
             Util.log(TAG, "id selected  : " + data.id)
 
             // callback adapter
-            adapterCallback(data)
+            onClickItem.onItemClicked(data)
+
 
         }
 
@@ -77,6 +84,16 @@ class FinancialCategoryAdapter(private val context: Context, val adapterCallback
         val image_img = itemView.image_img
         val name_tv = itemView.name_tv
         val frame = itemView.image_frame
+
+    }
+
+    interface AdapterOnClickItem {
+        fun onItemClicked(data: CategoryEntity)
+
+    }
+
+    fun setOnclick(onClickItem: AdapterOnClickItem) {
+        this.onClickItem = onClickItem
 
     }
 
@@ -96,6 +113,16 @@ class FinancialCategoryAdapter(private val context: Context, val adapterCallback
 
             add(response)
         }
+    }
+
+    fun removeAllData() {
+
+        if (listData.isNotEmpty()) {
+
+            listData.clear()
+            notifyDataSetChanged()
+        }
+
     }
 
     override fun getFilter(): Filter {

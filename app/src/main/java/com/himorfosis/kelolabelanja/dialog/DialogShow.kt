@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.himorfosis.kelolabelanja.R
-import com.himorfosis.kelolabelanja.month_picker.MonthPickerLiveData.Companion.TAG
 import com.himorfosis.kelolabelanja.month_picker.adapter.PickerMonthAdapter
 import com.himorfosis.kelolabelanja.utilities.Util
 

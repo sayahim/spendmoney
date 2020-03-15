@@ -24,7 +24,7 @@ public class StatistictViewModel extends ViewModel {
     public void setDataSpending(Context context) {
 
         statistictRepo = StatistictRepo.getInstance(context);
-        dataSpending = statistictRepo.setDataSpending(context);
+//        dataSpending = statistictRepo.setDataSpending(context);
     }
 
     public MutableLiveData<List<ChartModel>> getDataIncome() {
@@ -34,7 +34,7 @@ public class StatistictViewModel extends ViewModel {
     public void setDataIncome(Context context) {
 
         statistictRepo = StatistictRepo.getInstance(context);
-        dataIncome = statistictRepo.setDataIncomeUser(context);
+//        dataIncome = statistictRepo.setDataIncomeUser(context);
     }
 
     public MutableLiveData<List<PieEntry>> getDataStatisticChart() {

@@ -60,7 +60,6 @@ dependencies {
     implementation 'androidx.vectordrawable:vectordrawable:1.1.0'
 
     // network
-    implementation 'com.android.volley:volley:1.1.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.12.0'
     implementation 'com.squareup.okhttp3:okhttp:3.12.0'
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
@@ -86,27 +85,17 @@ dependencies {
     // anko
     implementation 'org.jetbrains.anko:anko:0.10.8'
 
-    // database
-    implementation "android.arch.persistence.room:runtime:1.1.1"
-    annotationProcessor "android.arch.persistence.room:compiler:1.1.1"
-    implementation "android.arch.persistence.room:rxjava2:1.1.1"
-    kapt "android.arch.persistence.room:compiler:1.1.1"
+    // view model
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:1.1.1'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
 
     //room
     implementation "androidx.room:room-runtime:2.2.3"
     kapt "androidx.room:room-compiler:2.2.3"
     implementation "androidx.room:room-ktx:2.2.3"
 
-    // view model
-    implementation 'androidx.lifecycle:lifecycle-viewmodel:1.1.1'
-    implementation 'androidx.lifecycle:lifecycle-extensions:1.1.1'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
-
     //paging
     implementation 'androidx.paging:paging-runtime:2.1.0'
-
-    //font
-    implementation 'me.anwarshahriar:calligrapher:1.0'
 
     // loading
     implementation 'com.ethanhua:skeleton:1.1.2'
@@ -115,10 +104,5 @@ dependencies {
     // chart
     implementation 'com.github.AnyChart:AnyChart-Android:1.1.2'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
-
-    // kotlinx-coroutines
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.1"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.1"
-
 
 }

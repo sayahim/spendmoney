@@ -3,7 +3,6 @@ package com.himorfosis.kelolabelanja.homepage.statistict.viewmodel;
 import android.content.Context;
 
 import com.github.mikephil.charting.data.PieEntry;
-import com.himorfosis.kelolabelanja.database.db.Database;
 import com.himorfosis.kelolabelanja.database.db.DatabaseDao;
 import com.himorfosis.kelolabelanja.database.entity.FinancialEntitiy;
 import com.himorfosis.kelolabelanja.homepage.statistict.model.ChartModel;
@@ -22,8 +21,6 @@ public class StatistictRepo {
     String TAG = "DaftarRekeningLiveData";
 
     private static StatistictRepo statistictRepo;
-
-    private static DatabaseDao databaseDao;
     private static String getMonth, getYear;
 
     public static StatistictRepo getInstance(Context context) {
@@ -33,14 +30,6 @@ public class StatistictRepo {
             statistictRepo = new StatistictRepo();
         }
 
-        databaseDao = Room.databaseBuilder(context, Database.class, "spending_db")
-                .allowMainThreadQueries()
-                .fallbackToDestructiveMigration()
-                .build()
-                .spendingDao();
-
-        getMonth = UtilJava.getData("picker", "month", context);
-        getYear = UtilJava.getData("picker", "year", context);
 
         return statistictRepo;
 
@@ -101,153 +90,153 @@ public class StatistictRepo {
 
         return dataChart;
     }
+//
+//    public MutableLiveData<List<ChartModel>> setDataSpending(Context context) {
+//
+//        MutableLiveData<List<ChartModel>> dataSpending = new MutableLiveData<>();
+//
+//        List<ChartModel> dataReportsSpend = new ArrayList<>();
+//
+//        String monthOnYear = getYear + "-" + getMonth;
+//        Integer nominalMax = 0;
+//        Integer totalNominalAllCategory = 0;
+//
+//        for (int totalCategoryId = 0; totalCategoryId < 20; totalCategoryId++) {
+//
+//            List<FinancialEntitiy> financialDatabase = databaseDao.reportDataSpending(monthOnYear + "-01", monthOnYear + "-32", "spend", totalCategoryId);
+//
+//            if (!financialDatabase.isEmpty()) {
+//
+//                int categoryId = 0;
+//                String categoryName = "-";
+//                String categoryImage = "-";
+//                int totalNominalPerCategory = 0;
+//
+//                for (int i = 0; i < financialDatabase.size(); i++) {
+//
+//                    FinancialEntitiy element = financialDatabase.get(i);
+//
+//                    categoryId = element.getCategory_id();
+//                    categoryName = element.getCategory_name();
+//                    categoryImage = element.getCategory_image();
+//
+//                    int convertNominalToInt = Integer.valueOf(element.getNominal());
+//
+//                    totalNominalPerCategory += convertNominalToInt;
+//
+//                    if (totalNominalPerCategory > nominalMax) {
+//
+//                        nominalMax = totalNominalPerCategory;
+//
+//                    }
+//
+//                }
+//
+//                // count total nominal all category
+//                totalNominalAllCategory += totalNominalPerCategory;
+//
+//                ChartModel data = new ChartModel();
+//
+//                data.setId_category(categoryId);
+//                data.setCategory_image(categoryImage);
+//                data.setCategory_name(categoryName);
+//                data.setTotal_nominal_category(totalNominalPerCategory);
+//
+//                dataReportsSpend.add(data);
+//
+//
+//            }
+//
+//        }
+//
+//        if (!dataReportsSpend.isEmpty()) {
+//
+//            Util.log(TAG, "nominalMax : " + nominalMax);
+//
+//            Util.saveDataInt("report", "nominal_all_category", totalNominalAllCategory, context);
+//            Util.saveDataInt("report", "chart", nominalMax, context);
+//
+//            dataSpending.setValue(dataReportsSpend);
+//
+//        } else {
+//
+//            dataSpending.setValue(null);
+//
+//        }
+//
+//        return dataSpending;
+//    }
 
-    public MutableLiveData<List<ChartModel>> setDataSpending(Context context) {
-
-        MutableLiveData<List<ChartModel>> dataSpending = new MutableLiveData<>();
-
-        List<ChartModel> dataReportsSpend = new ArrayList<>();
-
-        String monthOnYear = getYear + "-" + getMonth;
-        Integer nominalMax = 0;
-        Integer totalNominalAllCategory = 0;
-
-        for (int totalCategoryId = 0; totalCategoryId < 20; totalCategoryId++) {
-
-            List<FinancialEntitiy> financialDatabase = databaseDao.reportDataSpending(monthOnYear + "-01", monthOnYear + "-32", "spend", totalCategoryId);
-
-            if (!financialDatabase.isEmpty()) {
-
-                int categoryId = 0;
-                String categoryName = "-";
-                String categoryImage = "-";
-                int totalNominalPerCategory = 0;
-
-                for (int i = 0; i < financialDatabase.size(); i++) {
-
-                    FinancialEntitiy element = financialDatabase.get(i);
-
-                    categoryId = element.getCategory_id();
-                    categoryName = element.getCategory_name();
-                    categoryImage = element.getCategory_image();
-
-                    int convertNominalToInt = Integer.valueOf(element.getNominal());
-
-                    totalNominalPerCategory += convertNominalToInt;
-
-                    if (totalNominalPerCategory > nominalMax) {
-
-                        nominalMax = totalNominalPerCategory;
-
-                    }
-
-                }
-
-                // count total nominal all category
-                totalNominalAllCategory += totalNominalPerCategory;
-
-                ChartModel data = new ChartModel();
-
-                data.setId_category(categoryId);
-                data.setCategory_image(categoryImage);
-                data.setCategory_name(categoryName);
-                data.setTotal_nominal_category(totalNominalPerCategory);
-
-                dataReportsSpend.add(data);
-
-
-            }
-
-        }
-
-        if (!dataReportsSpend.isEmpty()) {
-
-            Util.log(TAG, "nominalMax : " + nominalMax);
-
-            Util.saveDataInt("report", "nominal_all_category", totalNominalAllCategory, context);
-            Util.saveDataInt("report", "chart", nominalMax, context);
-
-            dataSpending.setValue(dataReportsSpend);
-
-        } else {
-
-            dataSpending.setValue(null);
-
-        }
-
-        return dataSpending;
-    }
-
-    public MutableLiveData<List<ChartModel>> setDataIncomeUser(Context context) {
-
-        MutableLiveData<List<ChartModel>> dataSpending = new MutableLiveData<>();
-
-        List<ChartModel> dataReportIncome = new ArrayList<>();
-
-        String monthOnYear = getYear + "-" + getMonth;
-        Integer maxNominal = 0;
-        Integer totalNominalAllCategory = 0;
-
-        for (int totalCategoryId = 0; totalCategoryId < 20; totalCategoryId++) {
-
-            List<FinancialEntitiy> financialDatabase = databaseDao.reportDataSpending(monthOnYear + "-01", monthOnYear + "-32", "income", totalCategoryId);
-
-            if (!financialDatabase.isEmpty()) {
-
-                int categoryId = 0;
-                String categoryName = "-";
-                String categoryImage = "-";
-                int totalNominalPerCategory = 0;
-
-                for (int i = 0; i < financialDatabase.size(); i++) {
-
-                    FinancialEntitiy element = financialDatabase.get(i);
-
-                    categoryId = element.getCategory_id();
-                    categoryName = element.getCategory_name();
-                    categoryImage = element.getCategory_image();
-
-                    int convertNominalToInt = Integer.valueOf(element.getNominal());
-
-                    totalNominalPerCategory += convertNominalToInt;
-
-                    if (convertNominalToInt > maxNominal) {
-
-                        maxNominal = convertNominalToInt;
-
-                    }
-
-                }
-
-                // count total nominal all category
-                totalNominalAllCategory += totalNominalPerCategory;
-
-                ChartModel data = new ChartModel();
-
-                data.setId_category(categoryId);
-                data.setCategory_image(categoryImage);
-                data.setCategory_name(categoryName);
-                data.setTotal_nominal_category(totalNominalPerCategory);
-
-                dataReportIncome.add(data);
-
-            }
-
-        }
-
-        if (!dataReportIncome.isEmpty()) {
-
-            Util.saveDataInt("report", "nominal_all_category", totalNominalAllCategory, context);
-            Util.saveDataInt("report", "chart", maxNominal, context);
-            dataSpending.setValue(dataReportIncome);
-
-        } else {
-
-            dataSpending.setValue(null);
-
-        }
-
-        return dataSpending;
-    }
+//    public MutableLiveData<List<ChartModel>> setDataIncomeUser(Context context) {
+//
+//        MutableLiveData<List<ChartModel>> dataSpending = new MutableLiveData<>();
+//
+//        List<ChartModel> dataReportIncome = new ArrayList<>();
+//
+//        String monthOnYear = getYear + "-" + getMonth;
+//        Integer maxNominal = 0;
+//        Integer totalNominalAllCategory = 0;
+//
+//        for (int totalCategoryId = 0; totalCategoryId < 20; totalCategoryId++) {
+//
+//            List<FinancialEntitiy> financialDatabase = databaseDao.reportDataSpending(monthOnYear + "-01", monthOnYear + "-32", "income", totalCategoryId);
+//
+//            if (!financialDatabase.isEmpty()) {
+//
+//                int categoryId = 0;
+//                String categoryName = "-";
+//                String categoryImage = "-";
+//                int totalNominalPerCategory = 0;
+//
+//                for (int i = 0; i < financialDatabase.size(); i++) {
+//
+//                    FinancialEntitiy element = financialDatabase.get(i);
+//
+//                    categoryId = element.getCategory_id();
+//                    categoryName = element.getCategory_name();
+//                    categoryImage = element.getCategory_image();
+//
+//                    int convertNominalToInt = Integer.valueOf(element.getNominal());
+//
+//                    totalNominalPerCategory += convertNominalToInt;
+//
+//                    if (convertNominalToInt > maxNominal) {
+//
+//                        maxNominal = convertNominalToInt;
+//
+//                    }
+//
+//                }
+//
+//                // count total nominal all category
+//                totalNominalAllCategory += totalNominalPerCategory;
+//
+//                ChartModel data = new ChartModel();
+//
+//                data.setId_category(categoryId);
+//                data.setCategory_image(categoryImage);
+//                data.setCategory_name(categoryName);
+//                data.setTotal_nominal_category(totalNominalPerCategory);
+//
+//                dataReportIncome.add(data);
+//
+//            }
+//
+//        }
+//
+//        if (!dataReportIncome.isEmpty()) {
+//
+//            Util.saveDataInt("report", "nominal_all_category", totalNominalAllCategory, context);
+//            Util.saveDataInt("report", "chart", maxNominal, context);
+//            dataSpending.setValue(dataReportIncome);
+//
+//        } else {
+//
+//            dataSpending.setValue(null);
+//
+//        }
+//
+//        return dataSpending;
+//    }
 
 }
