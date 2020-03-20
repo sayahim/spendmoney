@@ -2,7 +2,6 @@ package com.himorfosis.kelolabelanja.financial.repo
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
-import com.himorfosis.kelolabelanja.database.db.AppDatabase
 import com.himorfosis.kelolabelanja.database.db.StateDB
 import com.himorfosis.kelolabelanja.database.entity.FinancialEntitiy
 
@@ -12,7 +11,7 @@ class FinancialLiveData {
 
         private val TAG = "FinancialRepo"
 
-        private var appDatabase: AppDatabase? = null
+//        private var appDatabase: AppDatabase? = null
 
         private var INSTANCE: FinancialLiveData? = null
         fun getInstance() = INSTANCE
@@ -22,13 +21,13 @@ class FinancialLiveData {
                 }
     }
 
-    fun setLocalDatabase(context: Context) {
-        appDatabase = AppDatabase.getInstance(context)
-
-    }
+//    fun setLocalDatabase(context: Context) {
+//        appDatabase = AppDatabase.getInstance(context)
+//
+//    }
 
     fun destroyDatabase() {
-        AppDatabase.destroyInstance()
+//        AppDatabase.destroyInstance()
     }
 
     fun createFinanceDatabase(context: Context, data: FinancialEntitiy):MutableLiveData<String> {
@@ -37,8 +36,8 @@ class FinancialLiveData {
 
         if (data != null) {
 
-            setLocalDatabase(context)
-            appDatabase!!.dbDao().insertSpending(data)
+//            setLocalDatabase(context)
+//            appDatabase!!.dbDao().insertSpending(data)
 
             dataResponse.value = StateDB.onSuccess.status
 
@@ -56,17 +55,17 @@ class FinancialLiveData {
 
         var dataResponse = MutableLiveData<MutableList<FinancialEntitiy>>()
 
-        setLocalDatabase(context)
+//        setLocalDatabase(context)
 
-        val listData = appDatabase!!.dbDao().getAllDataFinance()
-
-        if (listData.isEmpty()) {
-            dataResponse.value = listData
-        } else {
-            dataResponse.value = null
-        }
-
-        destroyDatabase()
+//        val listData = appDatabase!!.dbDao().getAllDataFinance()
+//
+//        if (listData.isEmpty()) {
+//            dataResponse.value = listData
+//        } else {
+//            dataResponse.value = null
+//        }
+//
+//        destroyDatabase()
 
         return dataResponse
     }

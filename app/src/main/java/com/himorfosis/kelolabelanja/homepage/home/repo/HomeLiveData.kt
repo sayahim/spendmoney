@@ -2,8 +2,6 @@ package com.himorfosis.kelolabelanja.homepage.home.repo
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
-import com.himorfosis.kelolabelanja.database.db.AppDatabase
-import com.himorfosis.kelolabelanja.database.db.DatabaseDao
 import com.himorfosis.kelolabelanja.database.entity.FinancialEntitiy
 import com.himorfosis.kelolabelanja.utilities.Util
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -23,7 +21,7 @@ class HomeLiveData {
         val compositeDisposable = CompositeDisposable()
 
         // database
-        private var notesDatabase: AppDatabase? = null
+//        private var notesDatabase: AppDatabase? = null
 
         private var INSTANCE: HomeLiveData? = null
         fun getInstance() = INSTANCE
@@ -34,7 +32,7 @@ class HomeLiveData {
 
     private fun setLocalDatabase(context: Context) {
 
-        notesDatabase = AppDatabase.getInstance(context)
+//        notesDatabase = AppDatabase.getInstance(context)
 
     }
 

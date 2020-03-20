@@ -1,32 +1,24 @@
 package com.himorfosis.kelolabelanja.financial
 
-import android.app.DatePickerDialog
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.ActionBar
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
 import com.himorfosis.kelolabelanja.R
-import com.himorfosis.kelolabelanja.category.CategoryData
+import com.himorfosis.kelolabelanja.data_sample.CategoryData
 import com.himorfosis.kelolabelanja.financial.adapter.FinancialCategoryAdapter
 import com.himorfosis.kelolabelanja.database.entity.CategoryEntity
 import com.himorfosis.kelolabelanja.database.entity.FinancialEntitiy
-import com.himorfosis.kelolabelanja.database.db.DatabaseDao
-import com.himorfosis.kelolabelanja.dialog.BottomSheetDialog
 import com.himorfosis.kelolabelanja.dialog.InputFinanceBottomDialog
 import com.himorfosis.kelolabelanja.financial.model.InputDataModel
 import com.himorfosis.kelolabelanja.homepage.activity.HomepageActivity
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.activity_input_financial.*
-import kotlinx.android.synthetic.main.layout_input_data.*
 import kotlinx.android.synthetic.main.toolbar_detail.*
 import org.jetbrains.anko.toast
 import kotlin.collections.ArrayList
@@ -182,7 +174,7 @@ class InputFinancial : AppCompatActivity() {
         recycler_category.apply {
 
             financialCategoryAdapter.addAll(listCategory)
-            layoutManager = GridLayoutManager(this@InputFinancial, 4)
+            layoutManager = GridLayoutManager(this@InputFinancial, 3)
             adapter = financialCategoryAdapter
 
         }

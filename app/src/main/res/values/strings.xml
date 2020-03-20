@@ -7,7 +7,8 @@
     // homepage
     <string name="home">Beranda</string>
     <string name="reports">Laporan</string>
-    <string name="statistict">Statistik</string>
+    <string name="category">Kategori</string>
+    <string name="profile">Profil</string>
 
     // input financial
     <string name="rupiah">Rp</string>
@@ -19,6 +20,9 @@
 
     <string name="today">Hari Ini</string>
 
+    // type financials
+    <string name="spend">Pengeluaran</string>
+    <string name="income">Pendapatan</string>
 
 
     <string-array name="month_full_list">

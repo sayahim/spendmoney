@@ -13,8 +13,8 @@
 
         <ImageButton
             android:id="@+id/backBar_btn"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
             android:background="@drawable/ic_back_black"
             android:layout_gravity="left|center"
             />
@@ -25,15 +25,15 @@
             android:layout_height="wrap_content"
             android:layout_gravity="left|center"
             android:text=""
-            android:textSize="16dp"
-            android:layout_marginLeft="50dp"
+            android:textSize="@dimen/_12ssp"
+            android:layout_marginLeft="@dimen/_50sdp"
             android:textColor="@color/text_black_primary"
             android:fontFamily="@font/semi_bold_opensans"/>
 
         <ImageButton
             android:id="@+id/delete_btn"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="@dimen/_15sdp"
+            android:layout_height="@dimen/_15sdp"
             android:background="@drawable/ic_delete_black"
             android:layout_gravity="right|center"
             android:visibility="invisible"

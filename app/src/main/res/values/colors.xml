@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#2F7EB7</color>
-    <color name="colorPrimaryDark">#10518C</color>
+    <color name="colorPrimary">#00ab6b</color>
+    <color name="colorPrimaryDark">#008B40</color>
     <color name="colorAccent">#7C7F81</color>
 
     <color name="black">#030303</color>
@@ -26,11 +26,14 @@
     <color name="purple_light">#7799FA</color>
     <color name="cream">#FFFDD0</color>
 
+    <color name="bg_blue">#2c61b9</color>
+    <color name="bg_blue_dark">#2e62bb</color>
+
     <color name="btn_blue">#1889FD</color>
     <color name="btn_blue_dark">#10518C</color>
-    <color name="btn_green">#08DA91</color>
+    <color name="btn_green">#00ab6b</color>
 
-    <color name="indicator">#159F85</color>
+    <color name="indicator">#00ab6b</color>
 
     <color name="icon_black">#7C7F81</color>
     <color name="line">#f3f3f3</color>
@@ -51,6 +54,7 @@
     <color name="text_hint">#a6a6a6</color>
     <color name="text_white">#ffffff</color>
     <color name="text_blue_dark">#10518C</color>
+    <color name="text_green">#00ab6b</color>
 
     <color name="text_hint_transparan">#bdffffff</color>
 

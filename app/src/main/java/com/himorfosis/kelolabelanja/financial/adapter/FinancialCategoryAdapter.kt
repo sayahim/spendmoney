@@ -1,6 +1,5 @@
 package com.himorfosis.kelolabelanja.financial.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.himorfosis.kelolabelanja.R
 import com.himorfosis.kelolabelanja.database.entity.CategoryEntity
 import com.himorfosis.kelolabelanja.utilities.Util
-import kotlinx.android.synthetic.main.item_category_spending.view.*
+import kotlinx.android.synthetic.main.item_category_financials.view.*
 import java.util.ArrayList
 
 class FinancialCategoryAdapter : RecyclerView.Adapter<FinancialCategoryAdapter.ViewHolder>(), Filterable {
@@ -23,7 +22,7 @@ class FinancialCategoryAdapter : RecyclerView.Adapter<FinancialCategoryAdapter.V
     lateinit var onClickItem: AdapterOnClickItem
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_category_spending, parent, false))
+        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_category_financials, parent, false))
     }
 
     override fun getItemCount() = listData.size

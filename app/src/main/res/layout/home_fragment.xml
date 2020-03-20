@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <include
-        layout="@layout/toolbar_homepage"
+        layout="@layout/toolbar_title"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
@@ -66,11 +66,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_50sdp"
-                        android:background="@color/colorPrimary"/>
-
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -86,6 +81,7 @@
                             android:paddingRight="@dimen/_10sdp"
                             android:paddingLeft="@dimen/_10sdp"
                             android:weightSum="2"
+                            android:background="@drawable/corner_blue"
                             >
 
                             <LinearLayout
@@ -98,10 +94,10 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/regular_opensans"
+                                    android:fontFamily="@font/semi_bold_opensans"
                                     android:text="Pengeluaran"
                                     android:layout_gravity="center"
-                                    android:textColor="@color/text_hint"
+                                    android:textColor="@color/text_white"
                                     android:textSize="@dimen/_12ssp" />
 
                                 <TextView
@@ -111,16 +107,16 @@
                                     android:layout_gravity="center"
                                     android:fontFamily="@font/bold_opensans"
                                     android:text="Rp 0"
-                                    android:textColor="@color/text_black_primary"
+                                    android:textColor="@color/text_white"
                                     android:textSize="@dimen/_18ssp" />
 
 
                             </LinearLayout>
 
                             <View
-                                android:layout_width="@dimen/_2sdp"
+                                android:layout_width="@dimen/_1sdp"
                                 android:layout_height="match_parent"
-                                android:background="@color/hint_color"
+                                android:background="@color/white"
                                 android:layout_marginLeft="@dimen/_3sdp"
                                 android:layout_marginRight="@dimen/_3sdp"/>
 
@@ -133,10 +129,10 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/regular_opensans"
+                                    android:fontFamily="@font/semi_bold_opensans"
                                     android:text="Pendapatan"
                                     android:layout_gravity="center"
-                                    android:textColor="@color/text_hint"
+                                    android:textColor="@color/text_white"
                                     android:textSize="@dimen/_12ssp" />
 
                                 <TextView
@@ -146,7 +142,7 @@
                                     android:fontFamily="@font/bold_opensans"
                                     android:text="Rp 0"
                                     android:layout_gravity="center"
-                                    android:textColor="@color/text_black_primary"
+                                    android:textColor="@color/text_white"
                                     android:textSize="@dimen/_18ssp" />
 
 
@@ -215,7 +211,7 @@
             android:layout_height="@dimen/_40sdp"
             android:layout_gravity="center|bottom"
             android:layout_marginBottom="@dimen/_25sdp"
-            android:background="@drawable/rounded_blue"
+            android:background="@drawable/rounded_green"
             android:orientation="horizontal"
             android:paddingLeft="@dimen/_20sdp"
             android:paddingRight="@dimen/_20sdp">

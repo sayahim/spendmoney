@@ -71,16 +71,30 @@
 
         </LinearLayout>
 
-        <ProgressBar
-            android:id="@+id/total_progress"
-            style="?android:attr/progressBarStyleHorizontal"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:indeterminate="false"
-            android:maxHeight="@dimen/_5sdp"
-            android:minHeight="@dimen/_5sdp"
-            android:progressDrawable="@drawable/progress_drawable" />
+            android:layout_height="wrap_content">
+
+<!--            <View-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="@dimen/_5sdp"-->
+<!--                android:layout_marginTop="@dimen/_5sdp"-->
+<!--                android:progressDrawable="@color/blue_dark" />-->
+
+            <ProgressBar
+                android:id="@+id/total_progress"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:indeterminate="false"
+                android:maxHeight="@dimen/_5sdp"
+                android:minHeight="@dimen/_5sdp"
+                android:progressDrawable="@drawable/progress_drawable" />
+
+        </FrameLayout>
+
+
 
     </LinearLayout>
 

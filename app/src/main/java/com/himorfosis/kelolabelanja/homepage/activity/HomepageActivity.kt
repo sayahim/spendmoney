@@ -1,26 +1,25 @@
 package com.himorfosis.kelolabelanja.homepage.activity
 
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import androidx.appcompat.app.ActionBar
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.himorfosis.kelolabelanja.R
+import com.himorfosis.kelolabelanja.homepage.category.CategoryMain
 import com.himorfosis.kelolabelanja.homepage.chart.ChartMain
-import com.himorfosis.kelolabelanja.homepage.home.HomeFragment
-import com.himorfosis.kelolabelanja.homepage.statistict.view.StatisticFragment
+import com.himorfosis.kelolabelanja.homepage.view.HomeFragment
+import com.himorfosis.kelolabelanja.homepage.view.ProfileFragment
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.activity_homepage.*
-import kotlinx.android.synthetic.main.toolbar_homepage.*
 
 class HomepageActivity : AppCompatActivity() {
 
     val TAG = "HomepageActivity"
     var fragmentActive = 0
 
-    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+//    var mOnNavigationItemSelectedListener: BottomNavigationView? = null
+
+    private val  mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.nav_home -> {
 
@@ -44,31 +43,51 @@ class HomepageActivity : AppCompatActivity() {
 
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.nav_statistic -> {
+            R.id.nav_category -> {
 
-                val fragment = StatisticFragment()
+                val fragment = CategoryMain()
                 replaceFragment(fragment)
 
-                Util.log(TAG, "nav_statistic")
+                fragmentActive = 2
+
+                return@OnNavigationItemSelectedListener true
+            }
+
+            R.id.nav_user -> {
+
+                val fragment = ProfileFragment()
+                replaceFragment(fragment)
 
                 fragmentActive = 3
 
                 return@OnNavigationItemSelectedListener true
+
             }
         }
         false
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_homepage)
 
-//        setToolbar()
-
         setFontType()
+
+        setBottomBar()
 
         val fragment = HomeFragment()
         replaceFragment(fragment)
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+
+    }
+
+    private fun setBottomBar() {
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
@@ -82,17 +101,6 @@ class HomepageActivity : AppCompatActivity() {
                 .commit()
     }
 
-    private fun setToolbar() {
-
-        val actionBar = supportActionBar
-        actionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this, R.color.white)))
-
-        supportActionBar!!.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
-        supportActionBar!!.setCustomView(R.layout.toolbar_homepage)
-
-        titleBar_tv.setText("Dashboard")
-
-    }
 
     private fun setFontType() {
 

@@ -48,24 +48,27 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_margin="@dimen/_10sdp">
+                    android:layout_margin="@dimen/_10sdp"
+                    android:paddingLeft="@dimen/_10sdp"
+                    android:paddingRight="@dimen/_10sdp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/regular_opensans"
+                        android:fontFamily="@font/semi_bold_opensans"
                         android:text="Daftar Data Teratas"
-                        android:textColor="@color/text_hint"
+                        android:textColor="@color/text_black_second"
                         android:textSize="@dimen/_12ssp"
                         android:layout_gravity="left"
                         />
 
                     <TextView
+                        android:id="@+id/see_all_report_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/regular_opensans"
                         android:text="Lihat Semua"
-                        android:textColor="@color/text_hint"
+                        android:textColor="@color/text_green"
                         android:textSize="@dimen/_12ssp"
                         android:layout_gravity="right"
                         />
