@@ -1,5 +1,6 @@
 package com.himorfosis.kelolabelanja.homepage.chart
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,10 @@ import com.himorfosis.kelolabelanja.data_sample.FinancialsData
 import com.himorfosis.kelolabelanja.homepage.chart.adapter.ReportChartAdapter
 import com.himorfosis.kelolabelanja.homepage.chart.model.ChartCategoryModel
 import com.himorfosis.kelolabelanja.homepage.chart.repo.ChartViewModel
+import com.himorfosis.kelolabelanja.reports.view.ReportDetailActivity
+import com.himorfosis.kelolabelanja.reports.view.ReportsActivity
+import com.himorfosis.kelolabelanja.state.StatusData
+import com.himorfosis.kelolabelanja.utilities.DateSet
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.chart_fragment.*
 import org.jetbrains.anko.support.v4.toast
@@ -29,14 +34,6 @@ class ChartSpendFragment : Fragment() {
 
     lateinit var chartViewModel: ChartViewModel
 
-//    companion object {
-//
-//
-//        fun newInstance(): ChartSpendFragment {
-//            return ChartSpendFragment()
-//        }
-//    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.chart_fragment, container, false)
@@ -45,33 +42,41 @@ class ChartSpendFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setViewModel()
-
+        initializeUI()
         setAdapter()
-
         getDataFinancialsCategory()
-
-        see_all_report_tv.setOnClickListener {
-            toast("Cooming soon")
-        }
 
     }
 
-    private fun setViewModel() {
+    private fun initializeUI() {
 
         chartViewModel = ViewModelProviders.of(this)[ChartViewModel::class.java]
+        show_data_month_tv.text = "Data Bulan " + DateSet.getMonthSelected(requireContext())
+
+        see_all_report_tv.setOnClickListener {
+
+            val post = Intent(requireContext(), ReportsActivity::class.java)
+            post.putExtra("type", FinancialsData.SPEND_TYPE)
+            startActivity(post)
+
+        }
     }
 
     private fun setAdapter() {
 
         adapterReportChart = ReportChartAdapter()
-
         recycler_report_cart.apply {
-
             layoutManager = LinearLayoutManager(requireContext())
             adapter = adapterReportChart
-
         }
+
+        adapterReportChart.setOnclick(object : ReportChartAdapter.OnClickItem {
+            override fun onItemClicked(data: ChartCategoryModel) {
+                val intent = Intent(context, ReportDetailActivity::class.java)
+                intent.putExtra("type", FinancialsData.SPEND_TYPE)
+                startActivity(intent)
+            }
+        })
 
     }
 
@@ -81,12 +86,9 @@ class ChartSpendFragment : Fragment() {
         chartViewModel.fetchChartFinancialsByCategoryResponse.observe(this, Observer {
 
             if (it.isNotEmpty()) {
-
                 setDataToShowOnCart(it)
                 adapterReportChart.addAll(it, it[0].total_nominal_category!!.toLong())
-
             } else {
-
                 toast("Data Tidak Tersedia")
             }
 
@@ -112,6 +114,9 @@ class ChartSpendFragment : Fragment() {
                 pie_chart.animateXY(50, 50)
                 pie_chart.invalidate()
 
+                layout_chart_ll.visibility = View.VISIBLE
+                progress_chart.visibility = View.GONE
+
             } else {
 
             }
@@ -120,21 +125,5 @@ class ChartSpendFragment : Fragment() {
 
     }
 
-//    private fun setFinancialsOnChartPie() {
-//
-//        pie_chart.description.text = "Data Teratas"
-//        pie_chart.isRotationEnabled = true
-//
-//        val pieDataSet = PieDataSet(dataListChart, "")
-//        pieDataSet.setColors(*ColorTemplate.MATERIAL_COLORS)
-//
-////        pieDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
-////        pieDataSet.setColors(ColorTemplate.PASTEL_COLORS);
-////        pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-//        val pieData = PieData(pieDataSet)
-//        pie_chart.data = pieData
-//        pie_chart.animateXY(50, 50)
-//        pie_chart.invalidate()
-//    }
 
 }

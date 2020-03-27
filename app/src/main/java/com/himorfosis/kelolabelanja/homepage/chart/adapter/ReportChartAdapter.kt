@@ -16,11 +16,12 @@ class ReportChartAdapter : RecyclerView.Adapter<ReportChartAdapter.ViewHolder>()
 
     private var listData: MutableList<ChartCategoryModel> = ArrayList<ChartCategoryModel>()
 
+    lateinit var onClickItem: OnClickItem
+
     // progress
     internal var progressStatusCounter = 0
     internal var progressHandler = Handler()
-    var maxNominal :Long = 0
-
+    var maxNominal: Long = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.item_progress_financial, parent, false)
@@ -64,6 +65,11 @@ class ReportChartAdapter : RecyclerView.Adapter<ReportChartAdapter.ViewHolder>()
 
                 }
             }).start()
+
+            holder.itemView.setOnClickListener {
+                onClickItem.onItemClicked(data)
+            }
+
         }
 
     }
@@ -78,8 +84,6 @@ class ReportChartAdapter : RecyclerView.Adapter<ReportChartAdapter.ViewHolder>()
     }
 
     private fun add(data: ChartCategoryModel) {
-
-
         listData.add(data)
         notifyItemInserted(listData.size - 1)
     }
@@ -101,5 +105,12 @@ class ReportChartAdapter : RecyclerView.Adapter<ReportChartAdapter.ViewHolder>()
         }
     }
 
+    interface OnClickItem {
+        fun onItemClicked(data: ChartCategoryModel)
+    }
+
+    fun setOnclick(onClickItem: OnClickItem) {
+        this.onClickItem = onClickItem
+    }
 
 }

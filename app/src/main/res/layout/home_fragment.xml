@@ -81,7 +81,7 @@
                             android:paddingRight="@dimen/_10sdp"
                             android:paddingLeft="@dimen/_10sdp"
                             android:weightSum="2"
-                            android:background="@drawable/corner_blue"
+                            android:background="@drawable/corner_blue_gradient"
                             >
 
                             <LinearLayout

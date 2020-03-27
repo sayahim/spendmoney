@@ -1,4 +1,4 @@
-package com.himorfosis.kelolabelanja.details
+package com.himorfosis.kelolabelanja.financial
 
 import android.app.Dialog
 import android.content.Intent
@@ -11,7 +11,6 @@ import android.view.Window
 import android.widget.Button
 import androidx.appcompat.app.ActionBar
 import androidx.core.content.ContextCompat
-import androidx.room.Room
 import com.himorfosis.kelolabelanja.R
 import com.himorfosis.kelolabelanja.database.db.DatabaseDao
 import com.himorfosis.kelolabelanja.homepage.activity.HomepageActivity
@@ -85,7 +84,7 @@ class FinancialDetail : AppCompatActivity() {
         dialogView.setContentView(layoutDialog)
 
         val cancelBtn = dialogView.findViewById(R.id.cancel_btn) as Button
-        val deleteBtn = dialogView.findViewById(R.id.delete_btn) as Button
+        val deleteBtn = dialogView.findViewById(R.id.action_btn) as Button
 
 
         cancelBtn.setOnClickListener {
@@ -115,7 +114,7 @@ class FinancialDetail : AppCompatActivity() {
         supportActionBar!!.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
         supportActionBar!!.setCustomView(R.layout.toolbar_detail)
 
-        delete_btn.visibility = View.VISIBLE
+        action_btn.visibility = View.VISIBLE
 
         titleBar_tv.text = "Detail"
 
@@ -125,7 +124,7 @@ class FinancialDetail : AppCompatActivity() {
 
         }
 
-        delete_btn.setOnClickListener {
+        action_btn.setOnClickListener {
 
 
             showAlertChoice()

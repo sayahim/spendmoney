@@ -56,7 +56,7 @@
                 android:background="@drawable/button_background_cancel"/>
 
             <Button
-                android:id="@+id/delete_btn"
+                android:id="@+id/action_btn"
                 android:layout_width="@dimen/_120sdp"
                 android:layout_height="@dimen/_40sdp"
                 android:layout_margin="@dimen/_5sdp"

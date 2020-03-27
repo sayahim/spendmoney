@@ -1,5 +1,6 @@
 package com.himorfosis.kelolabelanja.homepage.chart
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,22 +17,18 @@ import com.himorfosis.kelolabelanja.data_sample.FinancialsData
 import com.himorfosis.kelolabelanja.homepage.chart.adapter.ReportChartAdapter
 import com.himorfosis.kelolabelanja.homepage.chart.model.ChartCategoryModel
 import com.himorfosis.kelolabelanja.homepage.chart.repo.ChartViewModel
+import com.himorfosis.kelolabelanja.reports.model.ReportsDataModel
+import com.himorfosis.kelolabelanja.reports.view.ReportDetailActivity
+import com.himorfosis.kelolabelanja.reports.view.ReportsActivity
+import com.himorfosis.kelolabelanja.utilities.DateSet
 import kotlinx.android.synthetic.main.chart_fragment.*
 import org.jetbrains.anko.support.v4.toast
 
-class ChartIncomeFragment: Fragment() {
+class ChartIncomeFragment : Fragment() {
 
     // adapter
     lateinit var adapterReportChart: ReportChartAdapter
-
-    companion object {
-
-        lateinit var chartViewModel : ChartViewModel
-
-        fun newInstance(): ChartIncomeFragment {
-            return ChartIncomeFragment()
-        }
-    }
+    lateinit var chartViewModel: ChartViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -47,9 +44,12 @@ class ChartIncomeFragment: Fragment() {
 
         getDataFinancialsCategory()
 
-        see_all_report_tv.setOnClickListener {
-            toast("Cooming soon")
+        show_data_month_tv.text = "Data Bulan " + DateSet.getMonthSelected(requireContext())
 
+        see_all_report_tv.setOnClickListener {
+            val post = Intent(requireContext(), ReportsActivity::class.java)
+            post.putExtra("type", FinancialsData.INCOME_TYPE)
+            startActivity(post)
         }
 
     }
@@ -64,11 +64,16 @@ class ChartIncomeFragment: Fragment() {
         adapterReportChart = ReportChartAdapter()
 
         recycler_report_cart.apply {
-
             layoutManager = LinearLayoutManager(requireContext())
             adapter = adapterReportChart
-
         }
+
+        adapterReportChart.setOnclick(object : ReportChartAdapter.OnClickItem {
+            override fun onItemClicked(data: ChartCategoryModel) {
+                val intent = Intent(context, ReportDetailActivity::class.java)
+                intent.putExtra("type", FinancialsData.INCOME_TYPE)
+                startActivity(intent)            }
+        })
 
     }
 
@@ -92,7 +97,7 @@ class ChartIncomeFragment: Fragment() {
 
     }
 
-    private fun setDataToShowOnCart(listData : List<ChartCategoryModel>) {
+    private fun setDataToShowOnCart(listData: List<ChartCategoryModel>) {
 
         chartViewModel.setShowDataFinancialsCategoryOnChart(listData)
         chartViewModel.showDataFinancialsCategoryOnChart.observe(this, Observer {
@@ -109,6 +114,9 @@ class ChartIncomeFragment: Fragment() {
                 pie_chart.data = pieData
                 pie_chart.animateXY(50, 50)
                 pie_chart.invalidate()
+
+                layout_chart_ll.visibility = View.VISIBLE
+                progress_chart.visibility = View.GONE
 
             } else {
 

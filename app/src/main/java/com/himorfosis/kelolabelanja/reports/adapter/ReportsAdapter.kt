@@ -15,10 +15,12 @@ class ReportsAdapter : RecyclerView.Adapter<ReportsAdapter.ViewHolder>() {
 
     private var listData: MutableList<ReportsDataModel> = ArrayList<ReportsDataModel>()
 
+    lateinit var onClickItem: OnClickItem
+
     // progress
     internal var progressStatusCounter = 0
     internal var progressHandler = Handler()
-    var maxNominal :Long = 0
+    var maxNominal: Long = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.item_progress_financial, parent, false)
@@ -33,32 +35,44 @@ class ReportsAdapter : RecyclerView.Adapter<ReportsAdapter.ViewHolder>() {
 
         val data = listData[position]
 
-        holder.title_category_tv.text = data.category_name
-        holder.total_nominal_tv.text = "Rp " + data.total_nominal_category.toString()
+        if (data != null) {
 
-        // set image
-        val imageAssets = Util.convertImageDrawable(holder.itemView.context, data.category_image)
-        holder.category_image.setImageResource(imageAssets)
+            holder.title_category_tv.text = data.category_name
+            holder.total_nominal_tv.text = "Rp " + data.total_nominal_category.toString()
 
-        // count to get persen
-        val progressPersen:Double = data.total_nominal_category.toDouble() / maxNominal.toDouble()
-        val persen:Double = progressPersen * 100.0
+            // set image
+            val imageAssets = Util.convertImageDrawable(holder.itemView.context, data.category_image)
+            holder.category_image.setImageResource(imageAssets)
+            holder.category_image.visibility = View.VISIBLE
 
-        Thread(Runnable {
-            while (progressStatusCounter < 100) {
-                progressHandler.post {
-                    // set progress
-                    holder.total_progress.progress = persen.toInt()
+            Util.log("Adapter", "image : ${data.category_image}")
+
+            // count to get persen
+            val progressPersen: Double = data.total_nominal_category!!.toDouble() / maxNominal.toDouble()
+            val persen: Double = progressPersen * 100.0
+
+            Thread(Runnable {
+                while (progressStatusCounter < 100) {
+                    progressHandler.post {
+                        // set progress
+                        holder.total_progress.progress = persen.toInt()
+                    }
+                    try {
+                        Thread.sleep(300)
+                    } catch (e: InterruptedException) {
+                        e.printStackTrace()
+                    }
 
                 }
-                try {
-                    Thread.sleep(300)
-                } catch (e: InterruptedException) {
-                    e.printStackTrace()
-                }
+            }).start()
 
+            holder.itemView.setOnClickListener {
+
+                onClickItem.onItemClicked(data)
             }
-        }).start()
+
+        }
+
 
     }
 
@@ -77,9 +91,7 @@ class ReportsAdapter : RecyclerView.Adapter<ReportsAdapter.ViewHolder>() {
     }
 
     fun addAll(posItems: List<ReportsDataModel>, getMaxNominal: Long) {
-
         maxNominal = getMaxNominal
-
         for (response in posItems) {
             add(response)
         }
@@ -92,5 +104,17 @@ class ReportsAdapter : RecyclerView.Adapter<ReportsAdapter.ViewHolder>() {
             notifyDataSetChanged()
         }
     }
+
+
+    interface OnClickItem {
+        fun onItemClicked(data: ReportsDataModel)
+
+    }
+
+    fun setOnclick(onClickItem: OnClickItem) {
+        this.onClickItem = onClickItem
+
+    }
+
 
 }

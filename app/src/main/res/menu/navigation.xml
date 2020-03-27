@@ -18,7 +18,7 @@
         />
 
     <item
-        android:id="@+id/nav_user"
+        android:id="@+id/nav_profile"
         android:icon="@drawable/ic_person_black"
         android:title="@string/profile"
         />

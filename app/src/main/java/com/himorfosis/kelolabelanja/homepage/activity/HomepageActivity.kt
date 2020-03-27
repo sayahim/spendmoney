@@ -9,6 +9,7 @@ import com.himorfosis.kelolabelanja.homepage.category.CategoryMain
 import com.himorfosis.kelolabelanja.homepage.chart.ChartMain
 import com.himorfosis.kelolabelanja.homepage.view.HomeFragment
 import com.himorfosis.kelolabelanja.homepage.view.ProfileFragment
+import com.himorfosis.kelolabelanja.state.HomeState
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.activity_homepage.*
 
@@ -16,50 +17,28 @@ class HomepageActivity : AppCompatActivity() {
 
     val TAG = "HomepageActivity"
     var fragmentActive = 0
+    val NAV_START = 0
+    val NAV_ACTION = 1
 
 //    var mOnNavigationItemSelectedListener: BottomNavigationView? = null
 
     private val  mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.nav_home -> {
-
-                val fragment = HomeFragment()
-                replaceFragment(fragment)
-
-                Util.log(TAG, "beranda")
-
-                fragmentActive = 0
-
+                homeFragment()
                 return@OnNavigationItemSelectedListener true
             }
             R.id.nav_reports -> {
-
-                val fragment = ChartMain()
-                replaceFragment(fragment)
-
-                Util.log(TAG, "nav_reports")
-
-                fragmentActive = 1
-
+                reportFragment()
                 return@OnNavigationItemSelectedListener true
             }
             R.id.nav_category -> {
-
-                val fragment = CategoryMain()
-                replaceFragment(fragment)
-
-                fragmentActive = 2
-
+                categoryFragment()
                 return@OnNavigationItemSelectedListener true
             }
 
-            R.id.nav_user -> {
-
-                val fragment = ProfileFragment()
-                replaceFragment(fragment)
-
-                fragmentActive = 3
-
+            R.id.nav_profile -> {
+                profileFragment()
                 return@OnNavigationItemSelectedListener true
 
             }
@@ -72,57 +51,80 @@ class HomepageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_homepage)
 
-        setFontType()
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
-        setBottomBar()
+        checkParseData()
 
+    }
+
+    private fun checkParseData() {
+
+        val getFrom = intent.getStringExtra("home")
+
+        if (getFrom != null) {
+
+            if (getFrom == HomeState.PROFILE) {
+                profileFragment()
+            } else if (getFrom == HomeState.REPORT) {
+                reportFragment()
+            } else if (getFrom == HomeState.CATEGORY) {
+                categoryFragment()
+            } else {
+                homeFragment()
+            }
+
+        } else {
+            homeFragment()
+        }
+
+    }
+
+    private fun homeFragment() {
+        fragmentActive = NAV_START
         val fragment = HomeFragment()
         replaceFragment(fragment)
+        navigation.menu.findItem(R.id.nav_home).isChecked = true
 
     }
 
-    override fun onStart() {
-        super.onStart()
-
+    private fun reportFragment() {
+        fragmentActive = NAV_ACTION
+        val fragment = ChartMain()
+        replaceFragment(fragment)
+        navigation.menu.findItem(R.id.nav_reports).isChecked = true
 
     }
 
-    private fun setBottomBar() {
+    private fun categoryFragment() {
+        fragmentActive = NAV_ACTION
+        val fragment = CategoryMain()
+        replaceFragment(fragment)
+        navigation.menu.findItem(R.id.nav_category).isChecked = true
 
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+    }
+
+    private fun profileFragment() {
+        fragmentActive = NAV_ACTION
+        val fragment = ProfileFragment()
+        replaceFragment(fragment)
+        navigation.menu.findItem(R.id.nav_profile).isChecked = true
 
     }
 
     private fun replaceFragment(fragment: Fragment) {
-
+        Util.log(TAG, "fragment : $fragment")
         supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.frame, fragment, fragment.javaClass.getSimpleName())
+                .replace(R.id.frame, fragment, fragment.javaClass.simpleName)
                 .commit()
-    }
-
-
-    private fun setFontType() {
-
-//        val calligrapher = Calligrapher(this)
-//        calligrapher.setFont(this@HomepageActivity, Util.regularOpenSans, true)
-
     }
 
     override fun onBackPressed() {
 
         if (fragmentActive == 0) {
-
             finishAffinity()
-
         } else {
-
-            navigation.selectedItemId = R.id.nav_home
-            fragmentActive = 0
-
-            val fragment = HomeFragment()
-            replaceFragment(fragment)
-
+            homeFragment()
         }
 
     }

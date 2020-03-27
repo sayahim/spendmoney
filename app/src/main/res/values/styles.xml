@@ -35,4 +35,21 @@
         <item name="textAllCaps">false</item>
     </style>
 
+    <style name="MyEditTextStyle" parent="android:Widget.EditText">
+        <item name="android:textColor">@color/text_black_primary</item>
+<!--        <item name="android:textStyle">bold</item>-->
+        <item name="android:fontFamily">@font/semi_bold_opensans</item>
+        <item name="colorControlActivated">@color/indicator</item>
+        <item name="colorControlNormal">@color/hint_color</item>
+        <!--        <item name="android:padding">@dimen/_12ssp</item>-->
+<!--        <item name="android:background">@android:drawable/editbox_background_normal</item>-->
+        <item name="android:textSize">@dimen/_14ssp</item>
+    </style>
+
+    <style name="text_status" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/text_hint</item>
+        <item name="android:fontFamily">@font/regular_opensans</item>
+        <item name="android:textSize">@dimen/_14ssp</item>
+    </style>
+
 </resources>

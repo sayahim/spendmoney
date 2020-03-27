@@ -106,7 +106,7 @@ class FinancialCategoryDetail : AppCompatActivity() {
         supportActionBar!!.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
         supportActionBar!!.setCustomView(R.layout.toolbar_detail)
 
-        delete_btn.visibility = View.INVISIBLE
+        action_btn.visibility = View.INVISIBLE
 
         titleBar_tv.text = "Detail Ketegori $getTitleCategory"
 

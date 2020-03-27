@@ -18,6 +18,8 @@ object FinancialsData {
 //                CategoryEntity(2, "Belanja", "ic_belanja"),
 //                CategoryEntity(3, "Pakaian", "ic_hanger"),
 //                CategoryEntity(4, "Dapur", "ic_baker"),
+//                CategoryEntity(7, "Kesehatan", "ic_medical"),
+
 
 // income
 //                CategoryEntity(1, "Gaji", "ic_money"),
@@ -35,6 +37,10 @@ object FinancialsData {
                 FinancialEntitiy(null, 1, "Makanan", "ic_eat", SPEND_TYPE, "15000", "", "", "" ),
                 FinancialEntitiy(null, 4, "Belanja", "ic_baker", SPEND_TYPE, "200000", "", "", "" ),
                 FinancialEntitiy(null, 4, "Belanja", "ic_baker", SPEND_TYPE, "150000", "", "", "" ),
+                FinancialEntitiy(null, 3, "Pakaian", "ic_hanger", SPEND_TYPE, "300000", "", "", "" ),
+                FinancialEntitiy(null, 3, "Pakaian", "ic_hanger", SPEND_TYPE, "200000", "", "", "" ),
+                FinancialEntitiy(null, 4, "Dapur", "ic_baker", SPEND_TYPE, "200000", "", "", "" ),
+                FinancialEntitiy(null, 4, "Kesehatan", "ic_medical", SPEND_TYPE, "100000", "", "", "" ),
                 FinancialEntitiy(null, 3, "Penjualan", "ic_payment", INCOME_TYPE, "200000", "", "", "" )
 
         )

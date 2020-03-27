@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/_45sdp"
     android:minHeight="?attr/actionBarSize"
     >
 
@@ -25,16 +25,16 @@
             android:layout_height="wrap_content"
             android:layout_gravity="left|center"
             android:text=""
-            android:textSize="@dimen/_12ssp"
+            android:textSize="@dimen/_14ssp"
             android:layout_marginLeft="@dimen/_50sdp"
             android:textColor="@color/text_black_primary"
             android:fontFamily="@font/semi_bold_opensans"/>
 
-        <ImageButton
-            android:id="@+id/delete_btn"
-            android:layout_width="@dimen/_15sdp"
-            android:layout_height="@dimen/_15sdp"
-            android:background="@drawable/ic_delete_black"
+        <ImageView
+            android:id="@+id/action_btn"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:src="@drawable/ic_date_gray"
             android:layout_gravity="right|center"
             android:visibility="invisible"
             />

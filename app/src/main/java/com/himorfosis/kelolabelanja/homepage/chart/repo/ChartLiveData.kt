@@ -27,30 +27,6 @@ class ChartLiveData {
 
     }
 
-    private fun collectingDataByCategory() {
-
-        val dataFinancialsUser = FinancialsData.getFinancialSample()
-        val dataCategoryFinancialsUser = CategoryData.getDataCategoryIncome()
-
-
-        var setCategoryList: MutableList<FinancialEntitiy> = ArrayList<FinancialEntitiy>()
-
-        for (category in dataCategoryFinancialsUser) {
-
-            for (item in dataFinancialsUser) {
-
-                // check type financials
-                if (item.type == FinancialsData.INCOME_TYPE) {
-
-
-                }
-
-            }
-
-        }
-
-    }
-
     private fun fetchIncomeDataFinancialsByCategory(): List<ChartCategoryModel> {
 
         val listDataFinancials = FinancialsData.getFinancialSample()

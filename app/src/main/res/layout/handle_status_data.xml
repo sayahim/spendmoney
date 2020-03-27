@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/_20sdp"
+    >
+
+    <ImageView
+        android:id="@+id/status_image"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_100sdp"
+        android:layout_gravity="center"
+        android:src="@mipmap/logo_app"/>
+
+
+    <TextView
+        android:id="@+id/status_title_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginLeft="@dimen/_20sdp"
+        android:layout_marginRight="@dimen/_20sdp"
+        android:text="Status Data"
+        android:textSize="@dimen/_16ssp"
+        android:textColor="@color/text_black_second"
+        android:visibility="visible"
+        android:fontFamily="@font/bold_opensans"/>
+
+
+    <TextView
+        android:id="@+id/status_description_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginLeft="@dimen/_20sdp"
+        android:layout_marginRight="@dimen/_20sdp"
+        android:text="Status Data"
+        android:textSize="@dimen/_14ssp"
+        android:textColor="@color/text_black_second"
+        android:fontFamily="@font/regular_opensans"
+        android:visibility="visible"/>
+
+</LinearLayout>
