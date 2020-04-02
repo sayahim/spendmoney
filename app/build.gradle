@@ -34,7 +34,7 @@ android {
     flavorDimensions 'money-manager'
     productFlavors {
         production {
-            buildConfigField 'String', 'baseURL', '"https://api.mediv.net/"'
+            buildConfigField 'String', 'baseURL', '"http://localhost:8080/api/"'
         }
         development {
             buildConfigField 'String', 'baseURL', '"https://api.devmind2.net/"'

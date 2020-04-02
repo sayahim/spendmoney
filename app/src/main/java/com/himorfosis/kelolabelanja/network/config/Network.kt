@@ -1,8 +1,11 @@
 package com.himorfosis.kelolabelanja.network.config
 
 import com.himorfosis.kelolabelanja.BuildConfig
+import com.himorfosis.kelolabelanja.app.MyApp
 import com.himorfosis.kelolabelanja.network.services.ClientService
+import com.himorfosis.kelolabelanja.utilities.preferences.AccountPref
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -13,44 +16,36 @@ object Network {
 
     private val retrofitBuilder = Retrofit.Builder()
 
-    fun service(){
+    fun build() {
         val client = OkHttpClient.Builder()
-        client.addInterceptor { chain ->
-            val request = chain.request().newBuilder()
-                    .addHeader("Content-Type", "application/json")
-                    .addHeader("Accept", "application/json")
-                    .build()
-            chain.proceed(request)
+        if (BuildConfig.DEBUG) {
+            val httpLoggingInterceptor = HttpLoggingInterceptor()
+            httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+            client.addInterceptor(httpLoggingInterceptor)
+        } else {
+            HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.NONE
+                client.addInterceptor(this)
+            }
         }
-        client.readTimeout(60, TimeUnit.SECONDS)
-        client.connectTimeout(60, TimeUnit.SECONDS)
 
-        val builder = Retrofit.Builder().baseUrl(BuildConfig.baseURL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-        builder.client(client.build())
-        return builder.build().create(ClientService::class)
-    }
-
-    fun serviceWithToken(): ClientService {
-        val token = MedivApp.findInAccount("token")
-        val client = OkHttpClient.Builder()
+        val token = MyApp.findInAccount(AccountPref.TOKEN)
         client.addInterceptor { chain ->
             val request = chain.request().newBuilder()
-                    .addHeader("Content-Type", "application/json")
-                    .addHeader("Accept", "application/json")
+                    .header("Content-Type", "application/json;charset=UTF-8")
+                    .header("Accept", "application/json;charset=UTF-8")
                     .addHeader("Authorization", "Bearer $token")
                     .build()
             chain.proceed(request)
         }
-        client.readTimeout(60, TimeUnit.SECONDS)
-        client.connectTimeout(60, TimeUnit.SECONDS)
 
-        val builder = Retrofit.Builder().baseUrl(BuildConfig.baseURL)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+        client.connectTimeout(2, TimeUnit.MINUTES)
+        client.readTimeout(2, TimeUnit.MINUTES)
+
+        retrofitBuilder.baseUrl(BuildConfig.baseURL)
+                .client(client.build())
                 .addConverterFactory(GsonConverterFactory.create())
-        builder.client(client.build())
-        return builder.build().create(ClientInterface::class.java)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
     }
 
     fun <T> createService(service: Class<T>): T {

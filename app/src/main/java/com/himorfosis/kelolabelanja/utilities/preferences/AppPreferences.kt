@@ -7,11 +7,17 @@ class AppPreferences(context: Context, preference: String = context.packageName)
 
     private val sp: SharedPreferences = context.getSharedPreferences(preference, Context.MODE_PRIVATE)
 
+    fun deleteData() {
+        val editor: SharedPreferences.Editor = sp.edit()
+        editor.clear()
+        editor.apply()
+    }
+
     fun getString(field: String): String? {
         return sp.getString(field, "")
     }
 
-    fun setString(field: String, value: String? = "") {
+    fun saveString(field: String, value: String? = "") {
         sp.edit().putString(field, value).apply()
     }
 
@@ -19,7 +25,9 @@ class AppPreferences(context: Context, preference: String = context.packageName)
         return sp.getBoolean(field, false)
     }
 
-    fun setBoolean(field: String, value: Boolean) {
+    fun saveBoolean(field: String, value: Boolean) {
         sp.edit().putBoolean(field, value).apply()
     }
+
+
 }

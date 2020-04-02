@@ -1,9 +1,9 @@
 package com.himorfosis.kelolabelanja.utilities.preferences
 
-object AccountPreferences {
+object AccountPref {
 
     // key
-    val ACCOUNT = "ACCOUNT"
+    val KEY = "ACCOUNT"
 
     //field
     val ID = "ID"
