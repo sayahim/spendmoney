@@ -8,9 +8,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.himorfosis.kelolabelanja.R
-import com.himorfosis.kelolabelanja.database.entity.FinancialEntitiy
 import com.himorfosis.kelolabelanja.details.category.model.FinancialPerCategoryModel
 import com.himorfosis.kelolabelanja.utilities.Util
+import com.himorfosis.kelolabelanja.utilities.date.DateSet
 
 class FinancialCategoryGroupAdapter (var context: Context) : RecyclerView.Adapter<FinancialCategoryGroupAdapter.ViewHolder>() {
 
@@ -34,7 +34,7 @@ class FinancialCategoryGroupAdapter (var context: Context) : RecyclerView.Adapte
 
         if (data != null) {
 
-            holder.day_date.text = Util.convertDateName(data.date)
+            holder.day_date.text = DateSet.convertDateName(data.date)
 
             if (data.financialEntitiy.size != 0) {
 
@@ -43,9 +43,9 @@ class FinancialCategoryGroupAdapter (var context: Context) : RecyclerView.Adapte
                     adapterDetails = FinancialCategoryAdapter(context)
 
                     // sorted list
-                    var sortedListDescending = data.financialEntitiy.sortedWith(compareByDescending { it.time })
-
-                    adapterDetails.addAll(sortedListDescending)
+//                    var sortedListDescending = data.financialEntitiy.sortedWith(compareByDescending { it.time })
+//
+//                    adapterDetails.addAll(sortedListDescending)
 
                     layoutManager = LinearLayoutManager(context)
                     setHasFixedSize(true)

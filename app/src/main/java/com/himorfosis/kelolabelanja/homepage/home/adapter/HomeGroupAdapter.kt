@@ -4,33 +4,31 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.himorfosis.kelolabelanja.R
-import com.himorfosis.kelolabelanja.model.HomeGroupDataModel
+import com.himorfosis.kelolabelanja.homepage.home.model.HomeGroupDataModel
+import com.himorfosis.kelolabelanja.homepage.home.model.HomepageResponse
 import com.himorfosis.kelolabelanja.utilities.Util
+import com.himorfosis.kelolabelanja.utilities.date.DateSet
 import kotlinx.android.synthetic.main.item_group_home.view.*
 
-class HomeGroupAdapter (var context: Context) : RecyclerView.Adapter<HomeGroupAdapter.ViewHolder>() {
+class HomeGroupAdapter : RecyclerView.Adapter<HomeGroupAdapter.ViewHolder>() {
 
     private val TAG = "HomeGroupAdapter"
 
-    private var listData: MutableList<HomeGroupDataModel> = ArrayList()
+    private var listData: MutableList<HomepageResponse.Data> = ArrayList()
     private lateinit var adapterReports: HomeAdapter
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(context).inflate(R.layout.item_group_home, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.item_group_home, parent, false)
         return ViewHolder(v)
-
     }
 
-    //this method is giving the size of the list
     override fun getItemCount(): Int {
         return listData.size
     }
 
-    //this method is binding the data on the list
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         var data = listData[position]
@@ -39,45 +37,34 @@ class HomeGroupAdapter (var context: Context) : RecyclerView.Adapter<HomeGroupAd
 
             Util.log(TAG, "date : " + data.date)
 
-            holder.day_date.text = Util.convertDateSpecific(data.date)
+            holder.day_date.text = DateSet.convertDateSpecific(data.date)
 
-            if (data.totalSpending != 0) {
-
+            if (data.spend != 0) {
                 holder.spend_tv.visibility = View.VISIBLE
-                holder.spend_tv.text = "Out : " +  Util.numberFormatMoney(data.totalSpending.toString())
-
+                holder.spend_tv.text = "Out : " +  Util.numberFormatMoney(data.spend.toString())
             } else {
-
                 holder.spend_tv.visibility = View.INVISIBLE
-
             }
 
-            if (data.totalIncome != 0) {
-
+            if (data.income != 0) {
                 holder.income_tv.visibility = View.VISIBLE
-                holder.income_tv.text = "In : " + Util.numberFormatMoney(data.totalIncome.toString())
-
+                holder.income_tv.text = "In : " + Util.numberFormatMoney(data.income.toString())
             } else {
-
                 holder.income_tv.visibility = View.INVISIBLE
-
             }
 
-
-            if (data.financialEntitiy.size != 0) {
+            if (data.financePerDay.isNotEmpty()) {
 
                 holder.recycler_home_adapter.apply {
-
-                    adapterReports = HomeAdapter(context)
+                    adapterReports = HomeAdapter()
                     layoutManager = LinearLayoutManager(context)
                     setHasFixedSize(true)
                     adapter = adapterReports
-
                 }
 
                 // sorted list
-                var sortedListDescending = data.financialEntitiy.sortedWith(compareByDescending { it.time })
-                adapterReports.addAll(sortedListDescending)
+//                var sortedListDescending = data.financialEntitiy.sortedWith(compareByDescending { it.time })
+                adapterReports.addAll(data.financePerDay)
 
             }
 
@@ -94,15 +81,15 @@ class HomeGroupAdapter (var context: Context) : RecyclerView.Adapter<HomeGroupAd
 
     }
 
-    private fun add(homeGroupDataModel: HomeGroupDataModel) {
+    private fun add(data: HomepageResponse.Data) {
 
-        listData.add(homeGroupDataModel)
+        listData.add(data)
         notifyItemInserted(listData.size - 1)
 
     }
 
-    fun addAll(posItems: List<HomeGroupDataModel>) {
-        for (response in posItems) {
+    fun addAll(item: List<HomepageResponse.Data>) {
+        for (response in item) {
             add(response)
         }
     }

@@ -17,10 +17,9 @@ import com.himorfosis.kelolabelanja.data_sample.FinancialsData
 import com.himorfosis.kelolabelanja.homepage.chart.adapter.ReportChartAdapter
 import com.himorfosis.kelolabelanja.homepage.chart.model.ChartCategoryModel
 import com.himorfosis.kelolabelanja.homepage.chart.repo.ChartViewModel
-import com.himorfosis.kelolabelanja.reports.model.ReportsDataModel
 import com.himorfosis.kelolabelanja.reports.view.ReportDetailActivity
 import com.himorfosis.kelolabelanja.reports.view.ReportsActivity
-import com.himorfosis.kelolabelanja.utilities.DateSet
+import com.himorfosis.kelolabelanja.utilities.date.DateSet
 import kotlinx.android.synthetic.main.chart_fragment.*
 import org.jetbrains.anko.support.v4.toast
 
@@ -44,7 +43,7 @@ class ChartIncomeFragment : Fragment() {
 
         getDataFinancialsCategory()
 
-        show_data_month_tv.text = "Data Bulan " + DateSet.getMonthSelected(requireContext())
+        show_data_month_tv.text = "Data Bulan " + DateSet.getMonthSelected()
 
         see_all_report_tv.setOnClickListener {
             val post = Intent(requireContext(), ReportsActivity::class.java)

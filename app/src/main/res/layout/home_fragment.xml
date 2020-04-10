@@ -17,50 +17,31 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
             android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/_20sdp"
             android:layout_marginRight="@dimen/_20sdp"
-            android:layout_marginLeft="@dimen/_20sdp">
+            android:gravity="center"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/status_tv"
-                android:layout_width="match_parent"
+            <include
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:fontFamily="@font/bold_opensans"
-                android:textColor="@color/text_hint"
-                android:textSize="@dimen/_16ssp"
-                android:text="Tidak Ada Transaksi"
-                android:visibility="invisible"
-                />
-
-            <TextView
-                android:id="@+id/status_deskripsi_tv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:fontFamily="@font/regular_opensans"
-                android:textColor="@color/text_hint"
-                android:textSize="@dimen/_12ssp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:visibility="invisible"
-                android:text=""
-                />
+                layout="@layout/layout_status_failure"
+                android:layout_gravity="center"/>
 
         </LinearLayout>
-
-
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-
             <LinearLayout
+                android:id="@+id/layout_home"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:descendantFocusability="blocksDescendants"
+                >
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -70,19 +51,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/_10sdp"
-                        app:cardCornerRadius="@dimen/_5sdp"
-                        >
+                        app:cardCornerRadius="@dimen/_5sdp">
 
                         <androidx.appcompat.widget.LinearLayoutCompat
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:paddingTop="@dimen/_15sdp"
-                            android:paddingBottom="@dimen/_15sdp"
-                            android:paddingRight="@dimen/_10sdp"
-                            android:paddingLeft="@dimen/_10sdp"
-                            android:weightSum="2"
                             android:background="@drawable/corner_blue_gradient"
-                            >
+                            android:paddingLeft="@dimen/_10sdp"
+                            android:paddingTop="@dimen/_15sdp"
+                            android:paddingRight="@dimen/_10sdp"
+                            android:paddingBottom="@dimen/_15sdp"
+                            android:weightSum="2">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -94,14 +73,14 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
                                     android:fontFamily="@font/semi_bold_opensans"
                                     android:text="Pengeluaran"
-                                    android:layout_gravity="center"
                                     android:textColor="@color/text_white"
                                     android:textSize="@dimen/_12ssp" />
 
                                 <TextView
-                                    android:id="@+id/total_spend_today"
+                                    android:id="@+id/total_spend_month"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
@@ -116,9 +95,9 @@
                             <View
                                 android:layout_width="@dimen/_1sdp"
                                 android:layout_height="match_parent"
-                                android:background="@color/white"
                                 android:layout_marginLeft="@dimen/_3sdp"
-                                android:layout_marginRight="@dimen/_3sdp"/>
+                                android:layout_marginRight="@dimen/_3sdp"
+                                android:background="@color/white" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -129,9 +108,9 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
                                     android:fontFamily="@font/semi_bold_opensans"
                                     android:text="Pendapatan"
-                                    android:layout_gravity="center"
                                     android:textColor="@color/text_white"
                                     android:textSize="@dimen/_12ssp" />
 
@@ -139,9 +118,9 @@
                                     android:id="@+id/total_income_month"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
                                     android:fontFamily="@font/bold_opensans"
                                     android:text="Rp 0"
-                                    android:layout_gravity="center"
                                     android:textColor="@color/text_white"
                                     android:textSize="@dimen/_18ssp" />
 
@@ -167,54 +146,79 @@
                         android:id="@+id/month_selected_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Pilih Bulan"
                         android:fontFamily="@font/bold_opensans"
+                        android:text="Pilih Bulan"
                         android:textColor="@color/text_black_second"
-                        android:textSize="@dimen/_16ssp"
-                        />
+                        android:textSize="@dimen/_16ssp" />
 
                     <ImageView
                         android:layout_width="@dimen/_20sdp"
                         android:layout_height="@dimen/_20sdp"
-                        android:background="@drawable/ic_drop_down_black"
                         android:layout_gravity="center"
                         android:layout_marginLeft="@dimen/_5sdp"
-                        />
-
+                        android:background="@drawable/ic_drop_down_black" />
 
                 </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_1sdp"
-                    android:background="@color/line"
                     android:layout_marginLeft="@dimen/_10sdp"
-                    android:layout_marginRight="@dimen/_10sdp"/>
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:background="@color/line" />
 
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="@dimen/_5sdp"
-                    android:orientation="vertical" />
+                    android:layout_height="match_parent">
 
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/_5sdp"
+                        android:orientation="vertical" />
+                    <io.supercharge.shimmerlayout.ShimmerLayout
+                        android:id="@+id/loading_shimmer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="visible">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <include layout="@layout/loading_homepage"/>
+                            <include layout="@layout/loading_homepage"/>
+                            <include layout="@layout/loading_homepage"/>
+                            <include layout="@layout/loading_homepage"/>
+                            <include layout="@layout/loading_homepage"/>
+                            <include layout="@layout/loading_homepage"/>
+                            <include layout="@layout/loading_homepage"/>
+                            <include layout="@layout/loading_homepage"/>
+
+                        </LinearLayout>
+
+                    </io.supercharge.shimmerlayout.ShimmerLayout>
+
+                </FrameLayout>
 
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
 
-
         <LinearLayout
-            android:id="@+id/add_ll"
+            android:id="@+id/add_data_finance_ll"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/_40sdp"
             android:layout_gravity="center|bottom"
-            android:layout_marginBottom="@dimen/_25sdp"
             android:background="@drawable/rounded_green"
             android:orientation="horizontal"
             android:paddingLeft="@dimen/_20sdp"
-            android:paddingRight="@dimen/_20sdp">
+            android:paddingRight="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:visibility="gone"
+            >
 
             <ImageView
                 android:layout_width="@dimen/_20sdp"
@@ -238,6 +242,5 @@
 
 
     </FrameLayout>
-
 
 </LinearLayout>

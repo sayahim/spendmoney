@@ -14,13 +14,17 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.himorfosis.kelolabelanja.R
+import com.himorfosis.kelolabelanja.app.MyApp
 import com.himorfosis.kelolabelanja.month_picker.adapter.PickerMonthAdapter
 import com.himorfosis.kelolabelanja.utilities.Util
+import com.himorfosis.kelolabelanja.utilities.preferences.AppPreferences
+import com.himorfosis.kelolabelanja.utilities.preferences.PickerPref
 
-class DialogMonthPicker(internal val context: Context): DialogFragment() {
+class DialogMonthPicker(internal val context: Context) : DialogFragment() {
 
     val adapterPicker = PickerMonthAdapter()
     lateinit var onClickItem: OnClickItem
+    val preferences = AppPreferences(context, PickerPref.KEY)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.calendar_month_picker, container)
@@ -36,69 +40,58 @@ class DialogMonthPicker(internal val context: Context): DialogFragment() {
         val nextYear = view.findViewById(R.id.next_year_ll) as LinearLayout
         val yearSelected_tv = view.findViewById(R.id.year_selected_tv) as TextView
 
-        val getYearSelected = Util.getData("picker", "year", context)
-        val getMonthSelected = Util.getData("picker", "month", context)
+//        val getYearSelected = Util.getData("picker", "year", context)
+//        val getMonthSelected = Util.getData("picker", "month", context)
+
+        val getYearSelected = MyApp.findInPicker(PickerPref.YEAR)
+        val getMonthSelected = MyApp.findInPicker(PickerPref.MONTH)
+
+        preferences.saveString(PickerPref.KEY)
 
         var yearSelected = 0
 
         if (getYearSelected != null) {
-
             yearSelected = getYearSelected.toInt()
             yearSelected_tv.text = yearSelected.toString()
-
         } else {
-
             yearSelected = 2020
             yearSelected_tv.text = yearSelected.toString()
-
         }
 
         previousYear.setOnClickListener {
-
             yearSelected -= 1
-
             yearSelected_tv.text = yearSelected.toString()
             refreshDataPicker(yearSelected.toString())
-
         }
 
         nextYear.setOnClickListener {
-
             yearSelected += 1
-
             yearSelected_tv.text = yearSelected.toString()
             refreshDataPicker(yearSelected.toString())
-
         }
 
         recyclerView.apply {
-
             layoutManager = LinearLayoutManager(context)
             layoutManager = GridLayoutManager(context, 4)
             setHasFixedSize(true)
             adapter = adapterPicker
         }
 
-        adapterPicker.addAll(resources.getStringArray(R.array.month_list), getYearSelected)
+        adapterPicker.addAll(resources.getStringArray(R.array.month_list), getYearSelected.toString())
 
         adapterPicker.setOnclick(object : PickerMonthAdapter.OnClickItem {
             override fun onItemClicked(dataMonth: String) {
 
-                Util.saveData("picker", "month", dataMonth, context)
-                Util.saveData("picker", "year", yearSelected.toString(), context)
-
+                preferences.saveString(PickerPref.YEAR, yearSelected.toString())
+                preferences.saveString(PickerPref.MONTH, dataMonth)
                 dismiss()
-
                 onClickItem.onItemClicked(true)
-
             }
         })
 
     }
 
     private fun refreshDataPicker(yearSelected: String) {
-
-//            Util.saveData("picker", "year", yearSelected, context)
 
         adapterPicker.removeListAdapter()
 
@@ -113,7 +106,6 @@ class DialogMonthPicker(internal val context: Context): DialogFragment() {
 
     fun setOnclick(onClickItem: OnClickItem) {
         this.onClickItem = onClickItem
-
     }
 
 }

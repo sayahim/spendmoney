@@ -1,7 +1,7 @@
 package com.himorfosis.kelolabelanja.data_sample
 
-import com.himorfosis.kelolabelanja.database.entity.CategoryEntity
-import com.himorfosis.kelolabelanja.database.entity.FinancialEntitiy
+import com.himorfosis.kelolabelanja.financial.model.FinancialEntitiy
+
 
 object FinancialsData {
 

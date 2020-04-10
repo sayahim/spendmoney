@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.mikephil.charting.data.PieData
@@ -19,9 +20,7 @@ import com.himorfosis.kelolabelanja.homepage.chart.model.ChartCategoryModel
 import com.himorfosis.kelolabelanja.homepage.chart.repo.ChartViewModel
 import com.himorfosis.kelolabelanja.reports.view.ReportDetailActivity
 import com.himorfosis.kelolabelanja.reports.view.ReportsActivity
-import com.himorfosis.kelolabelanja.state.StatusData
-import com.himorfosis.kelolabelanja.utilities.DateSet
-import com.himorfosis.kelolabelanja.utilities.Util
+import com.himorfosis.kelolabelanja.utilities.date.DateSet
 import kotlinx.android.synthetic.main.chart_fragment.*
 import org.jetbrains.anko.support.v4.toast
 
@@ -50,8 +49,9 @@ class ChartSpendFragment : Fragment() {
 
     private fun initializeUI() {
 
-        chartViewModel = ViewModelProviders.of(this)[ChartViewModel::class.java]
-        show_data_month_tv.text = "Data Bulan " + DateSet.getMonthSelected(requireContext())
+
+        chartViewModel = ViewModelProvider(this).get(ChartViewModel::class.java)
+        show_data_month_tv.text = "Data Bulan " + DateSet.getMonthSelected()
 
         see_all_report_tv.setOnClickListener {
 

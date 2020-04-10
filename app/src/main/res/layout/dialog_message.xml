@@ -2,11 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:gravity="center">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minWidth="@dimen/_250sdp"
         android:background="@drawable/rounded_white"
         android:layout_margin="@dimen/_10sdp"
         android:orientation="vertical">
@@ -36,14 +38,16 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/regular_opensans"
                 android:gravity="center"
-                android:paddingTop="@dimen/_5sdp"
-                android:text="Apakah data Anda\n sudah sesuai ? "
+                android:paddingTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:text="Apakah data Anda\n sudah sesuai ?"
                 android:textColor="@color/text_black_second"
                 android:textSize="@dimen/_14ssp" />
 
         </LinearLayout>
 
         <Button
+            android:id="@+id/actionBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_rounded_blue"

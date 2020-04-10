@@ -4,80 +4,120 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".auth.Login"
     android:background="@color/white"
-    android:gravity="center">
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".auth.Login">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        style="@style/title_toolbar"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginLeft="@dimen/_30sdp"
-        android:layout_marginRight="@dimen/_30sdp"
-        android:paddingBottom="@dimen/_50sdp">
+        android:layout_margin="@dimen/_5sdp"
+        android:text="Login" />
 
-        <ImageView
-            android:layout_width="@dimen/_90sdp"
-            android:layout_height="@dimen/_90sdp"
-            android:src="@mipmap/logo_app"
-            android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/_50sdp"/>
 
-        <EditText
-            android:id="@+id/email_ed"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Email"
-            style="@style/MyEditTextStyle"
-            />
-
-        <EditText
-            android:id="@+id/password_ed"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Password"
-            style="@style/MyEditTextStyle"
-            android:layout_marginTop="@dimen/_10sdp"
-            />
-
-        <Button
-            android:id="@+id/login_btn"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
-            android:background="@drawable/corner_green"
-            android:text="LOGIN"
-            android:textColor="@color/text_white"
-            android:textAllCaps="false"
-            android:textSize="@dimen/_14ssp"
-            android:layout_marginTop="@dimen/_50sdp"
-            />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_marginTop="@dimen/_10sdp">
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/_100sdp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/_14ssp"
-                android:fontFamily="@font/regular_opensans"
-                android:text="Belum punya akun?"/>
+            <ImageView
+                android:id="@+id/close_login_img"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:src="@drawable/ic_close_black"
+                android:layout_gravity="right|center"
+                />
 
-            <TextView
-                android:id="@+id/register_tv"
-                android:layout_width="wrap_content"
+            <ImageView
+                android:layout_width="@dimen/_90sdp"
+                android:layout_height="@dimen/_90sdp"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:layout_marginBottom="@dimen/_50sdp"
+                android:src="@mipmap/logo_app" />
+
+            <EditText
+                android:id="@+id/email_ed"
+                style="@style/MyEditTextStyle"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/_14ssp"
-                android:text="Daftar disini"
-                android:fontFamily="@font/semi_bold_opensans"
-                android:textColor="@color/text_blue"
-                android:layout_marginLeft="@dimen/_5sdp"/>
+                android:hint="Masukkan Email"
+                android:inputType="textEmailAddress"
+                android:imeOptions="actionDone" />
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/passinput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:clickable="false"
+                android:gravity="center"
+                app:hintEnabled="false"
+                app:passwordToggleDrawable="@drawable/ic_password_visible_selector"
+                app:passwordToggleEnabled="true"
+                app:passwordToggleTint="#F3C16E">
+
+            <EditText
+                android:id="@+id/password_ed"
+                style="@style/MyEditTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:hint="Masukkan Password"
+                android:inputType="textPassword"
+                android:imeOptions="actionDone" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/login_btn"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginTop="@dimen/_50sdp"
+                android:background="@drawable/corner_green"
+                android:text="LOGIN"
+                android:textAllCaps="false"
+                android:textColor="@color/text_white"
+                android:textSize="@dimen/_14ssp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/regular_opensans"
+                    android:text="Belum punya akun?"
+                    android:textSize="@dimen/_14ssp" />
+
+                <TextView
+                    android:id="@+id/register_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:fontFamily="@font/semi_bold_opensans"
+                    android:text="Daftar disini"
+                    android:textColor="@color/text_blue"
+                    android:textSize="@dimen/_14ssp" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

@@ -9,7 +9,8 @@ import android.text.TextWatcher
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.himorfosis.kelolabelanja.R
 import com.himorfosis.kelolabelanja.financial.model.InputDataModel
-import com.himorfosis.kelolabelanja.utilities.DateSet
+import com.himorfosis.kelolabelanja.response.Category.CategoryResponse
+import com.himorfosis.kelolabelanja.utilities.date.DateSet
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.input_finance.*
 import java.text.DecimalFormat
@@ -24,12 +25,10 @@ class InputFinanceBottomDialog(context: Context): BottomSheetDialog(context) {
         lateinit var onClickItem: OnClickItemDialog
         interface OnClickItemDialog {
             fun onItemClicked(data: InputDataModel)
-
         }
 
         fun setOnclick(onClickItem: OnClickItemDialog) {
             this.onClickItem = onClickItem
-
         }
 
     }
@@ -40,7 +39,6 @@ class InputFinanceBottomDialog(context: Context): BottomSheetDialog(context) {
         window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         close_img.setOnClickListener {
-
             dismiss()
         }
 
@@ -57,9 +55,7 @@ class InputFinanceBottomDialog(context: Context): BottomSheetDialog(context) {
             val dateDialog = DatePickerDialog(context, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
 
                 dateSelected = "$dayOfMonth.${monthOfYear + 1}.$year"
-
                 Util.log(TAG, "date selected : $dateSelected")
-
 
             }, year, month, day)
             dateDialog.show()
@@ -81,37 +77,26 @@ class InputFinanceBottomDialog(context: Context): BottomSheetDialog(context) {
                 try {
 
                     var nominalSize = nominal_et.text.toString().length
-
                     var originalString = s.toString()
 
                     originalString = originalString.replace(decimalFormat.decimalFormatSymbols.groupingSeparator.toString(), "")
 
                     var number: Number = decimalFormat.parse(originalString)
-
                     var selectionNominal = nominal_et.selectionStart
 
                     if (hasFractionalPart) {
-
                         nominal_et.setText(decimalFormat.format(number))
-
                     } else {
-
                         nominal_et.setText(decimalFormatNotEdit.format(number))
-
                     }
 
                     val endSize = nominal_et.text.toString().length
 
                     var setIndicatorEditText = (selectionNominal + (endSize - nominalSize))
-
                     if (setIndicatorEditText in 1..endSize) {
-
                         nominal_et.setSelection(setIndicatorEditText)
-
                     } else {
-
                         nominal_et.setSelection(endSize - 1)
-
                     }
 
                 } catch (e : java.lang.NumberFormatException) {
@@ -137,7 +122,6 @@ class InputFinanceBottomDialog(context: Context): BottomSheetDialog(context) {
         note_et.addTextChangedListener(object : TextWatcher {
 
             override fun afterTextChanged(s: Editable) {
-
                 var noteSize = note_et.text.toString().length
                 note_length_tv.text = "$noteSize/50"
             }
@@ -153,13 +137,13 @@ class InputFinanceBottomDialog(context: Context): BottomSheetDialog(context) {
         })
 
         save_btn.setOnClickListener {
-
             val nominal = nominal_et.text.toString()
             val note = note_et.text.toString()
             val date = dateSelected
 
-            onClickItem.onItemClicked(InputDataModel(nominal, note, date))
+            val nominalReplace = nominal.replace(".", "")
 
+            onClickItem.onItemClicked(InputDataModel(nominalReplace, note, date))
             dismiss()
 
         }

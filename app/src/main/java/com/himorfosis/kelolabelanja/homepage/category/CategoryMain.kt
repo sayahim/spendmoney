@@ -27,7 +27,6 @@ class CategoryMain : Fragment() {
     }
 
     private fun setToolbar() {
-
         titleBar_tv.text = "Kategori"
     }
 

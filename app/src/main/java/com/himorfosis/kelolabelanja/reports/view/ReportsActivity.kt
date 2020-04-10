@@ -8,9 +8,10 @@ import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.himorfosis.kelolabelanja.R
+import com.himorfosis.kelolabelanja.app.MyApp
 import com.himorfosis.kelolabelanja.data_sample.FinancialsData
 import com.himorfosis.kelolabelanja.month_picker.DialogMonthPicker
 import com.himorfosis.kelolabelanja.reports.adapter.ReportsAdapter
@@ -18,7 +19,8 @@ import com.himorfosis.kelolabelanja.reports.model.ReportsDataModel
 import com.himorfosis.kelolabelanja.reports.repo.ReportsViewModel
 import com.himorfosis.kelolabelanja.state.StatusData
 import com.himorfosis.kelolabelanja.utilities.Util
-import kotlinx.android.synthetic.main.home_fragment.*
+import com.himorfosis.kelolabelanja.utilities.date.DateSet
+import com.himorfosis.kelolabelanja.utilities.preferences.PickerPref
 import kotlinx.android.synthetic.main.reports_activity.*
 import kotlinx.android.synthetic.main.toolbar_detail.*
 import java.text.SimpleDateFormat
@@ -46,7 +48,8 @@ class ReportsActivity : AppCompatActivity() {
     }
 
     private fun setViewModel() {
-        reportsViewModel = ViewModelProviders.of(this)[ReportsViewModel::class.java]
+
+        reportsViewModel = ViewModelProvider(this).get(ReportsViewModel::class.java)
     }
 
     private fun fetchDataReports() {
@@ -132,18 +135,18 @@ class ReportsActivity : AppCompatActivity() {
 
     private fun setTitleToolbar() {
 
-        val getYearSelected = Util.getData("picker", "year", this@ReportsActivity)
-        val getMonthSelected = Util.getData("picker", "month", this@ReportsActivity)
+        val getYearSelected = MyApp.picker.getString(PickerPref.YEAR)
+        val getMonthSelected = MyApp.picker.getString(PickerPref.MONTH)
         val dateYear = SimpleDateFormat("yyyy")
         val year = dateYear.format(Date())
 
         // show data
         if (getYearSelected == year) {
-            val thisMonth = Util.convertMonthName(getMonthSelected)
+            val thisMonth = DateSet.convertMonthName(getMonthSelected!!)
             titleBar_tv.text = "Report $thisMonth"
 
         } else {
-            val thisMonth = Util.convertMonthName(getMonthSelected)
+            val thisMonth = DateSet.convertMonthName(getMonthSelected!!)
             titleBar_tv.text = "Report $thisMonth $getYearSelected"
         }
     }

@@ -13,8 +13,8 @@
 
         <ImageButton
             android:id="@+id/backBar_btn"
-            android:layout_width="@dimen/_20sdp"
-            android:layout_height="@dimen/_20sdp"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
             android:background="@drawable/ic_back_black"
             android:layout_gravity="left|center"
             />

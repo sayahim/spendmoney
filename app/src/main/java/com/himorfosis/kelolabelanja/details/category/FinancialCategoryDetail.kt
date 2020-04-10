@@ -9,7 +9,6 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.himorfosis.kelolabelanja.R
-import com.himorfosis.kelolabelanja.database.db.DatabaseDao
 import com.himorfosis.kelolabelanja.details.category.adapter.FinancialCategoryGroupAdapter
 import com.himorfosis.kelolabelanja.details.category.model.FinancialPerCategoryModel
 import com.himorfosis.kelolabelanja.details.category.repo.FinancialCategoryRepo
@@ -21,7 +20,6 @@ class FinancialCategoryDetail : AppCompatActivity() {
 
     val TAG = "FinancialCategoryDetail"
 
-    lateinit var databaseDao: DatabaseDao
     lateinit var getCategoryID: String
     lateinit var getTitleCategory: String
     lateinit var getPeriod: String

@@ -4,6 +4,7 @@ import android.app.Application
 import com.himorfosis.kelolabelanja.network.config.Network
 import com.himorfosis.kelolabelanja.utilities.preferences.AccountPref
 import com.himorfosis.kelolabelanja.utilities.preferences.AppPreferences
+import com.himorfosis.kelolabelanja.utilities.preferences.BackpressedPref
 import com.himorfosis.kelolabelanja.utilities.preferences.PickerPref
 
 class MyApp: Application() {
@@ -13,8 +14,9 @@ class MyApp: Application() {
         sharedPref = AppPreferences(this)
         account = AppPreferences(this, AccountPref.KEY)
         picker = AppPreferences(this, PickerPref.KEY)
+        backpressed = AppPreferences(this, BackpressedPref.KEY)
 //        if (BuildConfig.DEBUG) Stetho.initializeWithDefaults(this)
-        Network.serviceWithToken()
+//        Network.serviceWithToken()
     }
 
 //    @SuppressLint("HardwareIds")
@@ -29,6 +31,7 @@ class MyApp: Application() {
         lateinit var sharedPref: AppPreferences
         lateinit var account: AppPreferences
         lateinit var picker: AppPreferences
+        lateinit var backpressed: AppPreferences
 
         fun findInAccount(key: String): String? {
             return account.getString(key)
@@ -38,10 +41,20 @@ class MyApp: Application() {
             return picker.getString(key)
         }
 
+        fun findInBackpressd(): String? {
+            return backpressed.getString(BackpressedPref.DATA)
+        }
+
         fun deleteAllPreferences() {
             picker.deleteData()
             account.deleteData()
+            backpressed.deleteData()
         }
+
+        fun deleteAccount() {
+            account.deleteData()
+        }
+
     }
 
 }

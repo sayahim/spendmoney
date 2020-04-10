@@ -1,18 +1,23 @@
 package com.himorfosis.kelolabelanja.financial.repo
 
-import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.himorfosis.kelolabelanja.database.entity.FinancialEntitiy
+import com.himorfosis.kelolabelanja.financial.model.FinanceCreateModel
+import com.himorfosis.kelolabelanja.financial.model.FinanceCreateResponse
+import com.himorfosis.kelolabelanja.financial.model.FinanceUserFetchModel
+import com.himorfosis.kelolabelanja.network.state.StateNetwork
 
 class FinancialViewModel: ViewModel() {
 
-    var financialUserResponse = MutableLiveData<MutableList<FinancialEntitiy>>()
+    var financeUserResponse = MutableLiveData<StateNetwork<List<FinanceCreateResponse>>>()
+    var financeCreateResponse = MutableLiveData<StateNetwork<FinanceCreateResponse>>()
 
-    fun fetchAllFinancials(context: Context) {
+    fun fetchUserFinancials(data: FinanceUserFetchModel) {
+        financeUserResponse = FinancialRepo.fetchFinanceUsers(data)
+    }
 
-        financialUserResponse = FinancialLiveData.getInstance().fetchAllFinanceFatabase(context)
-
+    fun createFinanceUser(data: FinanceCreateModel) {
+        financeCreateResponse = FinancialRepo.createFinance(data)
     }
 
 }

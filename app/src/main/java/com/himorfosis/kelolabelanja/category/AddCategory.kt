@@ -28,9 +28,7 @@ class AddCategory : AppCompatActivity() {
         supportActionBar!!.setCustomView(R.layout.toolbar_detail)
 
         backBar_btn.setOnClickListener {
-
-            startActivity(Intent(this, Category::class.java))
-
+//            startActivity(Intent(this, Category::class.java))
         }
 
         titleBar_tv.setText("Pilih Kategori")

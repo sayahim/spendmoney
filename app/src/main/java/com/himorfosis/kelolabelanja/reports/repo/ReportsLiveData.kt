@@ -3,8 +3,6 @@ package com.himorfosis.kelolabelanja.reports.repo
 import androidx.lifecycle.MutableLiveData
 import com.himorfosis.kelolabelanja.data_sample.CategoryData
 import com.himorfosis.kelolabelanja.data_sample.FinancialsData
-import com.himorfosis.kelolabelanja.homepage.chart.model.ChartCategoryModel
-import com.himorfosis.kelolabelanja.homepage.chart.repo.ChartLiveData
 import com.himorfosis.kelolabelanja.reports.model.ReportsDataModel
 import com.himorfosis.kelolabelanja.utilities.Util
 

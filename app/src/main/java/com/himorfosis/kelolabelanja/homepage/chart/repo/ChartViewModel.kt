@@ -14,12 +14,12 @@ class ChartViewModel : ViewModel() {
 
     fun setChartFinancialsByCategory(typeCategoryFinancials: String) {
 
-        fetchChartFinancialsByCategoryResponse = ChartLiveData.getInstance().fetchChartFinancialsByCategory(typeCategoryFinancials)
+        fetchChartFinancialsByCategoryResponse = ChartRepo.getInstance().fetchChartFinancialsByCategory(typeCategoryFinancials)
     }
 
     fun setShowDataFinancialsCategoryOnChart(dataCategoryFinance: List<ChartCategoryModel>) {
 
-        showDataFinancialsCategoryOnChart = ChartLiveData.getInstance().showDataFinancialsCategoryOnChart(dataCategoryFinance)
+        showDataFinancialsCategoryOnChart = ChartRepo.getInstance().showDataFinancialsCategoryOnChart(dataCategoryFinance)
     }
 
 }

@@ -7,7 +7,8 @@ import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.himorfosis.kelolabelanja.R
-import com.himorfosis.kelolabelanja.database.entity.CategoryEntity
+import com.himorfosis.kelolabelanja.category.model.CategoryEntity
+import com.himorfosis.kelolabelanja.response.Category.CategoryResponse
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.item_category_financials.view.*
 import java.util.ArrayList
@@ -16,8 +17,8 @@ class FinancialCategoryAdapter : RecyclerView.Adapter<FinancialCategoryAdapter.V
 
     private val TAG = "FinancialCategoryAdapter"
 
-    private var dataListFilter: MutableList<CategoryEntity> = ArrayList<CategoryEntity>()
-    private var listData: MutableList<CategoryEntity> = ArrayList<CategoryEntity>()
+    private var dataListFilter: MutableList<CategoryResponse> = ArrayList<CategoryResponse>()
+    private var listData: MutableList<CategoryResponse> = ArrayList<CategoryResponse>()
 
     lateinit var onClickItem: AdapterOnClickItem
 
@@ -55,21 +56,13 @@ class FinancialCategoryAdapter : RecyclerView.Adapter<FinancialCategoryAdapter.V
 
         val imageAssets = Util.convertImageDrawable(holder.itemView.context, data.image_category)
 
-        holder.name_tv.text = data.name
+        holder.name_tv.text = data.title
 
         holder.image_img.setImageResource(imageAssets)
 
         holder.itemView.setOnClickListener {
-
-//            if (getIdSelected != null) {
-//
-//                holder.frame.setBackgroundResource(0)
-//            }
-
             holder.frame.setBackgroundResource(R.drawable.circle_gold)
-
             Util.log(TAG, "id selected  : " + data.id)
-
             // callback adapter
             onClickItem.onItemClicked(data)
 
@@ -87,17 +80,16 @@ class FinancialCategoryAdapter : RecyclerView.Adapter<FinancialCategoryAdapter.V
     }
 
     interface AdapterOnClickItem {
-        fun onItemClicked(data: CategoryEntity)
+        fun onItemClicked(data: CategoryResponse)
 
     }
 
     fun setOnclick(onClickItem: AdapterOnClickItem) {
         this.onClickItem = onClickItem
-
     }
 
-    private fun add(categoryEntity: CategoryEntity) {
-        listData!!.add(categoryEntity)
+    private fun add(data: CategoryResponse) {
+        listData!!.add(data)
 
         // add data filter
         dataListFilter = listData
@@ -105,7 +97,7 @@ class FinancialCategoryAdapter : RecyclerView.Adapter<FinancialCategoryAdapter.V
         notifyItemInserted(listData!!.size - 1)
     }
 
-    fun addAll(posItems: List<CategoryEntity>) {
+    fun addAll(posItems: List<CategoryResponse>) {
         for (response in posItems) {
 
             dataListFilter = listData
@@ -138,11 +130,11 @@ class FinancialCategoryAdapter : RecyclerView.Adapter<FinancialCategoryAdapter.V
 
                 } else {
 
-                    val filteredList = ArrayList<CategoryEntity>()
+                    val filteredList = ArrayList<CategoryResponse>()
                     for (row in dataListFilter.orEmpty()) {
 
                         // check data search
-                        if (row.name.toLowerCase().contains(charString.toLowerCase()) || row.name.contains(charSequence)) {
+                        if (row.title.toLowerCase().contains(charString.toLowerCase()) || row.title.contains(charSequence)) {
                             filteredList.add(row)
                         }
                     }
@@ -161,7 +153,7 @@ class FinancialCategoryAdapter : RecyclerView.Adapter<FinancialCategoryAdapter.V
 
                 if (listData != null) {
 
-                    listData = filterResults.values as MutableList<CategoryEntity>
+                    listData = filterResults.values as MutableList<CategoryResponse>
                     notifyDataSetChanged()
                 }
 

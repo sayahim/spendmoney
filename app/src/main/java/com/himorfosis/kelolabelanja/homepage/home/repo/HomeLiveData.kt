@@ -1,69 +1,51 @@
 package com.himorfosis.kelolabelanja.homepage.home.repo
 
-import android.content.Context
 import androidx.lifecycle.MutableLiveData
-import com.himorfosis.kelolabelanja.database.entity.FinancialEntitiy
+import com.himorfosis.kelolabelanja.app.MyApp
+import com.himorfosis.kelolabelanja.financial.model.FinanceCreateResponse
+import com.himorfosis.kelolabelanja.financial.model.FinancialEntitiy
+import com.himorfosis.kelolabelanja.homepage.home.model.FinanceDataModel
+import com.himorfosis.kelolabelanja.homepage.home.model.HomeGroupDataModel
+import com.himorfosis.kelolabelanja.homepage.home.model.HomepageResponse
+import com.himorfosis.kelolabelanja.network.config.Network
+import com.himorfosis.kelolabelanja.network.repository.BaseRepository
+import com.himorfosis.kelolabelanja.network.services.FinanceService
+import com.himorfosis.kelolabelanja.network.services.HomepageService
+import com.himorfosis.kelolabelanja.network.state.StateNetwork
 import com.himorfosis.kelolabelanja.utilities.Util
+import com.himorfosis.kelolabelanja.utilities.date.DateSet
+import com.himorfosis.kelolabelanja.utilities.preferences.AccountPref
+import com.himorfosis.kelolabelanja.utilities.preferences.PickerPref
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
-class HomeLiveData {
+object HomeLiveData:BaseRepository() {
 
-    companion object {
+    private val service = Network.createService(HomepageService::class.java)
+    private val disposable = CompositeDisposable()
 
-        private val TAG = "HomeLiveData"
+    fun fetchFinanceUser(): MutableLiveData<StateNetwork<HomepageResponse>> {
 
-        // rx java
-        val compositeDisposable = CompositeDisposable()
+        val userId = MyApp.account.getString(AccountPref.ID)
+//        val monthPicker = MyApp.account.getString(PickerPref.MONTH)
+//        val yearPicker = MyApp.account.getString(PickerPref.YEAR)
 
-        // database
-//        private var notesDatabase: AppDatabase? = null
-
-        private var INSTANCE: HomeLiveData? = null
-        fun getInstance() = INSTANCE
-                ?: HomeLiveData().also {
-                    INSTANCE = it
+        val data = MutableLiveData<StateNetwork<HomepageResponse>>()
+        service.homepageFetch(userId, "2020-04-01")
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io()).subscribe({
+                    data.value = StateNetwork.OnSuccess(it)
+                }, {
+                    data.value = errorResponse(it)
+                }).let {
+                    disposable.add(it)
                 }
-    }
-
-    private fun setLocalDatabase(context: Context) {
-
-//        notesDatabase = AppDatabase.getInstance(context)
+        return data
 
     }
-
-    fun fetchFinancialsUser(context: Context):MutableLiveData<FinancialEntitiy> {
-
-        setLocalDatabase(context)
-
-        var dataResponse = MutableLiveData<FinancialEntitiy>()
-
-        val month = Util.getData("picker", "month", context)
-        val year = Util.getData("picker", "year", context)
-
-        val dateStart:String = "01-$year-$month"
-        val dateFinish:String = "32-$year-$month"
-
-//        compositeDisposable.add(notesDatabase!!.databaseDao().getDataFinancialDate(dateStart, dateFinish)
-//                .subscribeOn(Schedulers.computation())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe {
-//
-//                    listDataNote.clear()
-//
-//                    // add data to adapter
-//                    noteAdapter.addAll(it)
-//
-//                    dataResponse.value =
-//
-//                })
-
-        return dataResponse
-
+    private fun isLog(message: String) {
+        Util.log("HomeRepo", message)
     }
 
 }

@@ -5,7 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.himorfosis.kelolabelanja.R
-import com.himorfosis.kelolabelanja.database.entity.CategoryEntity
+import com.himorfosis.kelolabelanja.category.model.CategoryEntity
+import com.himorfosis.kelolabelanja.response.Category.CategoryResponse
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.item_category_list.view.*
 
@@ -13,7 +14,7 @@ class CategoryListAdapter : RecyclerView.Adapter<CategoryListAdapter.ViewHolder>
 
     lateinit var onClickItem: OnClickItem
 
-    var listData: MutableList<CategoryEntity> = ArrayList<CategoryEntity>()
+    var listData: MutableList<CategoryResponse> = ArrayList<CategoryResponse>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.item_category_list, parent, false)
@@ -28,7 +29,7 @@ class CategoryListAdapter : RecyclerView.Adapter<CategoryListAdapter.ViewHolder>
         val data = listData[position]
 
         if (data != null) {
-            holder.category_name_tv.text = data.name
+            holder.category_name_tv.text = data.title
 
             val imageAssets = Util.convertImageDrawable(holder.itemView.context, data.image_category)
             holder.category_img.setImageResource(imageAssets)
@@ -39,7 +40,6 @@ class CategoryListAdapter : RecyclerView.Adapter<CategoryListAdapter.ViewHolder>
             }
 
         }
-
 
     }
 
@@ -53,14 +53,14 @@ class CategoryListAdapter : RecyclerView.Adapter<CategoryListAdapter.ViewHolder>
 
     }
 
-    private fun add(data: CategoryEntity) {
+    private fun add(data: CategoryResponse) {
 
         listData.add(data)
         notifyItemInserted(listData.size - 1)
 
     }
 
-    fun addAll(posItems: List<CategoryEntity>) {
+    fun addAll(posItems: List<CategoryResponse>) {
         for (response in posItems) {
 
             add(response)
@@ -68,15 +68,12 @@ class CategoryListAdapter : RecyclerView.Adapter<CategoryListAdapter.ViewHolder>
         }
     }
 
-
     interface OnClickItem {
-        fun onItemClicked(data: CategoryEntity)
-
+        fun onItemClicked(data: CategoryResponse)
     }
 
     fun setOnclick(onClickItem: OnClickItem) {
         this.onClickItem = onClickItem
-
     }
 
 
