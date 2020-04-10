@@ -1,7 +1,13 @@
-package com.himorfosis.kelolabelanja.utilities
+package com.himorfosis.kelolabelanja.utilities.date
 
 import android.content.Context
+import android.os.Build
+import com.himorfosis.kelolabelanja.app.MyApp
+import com.himorfosis.kelolabelanja.utilities.Util
+import com.himorfosis.kelolabelanja.utilities.preferences.PickerPref
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 object DateSet {
@@ -15,7 +21,25 @@ object DateSet {
 
     }
 
-    @JvmStatic fun getMonthSelected(context: Context): String {
+    fun convertTimestamp(dateTime: String): String {
+
+        var dateFinal: String
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val current = LocalDateTime.now()
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+            dateFinal =  current.format(formatter)
+        } else {
+            var date = Date()
+            val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+            dateFinal = formatter.format(date)
+        }
+
+        return dateFinal
+
+    }
+
+    fun getMonthSelected(): String {
 
         var monthValue: String
 
@@ -23,27 +47,27 @@ object DateSet {
 
         val yearToday = dateYear.format(Date())
 
-        val monthSelected = Util.getData("picker", "month", context)
-        val yearSelected = Util.getData("picker", "year", context)
+        val monthSelected = MyApp.picker.getString(PickerPref.MONTH)
+        val yearSelected = MyApp.picker.getString(PickerPref.YEAR)
 
         // show data
         if (yearSelected == yearToday) {
-            val thisMonth = Util.convertMonthName(monthSelected)
+            val thisMonth = convertMonthName(monthSelected!!)
             monthValue = thisMonth
         } else {
-            val thisMonth = Util.convertMonthName(monthSelected)
+            val thisMonth = convertMonthName(monthSelected!!)
             monthValue = "$thisMonth  $yearSelected"
         }
 
         return monthValue
     }
 
-    @JvmStatic fun convertDateName(date: String): String {
+    fun convertDateName(date: String): String {
 
         val dateToday = SimpleDateFormat("yyyy-MM-dd")
         val getDateToday = dateToday.format(Date())
 
-        var nameDateFinal = "-"
+        var nameDateFinal: String
 
         if (date.equals(getDateToday)) {
 
@@ -74,7 +98,7 @@ object DateSet {
 
     }
 
-    @JvmStatic fun convertDateSpecific(date: String): String {
+    fun convertDateSpecific(date: String): String {
 
         val dateToday = SimpleDateFormat("yyyy-MM-dd")
         val getDateToday = dateToday.format(Date())
@@ -83,9 +107,7 @@ object DateSet {
 
         try {
 
-
             if (date.equals(getDateToday)) {
-
                 nameDateFinal = "Hari Ini"
 
             } else {
@@ -98,7 +120,7 @@ object DateSet {
                 val bulan = dateMonth.substring(0, dateMonth.indexOf("-"))
                 val tahun = date.substring(0, date.indexOf("-"))
 
-                val intDay = cal.get(Calendar.DAY_OF_WEEK)
+//                val intDay = cal.get(Calendar.DAY_OF_WEEK)
                 val intMonth = Integer.parseInt(bulan)
                 val nameMonth = monthArray[intMonth]
 
@@ -115,7 +137,7 @@ object DateSet {
 
     }
 
-    @JvmStatic fun convertMonthName(month: String) :String {
+    fun convertMonthName(month: String) :String {
 
         val monthArray = arrayOf("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember")
 

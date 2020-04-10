@@ -1,4 +1,4 @@
-package com.himorfosis.kelolabelanja.profile.adapter
+package com.himorfosis.kelolabelanja.homepage.profile.adapter
 
 import android.view.LayoutInflater
 import android.view.View
