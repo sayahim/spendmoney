@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.himorfosis.kelolabelanja.R
 import com.himorfosis.kelolabelanja.app.MyApp
 import com.himorfosis.kelolabelanja.utilities.Util
+import com.himorfosis.kelolabelanja.utilities.preferences.DataPreferences
 import com.himorfosis.kelolabelanja.utilities.preferences.PickerPref
 import kotlinx.android.synthetic.main.item_calendar_month.view.*
 import java.util.*
@@ -40,8 +41,8 @@ class PickerMonthAdapter : RecyclerView.Adapter<PickerMonthAdapter.ViewHolder>()
             monthValue += monthPosition.toString()
         }
 
-        val getMonthSelected = MyApp.picker.getString(PickerPref.MONTH)
-        val getYearSelected = MyApp.picker.getString(PickerPref.YEAR)
+        val getMonthSelected = DataPreferences.picker.getString(PickerPref.MONTH)
+        val getYearSelected = DataPreferences.picker.getString(PickerPref.YEAR)
 
         if (getMonthSelected == monthValue && yearSelected == getYearSelected) {
             // set background

@@ -16,6 +16,7 @@ import com.himorfosis.kelolabelanja.state.HomeState
 import com.himorfosis.kelolabelanja.utilities.Util
 import com.himorfosis.kelolabelanja.utilities.preferences.AccountPref
 import com.himorfosis.kelolabelanja.utilities.preferences.AppPreferences
+import com.himorfosis.kelolabelanja.utilities.preferences.DataPreferences
 import kotlinx.android.synthetic.main.activity_homepage.*
 
 class HomepageActivity : AppCompatActivity() {
@@ -112,7 +113,7 @@ class HomepageActivity : AppCompatActivity() {
 
     private fun profileFragment() {
 
-        val getToken = MyApp.findInAccount(AccountPref.TOKEN)
+        val getToken = DataPreferences.account.getString(AccountPref.TOKEN)
 
         if (getToken == "") {
             startActivity(Intent(this, Login::class.java))

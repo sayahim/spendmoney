@@ -5,6 +5,7 @@ import com.himorfosis.kelolabelanja.app.MyApp
 import com.himorfosis.kelolabelanja.network.services.ClientService
 import com.himorfosis.kelolabelanja.utilities.Util
 import com.himorfosis.kelolabelanja.utilities.preferences.AccountPref
+import com.himorfosis.kelolabelanja.utilities.preferences.DataPreferences
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -37,7 +38,7 @@ object Network {
 
         var token: String? = ""
         try {
-            token = MyApp.findInAccount(AccountPref.TOKEN)
+            token = DataPreferences.account.getString(AccountPref.TOKEN)
         } catch (e: Exception) {
             Util.log("Network", "error : $e")
         }

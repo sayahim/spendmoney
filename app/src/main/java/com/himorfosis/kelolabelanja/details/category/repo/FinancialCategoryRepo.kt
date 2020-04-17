@@ -3,10 +3,10 @@ package com.himorfosis.kelolabelanja.details.category.repo
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.himorfosis.kelolabelanja.app.MyApp
 import com.himorfosis.kelolabelanja.details.category.model.FinancialPerCategoryModel
 import com.himorfosis.kelolabelanja.financial.model.FinancialEntitiy
 import com.himorfosis.kelolabelanja.utilities.Util
+import com.himorfosis.kelolabelanja.utilities.preferences.DataPreferences
 import com.himorfosis.kelolabelanja.utilities.preferences.PickerPref
 import java.util.ArrayList
 
@@ -21,8 +21,8 @@ class FinancialCategoryRepo {
 
         fun setDataFinancialCategoryDatabase(context: Context, type: String, categoryId: String) {
 
-            val month = MyApp.picker.getString(PickerPref.MONTH)
-            val year = MyApp.picker.getString(PickerPref.YEAR)
+            val month = DataPreferences.picker.getString(PickerPref.MONTH)
+            val year = DataPreferences.picker.getString(PickerPref.YEAR)
 
             listDataFinancial.clear()
             listPerDayData.clear()

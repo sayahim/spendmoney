@@ -56,7 +56,6 @@
 
         </FrameLayout>
 
-
         <Button
             android:id="@+id/add_new_category_btn"
             android:layout_width="match_parent"

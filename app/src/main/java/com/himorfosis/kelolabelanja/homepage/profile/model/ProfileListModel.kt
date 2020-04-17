@@ -1,4 +1,4 @@
-package com.himorfosis.kelolabelanja.profile.model
+package com.himorfosis.kelolabelanja.homepage.profile.model
 
 class ProfileListModel (
 

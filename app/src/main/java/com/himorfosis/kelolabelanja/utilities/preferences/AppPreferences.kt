@@ -29,5 +29,8 @@ class AppPreferences(context: Context, preference: String = context.packageName)
         sp.edit().putBoolean(field, value).apply()
     }
 
+    fun clear(){
+        sp.edit().clear().apply()
+    }
 
 }

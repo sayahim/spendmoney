@@ -9,13 +9,16 @@ import androidx.core.content.ContextCompat
 import com.himorfosis.kelolabelanja.R
 import kotlinx.android.synthetic.main.toolbar_detail.*
 
-class AddCategory : AppCompatActivity() {
+class InputCategory : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_category)
 
         setToolbar()
+    }
+
+    private fun initializeUI(){
 
     }
 

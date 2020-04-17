@@ -5,8 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.himorfosis.kelolabelanja.R
 import com.himorfosis.kelolabelanja.homepage.chart.model.ChartCategoryModel
+import com.himorfosis.kelolabelanja.homepage.chart.model.ReportCategoryModel
 import com.himorfosis.kelolabelanja.reports.model.ReportsDataModel
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.item_progress_financial.view.*
@@ -14,14 +16,13 @@ import java.util.ArrayList
 
 class ReportChartAdapter : RecyclerView.Adapter<ReportChartAdapter.ViewHolder>() {
 
-    private var listData: MutableList<ChartCategoryModel> = ArrayList<ChartCategoryModel>()
+    private var listData: MutableList<ReportCategoryModel> = ArrayList<ReportCategoryModel>()
 
     lateinit var onClickItem: OnClickItem
 
     // progress
     internal var progressStatusCounter = 0
     internal var progressHandler = Handler()
-    var maxNominal: Long = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.item_progress_financial, parent, false)
@@ -39,23 +40,19 @@ class ReportChartAdapter : RecyclerView.Adapter<ReportChartAdapter.ViewHolder>()
 
         if (data != null) {
 
-            holder.title_category_tv.text = data.category_name
-            holder.total_nominal_tv.text = "Rp " + data.total_nominal_category.toString()
+            holder.title_category_tv.text = data.title
+            holder.total_nominal_tv.text = "Rp " + data.total_nominal.toString()
 
-            // set image
-            val imageAssets = Util.convertImageDrawable(holder.itemView.context, data.category_image)
-            holder.category_image.setImageResource(imageAssets)
-
-            // count to get persen
-            val progressPersen: Double = data.total_nominal_category!!.toDouble() / maxNominal.toDouble()
-            val persen: Double = progressPersen * 100.0
+            Glide.with(holder.itemView.context).load(data.image_category_url)
+                    .thumbnail(0.1f)
+                    .error(R.drawable.ic_broken_image)
+                    .into(holder.category_image)
 
             Thread(Runnable {
                 while (progressStatusCounter < 100) {
                     progressHandler.post {
                         // set progress
-                        holder.total_progress.progress = persen.toInt()
-
+                        holder.total_progress.progress = data.total_percentage
                     }
                     try {
                         Thread.sleep(300)
@@ -83,15 +80,12 @@ class ReportChartAdapter : RecyclerView.Adapter<ReportChartAdapter.ViewHolder>()
         val category_image = itemView.category_img
     }
 
-    private fun add(data: ChartCategoryModel) {
+    private fun add(data: ReportCategoryModel) {
         listData.add(data)
         notifyItemInserted(listData.size - 1)
     }
 
-    fun addAll(posItems: List<ChartCategoryModel>, getMaxNominal: Long) {
-
-        maxNominal = getMaxNominal
-
+    fun addAll(posItems: List<ReportCategoryModel>) {
         for (response in posItems) {
             add(response)
         }
@@ -106,7 +100,7 @@ class ReportChartAdapter : RecyclerView.Adapter<ReportChartAdapter.ViewHolder>()
     }
 
     interface OnClickItem {
-        fun onItemClicked(data: ChartCategoryModel)
+        fun onItemClicked(data: ReportCategoryModel)
     }
 
     fun setOnclick(onClickItem: OnClickItem) {

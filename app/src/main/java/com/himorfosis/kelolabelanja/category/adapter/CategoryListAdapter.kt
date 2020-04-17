@@ -4,10 +4,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.himorfosis.kelolabelanja.R
 import com.himorfosis.kelolabelanja.category.model.CategoryEntity
 import com.himorfosis.kelolabelanja.response.Category.CategoryResponse
 import com.himorfosis.kelolabelanja.utilities.Util
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_category_list.view.*
 
 class CategoryListAdapter : RecyclerView.Adapter<CategoryListAdapter.ViewHolder>() {
@@ -31,8 +33,12 @@ class CategoryListAdapter : RecyclerView.Adapter<CategoryListAdapter.ViewHolder>
         if (data != null) {
             holder.category_name_tv.text = data.title
 
-            val imageAssets = Util.convertImageDrawable(holder.itemView.context, data.image_category)
-            holder.category_img.setImageResource(imageAssets)
+//            val imageAssets = Util.convertImageDrawable(holder.itemView.context, data.image_category)
+//            holder.category_img.setImageResource(imageAssets)
+            Picasso.with(holder.itemView.context)
+                    .load(data.image_category_url)
+                    .error(R.drawable.ic_broken_image)
+                    .into(holder.category_img)
 
             holder.delete_img.setOnClickListener {
                 onClickItem.onItemClicked(data)

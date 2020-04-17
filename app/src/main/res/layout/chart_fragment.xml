@@ -19,14 +19,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_10sdp"
                     app:cardCornerRadius="@dimen/_3sdp"
-                    app:cardElevation="@dimen/_3sdp">
+                    app:cardElevation="@dimen/_3sdp"
+                    >
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -116,47 +117,22 @@
 
         </androidx.core.widget.NestedScrollView>
 
-        <LinearLayout
+        <include
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            layout="@layout/layout_status_failure"
             android:gravity="center"
             android:layout_gravity="center"
             android:layout_marginRight="@dimen/_20sdp"
-            android:layout_marginLeft="@dimen/_20sdp">
+            android:layout_marginLeft="@dimen/_20sdp"
+            />
 
-            <TextView
-                android:id="@+id/status_tv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:fontFamily="@font/bold_opensans"
-                android:textColor="@color/text_hint"
-                android:textSize="@dimen/_16ssp"
-                android:text="Tidak Ada Transaksi"
-                android:visibility="invisible"
-                />
-
-            <TextView
-                android:id="@+id/status_deskripsi_tv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:fontFamily="@font/regular_opensans"
-                android:textColor="@color/text_hint"
-                android:textSize="@dimen/_12ssp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:visibility="invisible"
-                android:text="-"
-                />
-
-            <ProgressBar
-                android:id="@+id/progress_chart"
-                android:layout_width="@dimen/_40sdp"
-                android:layout_height="@dimen/_40sdp"
-                />
-
-        </LinearLayout>
+        <ProgressBar
+            android:id="@+id/progress_chart"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_gravity="center"
+            />
 
     </FrameLayout>
 

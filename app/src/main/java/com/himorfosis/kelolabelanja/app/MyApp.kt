@@ -1,20 +1,20 @@
 package com.himorfosis.kelolabelanja.app
 
 import android.app.Application
+import com.bumptech.glide.Glide
 import com.himorfosis.kelolabelanja.network.config.Network
-import com.himorfosis.kelolabelanja.utilities.preferences.AccountPref
-import com.himorfosis.kelolabelanja.utilities.preferences.AppPreferences
-import com.himorfosis.kelolabelanja.utilities.preferences.BackpressedPref
-import com.himorfosis.kelolabelanja.utilities.preferences.PickerPref
+import com.himorfosis.kelolabelanja.utilities.preferences.*
 
 class MyApp: Application() {
 
     override fun onCreate() {
         super.onCreate()
-        sharedPref = AppPreferences(this)
+//        sharedPref = AppPreferences(this)
         account = AppPreferences(this, AccountPref.KEY)
-        picker = AppPreferences(this, PickerPref.KEY)
+//        picker = AppPreferences(this, PickerPref.KEY)
         backpressed = AppPreferences(this, BackpressedPref.KEY)
+        DataPreferences.invoke(this)
+
 //        if (BuildConfig.DEBUG) Stetho.initializeWithDefaults(this)
 //        Network.serviceWithToken()
     }
@@ -27,8 +27,14 @@ class MyApp: Application() {
 //        )
 //    }
 
+    override fun onLowMemory() {
+        super.onLowMemory()
+        Glide.get(applicationContext).onTrimMemory(Glide.TRIM_MEMORY_RUNNING_LOW)
+    }
+
+
     companion object {
-        lateinit var sharedPref: AppPreferences
+//        lateinit var sharedPref: AppPreferences
         lateinit var account: AppPreferences
         lateinit var picker: AppPreferences
         lateinit var backpressed: AppPreferences
@@ -45,15 +51,6 @@ class MyApp: Application() {
             return backpressed.getString(BackpressedPref.DATA)
         }
 
-        fun deleteAllPreferences() {
-            picker.deleteData()
-            account.deleteData()
-            backpressed.deleteData()
-        }
-
-        fun deleteAccount() {
-            account.deleteData()
-        }
 
     }
 

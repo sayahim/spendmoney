@@ -33,13 +33,10 @@ class FinancialCategoryDetail : AppCompatActivity() {
         setContentView(R.layout.activity_financial_category_detail)
 
         getParsingData()
-
         setToolbar()
-
         getDataDetailPerCategory()
 
     }
-
 
     private fun getParsingData() {
 

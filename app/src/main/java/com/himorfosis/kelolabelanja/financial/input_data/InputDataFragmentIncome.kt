@@ -29,6 +29,7 @@ import com.himorfosis.kelolabelanja.utilities.Util
 import com.himorfosis.kelolabelanja.utilities.preferences.AccountPref
 import com.himorfosis.kelolabelanja.utilities.preferences.AppPreferences
 import com.himorfosis.kelolabelanja.utilities.preferences.BackpressedPref
+import com.himorfosis.kelolabelanja.utilities.preferences.DataPreferences
 import kotlinx.android.synthetic.main.fragment_input_financial.*
 import kotlinx.android.synthetic.main.layout_status_failure.*
 import org.jetbrains.anko.support.v4.toast
@@ -86,7 +87,7 @@ class InputDataFragmentIncome: Fragment() {
                 isLog("date : ${data.date}")
                 isLog("id cat : ${category.id}")
 
-                val userId = MyApp.findInAccount(AccountPref.ID)
+                val userId = DataPreferences.account.getString(AccountPref.ID)
 
                 pushFinanceData(FinanceCreateModel(
                         userId, category.id, category.type_category, data.nominal, data.note))

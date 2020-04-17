@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
@@ -15,19 +15,23 @@ import com.github.mikephil.charting.utils.ColorTemplate
 import com.himorfosis.kelolabelanja.R
 import com.himorfosis.kelolabelanja.data_sample.FinancialsData
 import com.himorfosis.kelolabelanja.homepage.chart.adapter.ReportChartAdapter
-import com.himorfosis.kelolabelanja.homepage.chart.model.ChartCategoryModel
-import com.himorfosis.kelolabelanja.homepage.chart.repo.ChartViewModel
+import com.himorfosis.kelolabelanja.homepage.chart.model.ReportCategoryModel
+import com.himorfosis.kelolabelanja.homepage.chart.model.ReportCategoryRequest
+import com.himorfosis.kelolabelanja.homepage.chart.repo.ReportViewModel
+import com.himorfosis.kelolabelanja.network.state.StateNetwork
 import com.himorfosis.kelolabelanja.reports.view.ReportDetailActivity
 import com.himorfosis.kelolabelanja.reports.view.ReportsActivity
+import com.himorfosis.kelolabelanja.utilities.Util
 import com.himorfosis.kelolabelanja.utilities.date.DateSet
 import kotlinx.android.synthetic.main.chart_fragment.*
-import org.jetbrains.anko.support.v4.toast
+import kotlinx.android.synthetic.main.layout_status_failure.*
 
 class ChartIncomeFragment : Fragment() {
 
     // adapter
     lateinit var adapterReportChart: ReportChartAdapter
-    lateinit var chartViewModel: ChartViewModel
+    lateinit var reportViewModel: ReportViewModel
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -37,12 +41,15 @@ class ChartIncomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setViewModel()
-
+        initializeUI()
         setAdapter()
+        fetchReportCategory()
 
-        getDataFinancialsCategory()
+    }
 
+    private fun initializeUI() {
+
+        reportViewModel = ViewModelProvider(this).get(ReportViewModel::class.java)
         show_data_month_tv.text = "Data Bulan " + DateSet.getMonthSelected()
 
         see_all_report_tv.setOnClickListener {
@@ -53,54 +60,55 @@ class ChartIncomeFragment : Fragment() {
 
     }
 
-    private fun setViewModel() {
-
-        chartViewModel = ViewModelProviders.of(this)[ChartViewModel::class.java]
-    }
-
     private fun setAdapter() {
 
         adapterReportChart = ReportChartAdapter()
-
         recycler_report_cart.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = adapterReportChart
         }
 
         adapterReportChart.setOnclick(object : ReportChartAdapter.OnClickItem {
-            override fun onItemClicked(data: ChartCategoryModel) {
+            override fun onItemClicked(data: ReportCategoryModel) {
                 val intent = Intent(context, ReportDetailActivity::class.java)
-                intent.putExtra("type", FinancialsData.INCOME_TYPE)
-                startActivity(intent)            }
+                intent.putExtra("type", FinancialsData.SPEND_TYPE)
+                startActivity(intent)
+            }
         })
 
     }
 
-    private fun getDataFinancialsCategory() {
+    private fun fetchReportCategory() {
 
-        chartViewModel.setChartFinancialsByCategory(FinancialsData.INCOME_TYPE)
-        chartViewModel.fetchChartFinancialsByCategoryResponse.observe(this, Observer {
+        reportViewModel.fetchReportFinanceCategory(FinancialsData.INCOME_TYPE)
+        reportViewModel.reportFinanceCategoryResponse.observe(viewLifecycleOwner, Observer {
+            progress_chart.visibility = View.GONE
+            when(it) {
+                is StateNetwork.OnSuccess -> {
+                    if (it.data.isNotEmpty()) {
+                        layout_chart_ll.visibility = View.VISIBLE
+                        fetchChartReport(it.data)
+                        adapterReportChart.addAll(it.data)
+                    } else {
+                        onError(
+                                getString(R.string.data_not_available),
+                                getString(R.string.data_not_available_message)
+                        )
+                    }
+                }
 
-            if (it.isNotEmpty()) {
-
-                setDataToShowOnCart(it)
-
-                adapterReportChart.addAll(it, it[0].total_nominal_category!!.toLong())
-
-            } else {
-
-                toast("Data Tidak Tersedia")
+                is StateNetwork.OnError -> onError(it.error, it.message)
+                is StateNetwork.OnFailure -> onFailureNetwork()
             }
 
         })
 
     }
 
-    private fun setDataToShowOnCart(listData: List<ChartCategoryModel>) {
+    private fun fetchChartReport(it: List<ReportCategoryModel>) {
 
-        chartViewModel.setShowDataFinancialsCategoryOnChart(listData)
-        chartViewModel.showDataFinancialsCategoryOnChart.observe(this, Observer {
-
+        reportViewModel.fetchchartReportFinancePerCategory(it)
+        reportViewModel.chartReportFinancePerCategoryResponse.observe(viewLifecycleOwner, Observer {
             if (it.isNotEmpty()) {
 
                 pie_chart.description.text = "Data Teratas"
@@ -116,13 +124,35 @@ class ChartIncomeFragment : Fragment() {
 
                 layout_chart_ll.visibility = View.VISIBLE
                 progress_chart.visibility = View.GONE
-
-            } else {
-
             }
-
         })
 
     }
+
+    fun onError(title: String, message: String) {
+        title_status_tv.visibility = View.VISIBLE
+        description_status_tv.visibility = View.VISIBLE
+        title_status_tv.text = title
+        description_status_tv.text = message
+    }
+
+    fun onFailureNetwork() {
+        title_status_tv.visibility = View.VISIBLE
+        description_status_tv.visibility = View.VISIBLE
+        title_status_tv.text = getString(R.string.check_connection)
+        description_status_tv.text = getString(R.string.check_connection_message)
+    }
+
+    fun onDisconnect() {
+        title_status_tv.visibility = View.VISIBLE
+        description_status_tv.visibility = View.VISIBLE
+        title_status_tv.text = getString(R.string.disconnect)
+        description_status_tv.text = getString(R.string.disconnect_message)
+    }
+
+    fun isLog(message: String) {
+        Util.log("Chart", message)
+    }
+
 
 }

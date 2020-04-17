@@ -2,8 +2,8 @@ package com.himorfosis.kelolabelanja.utilities.date
 
 import android.content.Context
 import android.os.Build
-import com.himorfosis.kelolabelanja.app.MyApp
 import com.himorfosis.kelolabelanja.utilities.Util
+import com.himorfosis.kelolabelanja.utilities.preferences.DataPreferences
 import com.himorfosis.kelolabelanja.utilities.preferences.PickerPref
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
@@ -16,9 +16,21 @@ object DateSet {
 
         val date = SimpleDateFormat("yyyy-MM-dd")
         val today = date.format(Date())
-
         return today.toString()
+    }
 
+    fun getDateNow(): String {
+
+        val date = SimpleDateFormat("dd")
+        val today = date.format(Date())
+        return today.toString()
+    }
+
+    fun getDateMonthStartToday(): String {
+
+        val date = SimpleDateFormat("yyyy-MM-")
+        val today = date.format(Date())
+        return today.toString() + "01"
     }
 
     fun convertTimestamp(dateTime: String): String {
@@ -42,13 +54,11 @@ object DateSet {
     fun getMonthSelected(): String {
 
         var monthValue: String
-
         val dateYear = SimpleDateFormat("yyyy")
-
         val yearToday = dateYear.format(Date())
 
-        val monthSelected = MyApp.picker.getString(PickerPref.MONTH)
-        val yearSelected = MyApp.picker.getString(PickerPref.YEAR)
+        val monthSelected = DataPreferences.picker.getString(PickerPref.MONTH)
+        val yearSelected = DataPreferences.picker.getString(PickerPref.YEAR)
 
         // show data
         if (yearSelected == yearToday) {

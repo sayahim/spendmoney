@@ -18,6 +18,7 @@ import com.himorfosis.kelolabelanja.app.MyApp
 import com.himorfosis.kelolabelanja.month_picker.adapter.PickerMonthAdapter
 import com.himorfosis.kelolabelanja.utilities.Util
 import com.himorfosis.kelolabelanja.utilities.preferences.AppPreferences
+import com.himorfosis.kelolabelanja.utilities.preferences.DataPreferences
 import com.himorfosis.kelolabelanja.utilities.preferences.PickerPref
 
 class DialogMonthPicker(internal val context: Context) : DialogFragment() {
@@ -40,11 +41,9 @@ class DialogMonthPicker(internal val context: Context) : DialogFragment() {
         val nextYear = view.findViewById(R.id.next_year_ll) as LinearLayout
         val yearSelected_tv = view.findViewById(R.id.year_selected_tv) as TextView
 
-//        val getYearSelected = Util.getData("picker", "year", context)
-//        val getMonthSelected = Util.getData("picker", "month", context)
 
-        val getYearSelected = MyApp.findInPicker(PickerPref.YEAR)
-        val getMonthSelected = MyApp.findInPicker(PickerPref.MONTH)
+        val getYearSelected = DataPreferences.picker.getString(PickerPref.YEAR)
+        val getMonthSelected = DataPreferences.picker.getString(PickerPref.MONTH)
 
         preferences.saveString(PickerPref.KEY)
 

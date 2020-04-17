@@ -79,24 +79,26 @@ class InputFinanceBottomDialog(context: Context): BottomSheetDialog(context) {
                     var nominalSize = nominal_et.text.toString().length
                     var originalString = s.toString()
 
-                    originalString = originalString.replace(decimalFormat.decimalFormatSymbols.groupingSeparator.toString(), "")
+                    if (originalString != "") {
+                        originalString = originalString.replace(decimalFormat.decimalFormatSymbols.groupingSeparator.toString(), "")
 
-                    var number: Number = decimalFormat.parse(originalString)
-                    var selectionNominal = nominal_et.selectionStart
+                        var number: Number = decimalFormat.parse(originalString)
+                        var selectionNominal = nominal_et.selectionStart
 
-                    if (hasFractionalPart) {
-                        nominal_et.setText(decimalFormat.format(number))
-                    } else {
-                        nominal_et.setText(decimalFormatNotEdit.format(number))
-                    }
+                        if (hasFractionalPart) {
+                            nominal_et.setText(decimalFormat.format(number))
+                        } else {
+                            nominal_et.setText(decimalFormatNotEdit.format(number))
+                        }
 
-                    val endSize = nominal_et.text.toString().length
+                        val endSize = nominal_et.text.toString().length
 
-                    var setIndicatorEditText = (selectionNominal + (endSize - nominalSize))
-                    if (setIndicatorEditText in 1..endSize) {
-                        nominal_et.setSelection(setIndicatorEditText)
-                    } else {
-                        nominal_et.setSelection(endSize - 1)
+                        var setIndicatorEditText = (selectionNominal + (endSize - nominalSize))
+                        if (setIndicatorEditText in 1..endSize) {
+                            nominal_et.setSelection(setIndicatorEditText)
+                        } else {
+                            nominal_et.setSelection(endSize - 1)
+                        }
                     }
 
                 } catch (e : java.lang.NumberFormatException) {

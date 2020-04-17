@@ -21,6 +21,7 @@ import com.himorfosis.kelolabelanja.month_picker.DialogMonthPicker
 import com.himorfosis.kelolabelanja.network.state.StateNetwork
 import com.himorfosis.kelolabelanja.utilities.date.DateSet
 import com.himorfosis.kelolabelanja.utilities.Util
+import com.himorfosis.kelolabelanja.utilities.preferences.DataPreferences
 import com.himorfosis.kelolabelanja.utilities.preferences.PickerPref
 import kotlinx.android.synthetic.main.home_fragment.*
 import kotlinx.android.synthetic.main.home_fragment.month_selected_tv
@@ -73,7 +74,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun setAdapter() {
-
         adapterHome = HomeGroupAdapter()
         recycler.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -89,7 +89,13 @@ class HomeFragment : Fragment() {
             loadingStop()
             when (it) {
                 is StateNetwork.OnSuccess -> {
-                    onSuccessFetchHomepage(it.data)
+                    if (it.data.data.isNotEmpty()) {
+                        onSuccessFetchHomepage(it.data)
+                    } else {
+                        onFailure(
+                                getString(R.string.data_transaction_not_available),
+                                getString(R.string.data_transaction_not_available_message))
+                    }
                 }
                 is StateNetwork.OnError -> {
                     onFailure(it.error, it.message)
@@ -146,8 +152,8 @@ class HomeFragment : Fragment() {
             override fun onItemClicked(data: Boolean) {
                 if (data) {
 
-                    val getYearSelected = MyApp.picker.getString(PickerPref.YEAR)
-                    val getMonthSelected = MyApp.picker.getString(PickerPref.MONTH)
+                    val getYearSelected = DataPreferences.picker.getString(PickerPref.YEAR)
+                    val getMonthSelected = DataPreferences.picker.getString(PickerPref.MONTH)
                     val dateYear = SimpleDateFormat("yyyy")
                     val year = dateYear.format(Date())
 
@@ -164,7 +170,7 @@ class HomeFragment : Fragment() {
                     }
 
                     // reload data
-//                    getDataMonthSelected()
+                    fetchDataFinanceUser()
                 }
             }
         })

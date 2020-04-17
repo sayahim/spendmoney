@@ -8,6 +8,7 @@ import com.himorfosis.kelolabelanja.homepage.activity.HomepageActivity
 import com.himorfosis.kelolabelanja.network.config.Network
 import com.himorfosis.kelolabelanja.utilities.Util
 import com.himorfosis.kelolabelanja.utilities.preferences.AppPreferences
+import com.himorfosis.kelolabelanja.utilities.preferences.DataPreferences
 import com.himorfosis.kelolabelanja.utilities.preferences.PickerPref
 import kotlinx.android.synthetic.main.home_fragment.*
 import java.text.SimpleDateFormat
@@ -43,16 +44,9 @@ class SplashScreen : AppCompatActivity() {
         val yearToday = dateYear.format(Date())
         val monthToday = dateMonth.format(Date())
 
-        preferences = AppPreferences(this, PickerPref.KEY)
-        preferences.saveString(PickerPref.MONTH, monthToday)
-        preferences.saveString(PickerPref.YEAR, yearToday)
-//        Util.saveData("picker", "month", monthToday, this)
-//        Util.saveData("picker", "year", yearToday, this)
+        DataPreferences.picker.saveString(PickerPref.MONTH, monthToday)
+        DataPreferences.picker.saveString(PickerPref.YEAR, yearToday)
 
-    }
-
-    companion object {
-        lateinit var preferences: AppPreferences
     }
 
 }

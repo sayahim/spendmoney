@@ -13,7 +13,8 @@ interface HomepageService {
     @POST("homepage")
     fun homepageFetch(
             @Field("user_id") user_id: String?,
-            @Field("date_today") date_start: String?
+            @Field("date_start") date_start: String?,
+            @Field("date_today") date_today: String?
     ): Observable<HomepageResponse>
 
 }

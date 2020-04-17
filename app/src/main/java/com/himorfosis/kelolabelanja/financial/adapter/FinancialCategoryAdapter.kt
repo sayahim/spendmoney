@@ -6,10 +6,12 @@ import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.himorfosis.kelolabelanja.R
 import com.himorfosis.kelolabelanja.category.model.CategoryEntity
 import com.himorfosis.kelolabelanja.response.Category.CategoryResponse
 import com.himorfosis.kelolabelanja.utilities.Util
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_category_financials.view.*
 import java.util.ArrayList
 
@@ -35,38 +37,30 @@ class FinancialCategoryAdapter : RecyclerView.Adapter<FinancialCategoryAdapter.V
         var data = listData[position]
 
         // check selected
-
-        var convertID = data.id.toString()
-
+        var convertID = data.id
         if (getIdSelected != null) {
-
             if (getIdSelected == convertID) {
-
                 holder.frame.setBackgroundResource(R.drawable.circle_gold)
             } else {
-
                 holder.frame.setBackgroundResource(R.drawable.border_line)
             }
-
         } else {
-
             holder.frame.setBackgroundResource(R.drawable.border_line)
-
         }
-
-        val imageAssets = Util.convertImageDrawable(holder.itemView.context, data.image_category)
 
         holder.name_tv.text = data.title
 
-        holder.image_img.setImageResource(imageAssets)
+        isLog("image : " + data.image_category_url)
+        Picasso.with(holder.itemView.context)
+                .load(data.image_category_url)
+                .error(R.drawable.ic_broken_image)
+                .into(holder.image_img)
 
         holder.itemView.setOnClickListener {
             holder.frame.setBackgroundResource(R.drawable.circle_gold)
             Util.log(TAG, "id selected  : " + data.id)
             // callback adapter
             onClickItem.onItemClicked(data)
-
-
         }
 
     }
@@ -90,7 +84,6 @@ class FinancialCategoryAdapter : RecyclerView.Adapter<FinancialCategoryAdapter.V
 
     private fun add(data: CategoryResponse) {
         listData!!.add(data)
-
         // add data filter
         dataListFilter = listData
 
@@ -99,21 +92,21 @@ class FinancialCategoryAdapter : RecyclerView.Adapter<FinancialCategoryAdapter.V
 
     fun addAll(posItems: List<CategoryResponse>) {
         for (response in posItems) {
-
             dataListFilter = listData
-
             add(response)
         }
     }
 
-    fun removeAllData() {
+    fun clear() {
 
         if (listData.isNotEmpty()) {
-
             listData.clear()
             notifyDataSetChanged()
         }
+    }
 
+    private fun isLog(message: String) {
+        Util.log("FinanceCategory", message)
     }
 
     override fun getFilter(): Filter {

@@ -10,7 +10,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-object CategoryRepo: BaseRepository(){
+class CategoryRepo: BaseRepository(){
 
     val service = Network.createService(CategoryService::class.java)
     private val disposable = CompositeDisposable()

@@ -7,15 +7,16 @@ import com.himorfosis.kelolabelanja.response.Category.CategoryResponse
 
 class CategoryViewModel: ViewModel() {
 
+    var categoryRepo = CategoryRepo()
     var categoryResponse = MutableLiveData<StateNetwork<List<CategoryResponse>>>()
     var categoryTypeFinanceResponse = MutableLiveData<StateNetwork<List<CategoryResponse>>>()
 
     fun categoryFetch() {
-        categoryResponse = CategoryRepo.category()
+        categoryResponse = categoryRepo.category()
     }
 
     fun categoryTypeFinancePush(type: String) {
-        categoryTypeFinanceResponse = CategoryRepo.categoryTypeFinance(type)
+        categoryTypeFinanceResponse = categoryRepo.categoryTypeFinance(type)
     }
 
 }

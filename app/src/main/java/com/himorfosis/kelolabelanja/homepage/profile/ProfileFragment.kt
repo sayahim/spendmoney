@@ -16,9 +16,10 @@ import com.himorfosis.kelolabelanja.auth.repo.AuthViewModel
 import com.himorfosis.kelolabelanja.dialog.DialogLoading
 import com.himorfosis.kelolabelanja.network.state.StateNetwork
 import com.himorfosis.kelolabelanja.homepage.profile.adapter.ProfileListAdapter
-import com.himorfosis.kelolabelanja.profile.model.ProfileListModel
+import com.himorfosis.kelolabelanja.homepage.profile.model.ProfileListModel
 import com.himorfosis.kelolabelanja.utilities.Util
 import com.himorfosis.kelolabelanja.utilities.preferences.AccountPref
+import com.himorfosis.kelolabelanja.utilities.preferences.DataPreferences
 import kotlinx.android.synthetic.main.profile_fragment.*
 import kotlinx.android.synthetic.main.toolbar_title.*
 import org.jetbrains.anko.support.v4.toast
@@ -48,8 +49,8 @@ class ProfileFragment : Fragment() {
     private fun initializeUI() {
 
         titleBar_tv.text = "Profil"
-        name_user_tv.text = MyApp.findInAccount(AccountPref.NAME)
-        email_user_tv.text = MyApp.findInAccount(AccountPref.EMAIL)
+        name_user_tv.text = DataPreferences.account.getString(AccountPref.NAME)
+        email_user_tv.text = DataPreferences.account.getString(AccountPref.EMAIL)
 
         setAdapter()
         viewModel = ViewModelProvider(this).get(AuthViewModel::class.java)
@@ -89,7 +90,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun logoutSuccess() {
-        MyApp.deleteAllPreferences()
+        DataPreferences.clearAllPreferences()
         startActivity(Intent(context, Login::class.java))
     }
 

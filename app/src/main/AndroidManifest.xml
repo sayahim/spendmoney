@@ -36,15 +36,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
         <activity
-            android:name=".category.Category"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
-        <activity
             android:name=".financial.FinancialDetail"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".category.AddCategory"
+            android:name=".category.InputCategory"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity

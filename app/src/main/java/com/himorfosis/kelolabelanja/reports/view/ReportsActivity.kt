@@ -20,6 +20,7 @@ import com.himorfosis.kelolabelanja.reports.repo.ReportsViewModel
 import com.himorfosis.kelolabelanja.state.StatusData
 import com.himorfosis.kelolabelanja.utilities.Util
 import com.himorfosis.kelolabelanja.utilities.date.DateSet
+import com.himorfosis.kelolabelanja.utilities.preferences.DataPreferences
 import com.himorfosis.kelolabelanja.utilities.preferences.PickerPref
 import kotlinx.android.synthetic.main.reports_activity.*
 import kotlinx.android.synthetic.main.toolbar_detail.*
@@ -135,8 +136,8 @@ class ReportsActivity : AppCompatActivity() {
 
     private fun setTitleToolbar() {
 
-        val getYearSelected = MyApp.picker.getString(PickerPref.YEAR)
-        val getMonthSelected = MyApp.picker.getString(PickerPref.MONTH)
+        val getYearSelected = DataPreferences.picker.getString(PickerPref.YEAR)
+        val getMonthSelected = DataPreferences.picker.getString(PickerPref.MONTH)
         val dateYear = SimpleDateFormat("yyyy")
         val year = dateYear.format(Date())
 

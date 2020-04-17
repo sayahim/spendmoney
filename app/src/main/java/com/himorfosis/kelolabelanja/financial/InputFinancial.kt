@@ -20,6 +20,8 @@ import com.himorfosis.kelolabelanja.financial.model.FinancialEntitiy
 import com.himorfosis.kelolabelanja.financial.model.InputDataModel
 import com.himorfosis.kelolabelanja.homepage.activity.HomepageActivity
 import com.himorfosis.kelolabelanja.utilities.Util
+import com.himorfosis.kelolabelanja.utilities.preferences.BackpressedPref
+import com.himorfosis.kelolabelanja.utilities.preferences.DataPreferences
 import kotlinx.android.synthetic.main.activity_input_financial.*
 import kotlinx.android.synthetic.main.toolbar_detail.*
 import org.jetbrains.anko.toast
@@ -169,7 +171,7 @@ class InputFinancial : AppCompatActivity() {
 
     private fun actionBackpressed() {
 
-        val typeFinance = MyApp.findInBackpressd()
+        val typeFinance = DataPreferences.backpressed.getString(BackpressedPref.DATA)
 
         isLog(typeFinance!!)
 

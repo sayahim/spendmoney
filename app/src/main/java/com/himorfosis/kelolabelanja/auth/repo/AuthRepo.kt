@@ -1,7 +1,6 @@
 package com.himorfosis.kelolabelanja.auth.repo
 
 import androidx.lifecycle.MutableLiveData
-import com.himorfosis.kelolabelanja.app.MyApp
 import com.himorfosis.kelolabelanja.network.config.Network
 import com.himorfosis.kelolabelanja.network.repository.BaseRepository
 import com.himorfosis.kelolabelanja.network.services.AuthService
@@ -12,7 +11,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import okhttp3.ResponseBody
 
-object AuthRepo: BaseRepository() {
+class AuthRepo: BaseRepository() {
 
     val service = Network.createService(AuthService::class.java)
     private val disposable = CompositeDisposable()

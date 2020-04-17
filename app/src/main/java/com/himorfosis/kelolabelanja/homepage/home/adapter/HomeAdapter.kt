@@ -9,6 +9,7 @@ import com.himorfosis.kelolabelanja.R
 import com.himorfosis.kelolabelanja.data_sample.CategoryData
 import com.himorfosis.kelolabelanja.homepage.home.model.HomepageResponse
 import com.himorfosis.kelolabelanja.utilities.Util
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_home.view.*
 
 class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
@@ -30,8 +31,7 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
         val context = holder.itemView.context
 
         if (data.note != null) {
-//            holder.name_tv.text = data.id_category
-            holder.name_tv.text = data.note
+            holder.name_tv.text = data.category.title
 
         } else {
             holder.name_tv.text = data.note
@@ -41,7 +41,7 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
             holder.nominal_tv.setTextColor(ContextCompat.getColor(context, R.color.green))
             if (data.nominal != null) {
                 holder.nominal_tv.text = Util.numberFormatMoney(data.nominal.toString())
-            } else{
+            } else {
                 holder.nominal_tv.text = "Rp0"
             }
 
@@ -49,15 +49,19 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
             holder.nominal_tv.setTextColor(ContextCompat.getColor(context, R.color.text_black_primary))
             if (data.nominal != null) {
-                holder.nominal_tv.text =  Util.numberFormatMoney(data.nominal.toString())
+                holder.nominal_tv.text = Util.numberFormatMoney(data.nominal.toString())
             } else {
                 holder.nominal_tv.text = "Rp0"
             }
 
         }
 
-//        val imageAssets = Util.convertImageDrawable(context, data.)
+        Picasso.with(holder.itemView.context)
+                .load(data.category.image_category_url)
+                .error(R.drawable.ic_broken_image)
+                .into(holder.category_img)
 
+//        val imageAssets = Util.convertImageDrawable(context, data.)
 //        holder.category_img.setImageResource(imageAssets)
 
         holder.itemView.setOnClickListener {
@@ -84,10 +88,11 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-            val name_tv = itemView.name_tv
-//            val time_tv = itemView.findViewById(R.id.time_tv) as TextView
-            val nominal_tv = itemView.nominal_tv
-            val category_img = itemView.category_img
+        val name_tv = itemView.name_tv
+
+        //            val time_tv = itemView.findViewById(R.id.time_tv) as TextView
+        val nominal_tv = itemView.nominal_tv
+        val category_img = itemView.category_img
 
     }
 
