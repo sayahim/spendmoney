@@ -22,6 +22,7 @@ import com.himorfosis.kelolabelanja.utilities.preferences.AccountPref
 import com.himorfosis.kelolabelanja.utilities.preferences.AppPreferences
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.toolbar_title.*
+import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.toast
 
 class Login : AppCompatActivity() {
@@ -94,16 +95,17 @@ class Login : AppCompatActivity() {
         // refresh network to get token
         Network.build()
 
-        startActivity(Intent(this, HomepageActivity::class.java))
+        closeActivityLogin()
     }
 
 
     private fun closeActivityLogin() {
-        startActivity(Intent(this, HomepageActivity::class.java))
+        startActivity(intentFor<HomepageActivity>())
+
     }
 
     private fun dialogInfo(title: String?, message: String) {
-        DialogInfo(this, title.toString(), message.toString()).show()
+        DialogInfo(this, title.toString(), message).show()
     }
 
     private fun isLog(message: String) {

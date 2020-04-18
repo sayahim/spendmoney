@@ -130,7 +130,15 @@ class InputDataFragmentIncome: Fragment() {
             viewModelCategory.categoryTypeFinanceResponse.observe(viewLifecycleOwner, Observer {
                 when (it) {
                     is StateNetwork.OnSuccess -> {
-                        adapterCategory.addAll(it.data) }
+                        if (it.data.isNotEmpty()) {
+                            adapterCategory.addAll(it.data)
+                        } else {
+                            onFailure(
+                                    getString(R.string.data_not_available),
+                                    getString(R.string.data_not_available_message)
+                            )
+                        }
+                    }
                     is StateNetwork.OnError -> {
                         onFailure(
                                 it.error,

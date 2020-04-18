@@ -42,112 +42,6 @@ class InputFinancial : AppCompatActivity() {
 
     }
 
-
-//    private fun deleteTextSearch() {
-//        search_category_et.setText("")
-//        delete_search_btn.visibility = View.INVISIBLE
-//    }
-
-//    private fun setActionClick() {
-//
-//        delete_search_btn.setOnClickListener {
-//            deleteTextSearch()
-//        }
-//
-//    }
-
-
-//    private fun insertIntoDatabase(data: FinancialEntitiy) {
-//
-//        toast("Data Berhasil Tersimpan")
-//        startActivity(Intent(this, HomepageActivity::class.java))
-//
-//    }
-
-//    private fun setDataCategorySpending() {
-//
-//        getTypeInputData = "spend"
-//
-//        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
-//
-//        spend_tv.setTextColor(resources.getColor(R.color.text_blue_dark))
-//        income_tv.setTextColor(resources.getColor(R.color.text_second))
-//
-//        // set indicator
-//        income_indicator.visibility = View.INVISIBLE
-//        spend_indicator.visibility = View.VISIBLE
-//
-//        search_category_et.setText("")
-//        delete_search_btn.visibility = View.INVISIBLE
-//
-//        deleteTextSearch()
-//
-//        listCategory = CategoryData.getDataCategorySpending()
-//
-//        setAdapterCategory()
-//
-//    }
-
-//    private fun setDataCategoryIncome() {
-//
-//        getTypeInputData = "income"
-//
-//        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
-//
-//        income_tv.setTextColor(resources.getColor(R.color.text_blue_dark))
-//        spend_tv.setTextColor(resources.getColor(R.color.text_second))
-//
-//        // set indicator
-//        income_indicator.visibility = View.VISIBLE
-//        spend_indicator.visibility = View.INVISIBLE
-//
-//        // delete cache data
-//        Util.saveData("category", "selected", "0", this)
-//
-//        deleteTextSearch()
-//
-//        listCategory = CategoryData.getDataCategoryIncome()
-//
-//        setAdapterCategory()
-//
-//    }
-
-//    private fun setAdapterCategory() {
-//
-//        Util.log(TAG, "adapter")
-//
-//        financialCategoryAdapter = FinancialCategoryAdapter()
-//
-//        recycler_category.apply {
-//
-//            financialCategoryAdapter.addAll(listCategory)
-//            layoutManager = GridLayoutManager(this@InputFinancial, 3)
-//            adapter = financialCategoryAdapter
-//
-//        }
-//        if (listCategory.isEmpty()) {
-//
-//            status_data_tv.visibility = View.VISIBLE
-//
-//        } else {
-//
-//            status_data_tv.visibility = View.INVISIBLE
-//        }
-//
-//        // adapter callback
-//        financialCategoryAdapter.setOnclick(object : FinancialCategoryAdapter.AdapterOnClickItem {
-//            override fun onItemClicked(data: CategoryEntity) {
-//
-//                Util.saveData("category", "selected", data.id.toString(), this@InputFinancial)
-//
-//                showInputDataFinance(data)
-//
-//                reloadDataAdapter()
-//
-//            }
-//        })
-//
-//    }
     private fun setToolbar() {
 
         val actionBar = supportActionBar
@@ -159,7 +53,6 @@ class InputFinancial : AppCompatActivity() {
         titleBar_tv.text = "Input Data Keuangan"
 
         backBar_btn.setOnClickListener {
-
             actionBackpressed()
         }
 
@@ -177,7 +70,6 @@ class InputFinancial : AppCompatActivity() {
 
         if (typeFinance == getString(R.string.income)) {
             finance_pager.currentItem = 0
-//            setDataCategorySpending()
         } else {
             startActivity(Intent(this, HomepageActivity::class.java))
         }

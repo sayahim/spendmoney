@@ -4,7 +4,9 @@
     android:layout_height="wrap_content"
     android:minHeight="@dimen/_30sdp"
     android:orientation="horizontal"
-    android:gravity="center">
+    android:gravity="center"
+    android:background="@android:color/white"
+    >
 
 
     <TextView

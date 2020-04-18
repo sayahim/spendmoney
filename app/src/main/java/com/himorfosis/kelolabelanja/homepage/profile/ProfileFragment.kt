@@ -113,7 +113,7 @@ class ProfileFragment : Fragment() {
         dataList.add(ProfileListModel(3, "About App"))
         dataList.add(ProfileListModel(4, "Share Info App"))
         dataList.add(ProfileListModel(5, "Rate Us"))
-        dataList.add(ProfileListModel(6, "suggestion Development"))
+        dataList.add(ProfileListModel(6, "Suggestion Development"))
         dataList.add(ProfileListModel(7, "Log Out"))
 
         return dataList

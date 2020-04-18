@@ -25,6 +25,7 @@ import com.himorfosis.kelolabelanja.utilities.Util
 import com.himorfosis.kelolabelanja.utilities.date.DateSet
 import kotlinx.android.synthetic.main.chart_fragment.*
 import kotlinx.android.synthetic.main.layout_status_failure.*
+import org.jetbrains.anko.support.v4.intentFor
 
 class ChartIncomeFragment : Fragment() {
 
@@ -70,9 +71,10 @@ class ChartIncomeFragment : Fragment() {
 
         adapterReportChart.setOnclick(object : ReportChartAdapter.OnClickItem {
             override fun onItemClicked(data: ReportCategoryModel) {
-                val intent = Intent(context, ReportDetailActivity::class.java)
-                intent.putExtra("type", FinancialsData.SPEND_TYPE)
-                startActivity(intent)
+                startActivity(intentFor<ReportDetailActivity>(
+                        "type" to FinancialsData.SPEND_TYPE
+                ))
+
             }
         })
 
@@ -83,7 +85,7 @@ class ChartIncomeFragment : Fragment() {
         reportViewModel.fetchReportFinanceCategory(FinancialsData.INCOME_TYPE)
         reportViewModel.reportFinanceCategoryResponse.observe(viewLifecycleOwner, Observer {
             progress_chart.visibility = View.GONE
-            when(it) {
+            when (it) {
                 is StateNetwork.OnSuccess -> {
                     if (it.data.isNotEmpty()) {
                         layout_chart_ll.visibility = View.VISIBLE

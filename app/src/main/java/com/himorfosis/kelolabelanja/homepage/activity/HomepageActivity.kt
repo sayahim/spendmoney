@@ -68,7 +68,6 @@ class HomepageActivity : AppCompatActivity() {
     private fun checkParseData() {
 
         val getFrom = intent.getStringExtra("home")
-
         if (getFrom != null) {
 
             if (getFrom == HomeState.PROFILE) {

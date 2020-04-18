@@ -11,6 +11,7 @@ import com.himorfosis.kelolabelanja.utilities.preferences.AppPreferences
 import com.himorfosis.kelolabelanja.utilities.preferences.DataPreferences
 import com.himorfosis.kelolabelanja.utilities.preferences.PickerPref
 import kotlinx.android.synthetic.main.home_fragment.*
+import org.jetbrains.anko.intentFor
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -26,7 +27,7 @@ class SplashScreen : AppCompatActivity() {
             override fun run() {
 
                 setDataDateToday()
-                startActivity(Intent(this@SplashScreen, HomepageActivity::class.java))
+                startActivity(intentFor<HomepageActivity>())
             }
 
         }, 1000)

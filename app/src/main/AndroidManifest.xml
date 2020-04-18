@@ -4,7 +4,7 @@
     package="com.himorfosis.kelolabelanja">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:node="replace" />
@@ -20,7 +20,7 @@
         android:roundIcon="@mipmap/logo_app_round"
         android:supportsRtl="true"
         android:theme="@style/NoActionBar">
-
+        <activity android:name=".category.AssetsCategoryList"></activity>
         <activity
             android:name=".SplashScreen"
             android:label="@string/app_name"
@@ -55,16 +55,18 @@
             android:name=".reports.view.ReportsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
-        <activity android:name=".reports.view.ReportDetailActivity"
+        <activity
+            android:name=".reports.view.ReportDetailActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"
-            ></activity>
-        <activity android:name=".auth.Login"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".auth.Login"
             android:screenOrientation="portrait"
-            android:theme="@style/NoActionBar"/>
-        <activity android:name=".auth.Register"
+            android:theme="@style/NoActionBar" />
+        <activity
+            android:name=".auth.Register"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

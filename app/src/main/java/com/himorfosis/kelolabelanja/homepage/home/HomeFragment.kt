@@ -98,6 +98,9 @@ class HomeFragment : Fragment() {
                     }
                 }
                 is StateNetwork.OnError -> {
+                    if (it.status == 401) {
+                        DataPreferences.account.clear()
+                    }
                     onFailure(it.error, it.message)
                 }
 

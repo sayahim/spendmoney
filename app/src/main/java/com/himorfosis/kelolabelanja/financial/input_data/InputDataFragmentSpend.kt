@@ -30,6 +30,7 @@ import com.himorfosis.kelolabelanja.utilities.preferences.BackpressedPref
 import com.himorfosis.kelolabelanja.utilities.preferences.DataPreferences
 import kotlinx.android.synthetic.main.fragment_input_financial.*
 import kotlinx.android.synthetic.main.layout_status_failure.*
+import org.jetbrains.anko.support.v4.intentFor
 import org.jetbrains.anko.support.v4.toast
 
 class InputDataFragmentSpend : Fragment() {
@@ -96,14 +97,13 @@ class InputDataFragmentSpend : Fragment() {
     private fun pushFinanceData(data: FinanceCreateModel) {
 
         isLoading()
-
         viewModelFinance.createFinanceUser(data)
         viewModelFinance.financeCreateResponse.observe(this, Observer {
             loadingDialog.dismiss()
             when (it) {
                 is StateNetwork.OnSuccess -> {
                     toast(getString(R.string.success))
-                    startActivity(Intent(requireContext(), HomepageActivity::class.java))
+                    startActivity(intentFor<HomepageActivity>())
                 }
                 is StateNetwork.OnError -> {
                     dialogInfo(
@@ -128,7 +128,14 @@ class InputDataFragmentSpend : Fragment() {
             viewModelCategory.categoryTypeFinanceResponse.observe(viewLifecycleOwner, Observer {
                 when (it) {
                     is StateNetwork.OnSuccess -> {
-                        adapterCategory.addAll(it.data) }
+                        if (it.data.isNotEmpty()) {
+                            adapterCategory.addAll(it.data)
+                        } else {
+                            onFailure(
+                                    getString(R.string.data_not_available),
+                                    getString(R.string.data_not_available_message)
+                            )
+                        }                    }
                     is StateNetwork.OnError -> {
                         onFailure(
                                 it.error,

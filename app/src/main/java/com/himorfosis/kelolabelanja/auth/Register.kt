@@ -17,6 +17,7 @@ import com.himorfosis.kelolabelanja.network.state.StateNetwork
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.toolbar_detail.*
+import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.toast
 
 class Register : AppCompatActivity() {
@@ -41,7 +42,7 @@ class Register : AppCompatActivity() {
             val email = email_ed.text.toString()
             val password = password_ed.text.toString()
             val confirm_pass = password_confirm_ed.text.toString()
-            if (name.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && confirm_pass.isNotEmpty() ) {
+            if (name.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && confirm_pass.isNotEmpty()) {
                 if (password == confirm_pass) {
                     registerPush(name, email, password)
                 } else {
@@ -83,7 +84,7 @@ class Register : AppCompatActivity() {
         titleBar_tv.text = getString(R.string.register)
 
         backBar_btn.setOnClickListener {
-            startActivity(Intent(this, HomepageActivity::class.java))
+            startActivity(intentFor<HomepageActivity>())
         }
 
     }
@@ -95,7 +96,7 @@ class Register : AppCompatActivity() {
 
     private fun registerSuccess() {
         toast("Register Sukses")
-        startActivity(Intent(this, Login::class.java))
+        startActivity(intentFor<Login>())
     }
 
     private fun dialogInfo(title: String?, message: String?) {

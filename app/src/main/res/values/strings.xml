@@ -56,6 +56,15 @@
     <string name="success">Success</string>
     <string name="failed">Gagal</string>
 
+    // category
+    <string name="title_category">Judul Kategori</string>
+    <string name="description_category">Judul Kategori</string>
+    <string name="type_category">Tipe Kategori</string>
+    <string name="image_category">Gambar Kategori</string>
+    <string name="category_title_input_hint">Masukkan judul kategori...</string>
+    <string name="category_description_input_hint">Masukkan deskripsi kategori...</string>
+
+
     <string-array name="month_full_list">
         <item>Januari</item>
         <item>Februari</item>
