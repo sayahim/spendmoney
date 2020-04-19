@@ -3,7 +3,7 @@ package com.himorfosis.kelolabelanja.category.repo
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.himorfosis.kelolabelanja.network.state.StateNetwork
-import com.himorfosis.kelolabelanja.response.Category.CategoryResponse
+import com.himorfosis.kelolabelanja.response.CategoryResponse
 
 class CategoryViewModel: ViewModel() {
 

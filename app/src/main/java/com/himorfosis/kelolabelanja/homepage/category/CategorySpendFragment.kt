@@ -10,12 +10,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.himorfosis.kelolabelanja.R
 import com.himorfosis.kelolabelanja.category.adapter.CategoryListAdapter
-import com.himorfosis.kelolabelanja.category.model.CategoryEntity
 import com.himorfosis.kelolabelanja.category.repo.CategoryViewModel
 import com.himorfosis.kelolabelanja.data_sample.CategoryData
 import com.himorfosis.kelolabelanja.network.config.ConnectionDetector
 import com.himorfosis.kelolabelanja.network.state.StateNetwork
-import com.himorfosis.kelolabelanja.response.Category.CategoryResponse
+import com.himorfosis.kelolabelanja.response.CategoryResponse
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.category_fragment.*
 import kotlinx.android.synthetic.main.layout_status_failure.*

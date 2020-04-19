@@ -1,6 +1,6 @@
 package com.himorfosis.kelolabelanja.network.services
 
-import com.himorfosis.kelolabelanja.response.Category.CategoryResponse
+import com.himorfosis.kelolabelanja.response.CategoryResponse
 import io.reactivex.Observable
 import retrofit2.http.*
 

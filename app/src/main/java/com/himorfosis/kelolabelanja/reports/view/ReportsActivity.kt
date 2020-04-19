@@ -41,6 +41,7 @@ class ReportsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.reports_activity)
 
+        reportsViewModel = ViewModelProvider(this).get(ReportsViewModel::class.java)
         setToolbar()
         setAdapter()
         setViewModel()
@@ -49,8 +50,6 @@ class ReportsActivity : AppCompatActivity() {
     }
 
     private fun setViewModel() {
-
-        reportsViewModel = ViewModelProvider(this).get(ReportsViewModel::class.java)
     }
 
     private fun fetchDataReports() {

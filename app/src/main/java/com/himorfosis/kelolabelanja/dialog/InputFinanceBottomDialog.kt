@@ -9,7 +9,6 @@ import android.text.TextWatcher
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.himorfosis.kelolabelanja.R
 import com.himorfosis.kelolabelanja.financial.model.InputDataModel
-import com.himorfosis.kelolabelanja.response.Category.CategoryResponse
 import com.himorfosis.kelolabelanja.utilities.date.DateSet
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.input_finance.*
