@@ -65,7 +65,6 @@ class InputFinancial : AppCompatActivity() {
     private fun actionBackpressed() {
 
         val typeFinance = DataPreferences.backpressed.getString(BackpressedPref.DATA)
-
         isLog(typeFinance!!)
 
         if (typeFinance == getString(R.string.income)) {

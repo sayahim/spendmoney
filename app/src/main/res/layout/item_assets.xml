@@ -11,7 +11,7 @@
         android:orientation="vertical">
 
         <FrameLayout
-            android:id="@+id/image_frame"
+            android:id="@+id/assets_frame"
             android:layout_width="@dimen/_30sdp"
             android:layout_height="@dimen/_30sdp"
             android:layout_gravity="center"
@@ -20,7 +20,7 @@
             >
 
             <ImageView
-                android:id="@+id/image_img"
+                android:id="@+id/assets_img"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -29,21 +29,6 @@
 
         </FrameLayout>
 
-
-        <TextView
-            android:id="@+id/name_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_3sdp"
-            android:layout_marginRight="@dimen/_3sdp"
-            android:paddingBottom="@dimen/_5sdp"
-            android:paddingTop="@dimen/_5sdp"
-            android:fontFamily="@font/regular_opensans"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="Contoh"
-            android:textColor="@color/text_black_primary"
-            android:textSize="@dimen/_12sdp" />
 
     </LinearLayout>
 

@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.himorfosis.kelolabelanja.R
-import com.himorfosis.kelolabelanja.response.CategoryResponse
+import com.himorfosis.kelolabelanja.category.model.CategoryResponse
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_category_list.view.*
 

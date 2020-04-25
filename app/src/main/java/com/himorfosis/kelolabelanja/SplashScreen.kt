@@ -37,7 +37,6 @@ class SplashScreen : AppCompatActivity() {
     private fun setDataDateToday() {
 
         val date = SimpleDateFormat("yyyy-MM-dd")
-
         val dateMonth = SimpleDateFormat("MM")
         val dateYear = SimpleDateFormat("yyyy")
 

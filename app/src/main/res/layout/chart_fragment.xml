@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -26,8 +26,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_10sdp"
                     app:cardCornerRadius="@dimen/_3sdp"
-                    app:cardElevation="@dimen/_3sdp"
-                    >
+                    app:cardElevation="@dimen/_3sdp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -39,17 +38,16 @@
                             android:id="@+id/show_data_month_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="@dimen/_10ssp"
-                            android:text="Data Bulan Maret"
+                            android:layout_margin="@dimen/_5sdp"
                             android:fontFamily="@font/regular_opensans"
+                            android:text="Data Bulan Maret"
                             android:textColor="@color/text_green"
-                            android:layout_margin="@dimen/_5sdp"/>
+                            android:textSize="@dimen/_10ssp" />
 
                         <com.github.mikephil.charting.charts.PieChart
                             android:id="@+id/pie_chart"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            />
+                            android:layout_height="match_parent" />
 
 
                     </LinearLayout>
@@ -59,39 +57,37 @@
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_margin="@dimen/_10sdp"
+                    android:orientation="horizontal"
                     android:paddingLeft="@dimen/_10sdp"
                     android:paddingRight="@dimen/_10sdp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="left"
                         android:fontFamily="@font/semi_bold_opensans"
                         android:text="Daftar Data Teratas"
                         android:textColor="@color/text_black_second"
-                        android:textSize="@dimen/_12ssp"
-                        android:layout_gravity="left"
-                        />
+                        android:textSize="@dimen/_12ssp" />
 
                     <TextView
                         android:id="@+id/see_all_report_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="right"
                         android:fontFamily="@font/regular_opensans"
                         android:text="Lihat Semua"
                         android:textColor="@color/text_green"
-                        android:textSize="@dimen/_12ssp"
-                        android:layout_gravity="right"
-                        />
+                        android:textSize="@dimen/_12ssp" />
 
                 </FrameLayout>
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/_10sdp"
                     android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
                     android:layout_marginBottom="@dimen/_10sdp"
                     app:cardCornerRadius="@dimen/_3sdp"
                     app:cardElevation="@dimen/_3sdp">
@@ -117,22 +113,86 @@
 
         </androidx.core.widget.NestedScrollView>
 
-        <include
+        <io.supercharge.shimmerlayout.ShimmerLayout
+            android:id="@+id/loading_chart_shimmer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            layout="@layout/layout_status_failure"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:layout_marginRight="@dimen/_20sdp"
-            android:layout_marginLeft="@dimen/_20sdp"
-            />
+            android:background="@android:color/white"
+            android:visibility="visible">
 
-        <ProgressBar
-            android:id="@+id/progress_chart"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_40sdp"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_10sdp"
+                android:orientation="vertical">
+
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_210sdp"
+                    android:orientation="vertical">
+
+                    <FrameLayout
+                        android:layout_width="@dimen/_100sdp"
+                        android:layout_height="@dimen/_15sdp"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:background="@drawable/loading_corner" />
+
+                    <FrameLayout
+                        android:layout_width="@dimen/_130sdp"
+                        android:layout_height="@dimen/_130sdp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:background="@drawable/loading_circle" />
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_25sdp"
+                    android:layout_marginBottom="@dimen/_20sdp"
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="@dimen/_120sdp"
+                        android:layout_height="@dimen/_15sdp"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:background="@drawable/loading_corner"
+                        android:layout_gravity="left"/>
+
+                    <View
+                        android:layout_width="@dimen/_120sdp"
+                        android:layout_height="@dimen/_15sdp"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:background="@drawable/loading_corner"
+                        android:layout_gravity="right"/>
+
+                </FrameLayout>
+
+                <include layout="@layout/loading_homepage" />
+                <include layout="@layout/loading_homepage" />
+                <include layout="@layout/loading_homepage" />
+                <include layout="@layout/loading_homepage" />
+                <include layout="@layout/loading_homepage" />
+
+            </LinearLayout>
+
+        </io.supercharge.shimmerlayout.ShimmerLayout>
+
+        <include
+            layout="@layout/layout_status_failure"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            />
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:gravity="center" />
+
 
     </FrameLayout>
 

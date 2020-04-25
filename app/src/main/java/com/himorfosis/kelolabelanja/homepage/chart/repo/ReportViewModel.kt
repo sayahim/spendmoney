@@ -6,19 +6,25 @@ import com.github.mikephil.charting.data.PieEntry
 import com.himorfosis.kelolabelanja.homepage.chart.model.ReportCategoryModel
 import com.himorfosis.kelolabelanja.homepage.chart.model.ReportCategoryRequest
 import com.himorfosis.kelolabelanja.network.state.StateNetwork
+import com.himorfosis.kelolabelanja.reports.model.ReportCategoryDetailsModel
 
 class ReportViewModel: ViewModel() {
 
     private var reportRepo = ReportRepo()
     var reportFinanceCategoryResponse = MutableLiveData<StateNetwork<List<ReportCategoryModel>>>()
     var chartReportFinancePerCategoryResponse = MutableLiveData<List<PieEntry>>()
+    var reportFinanceCategoryDetailResponse = MutableLiveData<StateNetwork<List<ReportCategoryDetailsModel>>>()
 
-    fun fetchReportFinanceCategory(data: String) {
-        reportFinanceCategoryResponse = reportRepo.financialsPerCategory(data)
+    fun fetchReportFinanceCategory(type: String) {
+        reportFinanceCategoryResponse = reportRepo.financialsPerCategory(type)
     }
 
     fun fetchchartReportFinancePerCategory(data : List<ReportCategoryModel>) {
         chartReportFinancePerCategoryResponse = reportRepo.chartReportFinancePerCategory(data)
+    }
+
+    fun fectchReportFinanceCategoryDetail(id: String) {
+        reportFinanceCategoryDetailResponse = reportRepo.reportFinanceCategoryDetail(id)
     }
 
 }

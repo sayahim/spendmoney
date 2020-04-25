@@ -21,12 +21,13 @@ import com.himorfosis.kelolabelanja.financial.repo.FinancialViewModel
 import com.himorfosis.kelolabelanja.homepage.activity.HomepageActivity
 import com.himorfosis.kelolabelanja.network.config.ConnectionDetector
 import com.himorfosis.kelolabelanja.network.state.StateNetwork
-import com.himorfosis.kelolabelanja.response.CategoryResponse
+import com.himorfosis.kelolabelanja.category.model.CategoryResponse
 import com.himorfosis.kelolabelanja.utilities.Util
 import com.himorfosis.kelolabelanja.utilities.preferences.AccountPref
 import com.himorfosis.kelolabelanja.utilities.preferences.AppPreferences
 import com.himorfosis.kelolabelanja.utilities.preferences.BackpressedPref
 import com.himorfosis.kelolabelanja.utilities.preferences.DataPreferences
+import kotlinx.android.synthetic.main.category_fragment.*
 import kotlinx.android.synthetic.main.fragment_input_financial.*
 import kotlinx.android.synthetic.main.layout_status_failure.*
 import org.jetbrains.anko.support.v4.intentFor
@@ -38,7 +39,6 @@ class InputDataFragmentSpend : Fragment() {
         lateinit var viewModelCategory: CategoryViewModel
         lateinit var viewModelFinance: FinancialViewModel
         lateinit var adapterCategory: FinancialCategoryAdapter
-        lateinit var preferences : AppPreferences
         lateinit var loadingDialog : DialogLoading
     }
 
@@ -55,17 +55,18 @@ class InputDataFragmentSpend : Fragment() {
         setAdapter()
         initializeUI()
 
+        getDataCategory()
+
     }
 
     override fun onStart() {
         super.onStart()
-        preferences = AppPreferences(requireContext(), BackpressedPref.KEY)
-        preferences.saveString(BackpressedPref.DATA, getString(R.string.spend))
+        isLog("spend start")
+        DataPreferences.backpressed.saveString(BackpressedPref.DATA, getString(R.string.spend))
     }
 
     private fun initializeUI() {
 
-        getDataCategory()
         adapterCategory.setOnclick(object : FinancialCategoryAdapter.AdapterOnClickItem {
             override fun onItemClicked(data: CategoryResponse) {
                 showInputDataFinance(data)
@@ -95,28 +96,35 @@ class InputDataFragmentSpend : Fragment() {
 
     private fun pushFinanceData(data: FinanceCreateModel) {
 
-        isLoading()
-        viewModelFinance.createFinanceUser(data)
-        viewModelFinance.financeCreateResponse.observe(this, Observer {
-            loadingDialog.dismiss()
-            when (it) {
-                is StateNetwork.OnSuccess -> {
-                    toast(getString(R.string.success))
-                    startActivity(intentFor<HomepageActivity>())
-                }
-                is StateNetwork.OnError -> {
-                    dialogInfo(
-                            it.error,
-                            it.message)
-                }
+        if (ConnectionDetector.isConnectingToInternet(requireContext())) {
+            isLoading()
+            viewModelFinance.createFinanceUser(data)
+            viewModelFinance.financeCreateResponse.observe(this, Observer {
+                loadingDialog.dismiss()
+                when (it) {
+                    is StateNetwork.OnSuccess -> {
+                        toast(getString(R.string.success))
+                        startActivity(intentFor<HomepageActivity>())
+                    }
+                    is StateNetwork.OnError -> {
+                        dialogInfo(
+                                it.error,
+                                it.message)
+                    }
 
-                is StateNetwork.OnFailure -> {
-                    dialogInfo(
-                            getString(R.string.failed_server_connection),
-                            getString(R.string.failed_server_connection_message))
+                    is StateNetwork.OnFailure -> {
+                        dialogInfo(
+                                getString(R.string.failed_server_connection),
+                                getString(R.string.failed_server_connection_message))
+                    }
                 }
-            }
-        })
+            })
+
+        } else {
+            dialogInfo(
+                    getString(R.string.disconnect),
+                    getString(R.string.disconnect_message))
+        }
 
     }
 
@@ -157,6 +165,7 @@ class InputDataFragmentSpend : Fragment() {
     }
 
     fun onFailure(title: String, message: String) {
+        loading_category_shimmer.visibility = View.GONE
         title_status_tv.visibility = View.VISIBLE
         description_status_tv.visibility = View.VISIBLE
         title_status_tv.text = title
@@ -164,7 +173,7 @@ class InputDataFragmentSpend : Fragment() {
     }
 
     private fun dialogInfo(title: String?, message: String) {
-        DialogInfo(requireContext(), title.toString(), message.toString()).show()
+        DialogInfo(requireContext(), title.toString(), message).show()
     }
 
     private fun isLoading() {

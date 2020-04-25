@@ -33,27 +33,31 @@ object DateSet {
         return today.toString() + "01"
     }
 
-    fun convertTimestamp(dateTime: String): String {
+    fun convertTimestamp(dateTime: Long): String {
 
-        var dateFinal: String
+        val date = Date(dateTime)
+        val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        return format.format(date)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val current = LocalDateTime.now()
-            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-            dateFinal =  current.format(formatter)
-        } else {
-            var date = Date()
-            val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-            dateFinal = formatter.format(date)
-        }
+//        var dateFinal: String
+//
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            val current = LocalDateTime.now()
+//            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+//            dateFinal =  current.format(formatter)
+//        } else {
+//            var date = Date()
+//            val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+//            dateFinal = formatter.format(date)
+//        }
 
-        return dateFinal
+//        return dateFinal
 
     }
 
-    fun getMonthSelected(): String {
+    fun getMonthSelected(): String? {
 
-        var monthValue: String
+        var monthValue: String?
         val dateYear = SimpleDateFormat("yyyy")
         val yearToday = dateYear.format(Date())
 
@@ -62,7 +66,7 @@ object DateSet {
 
         // show data
         if (yearSelected == yearToday) {
-            val thisMonth = convertMonthName(monthSelected!!)
+            val thisMonth = convertMonthName(monthSelected)
             monthValue = thisMonth
         } else {
             val thisMonth = convertMonthName(monthSelected!!)
@@ -117,7 +121,7 @@ object DateSet {
 
         try {
 
-            if (date.equals(getDateToday)) {
+            if (date == getDateToday) {
                 nameDateFinal = "Hari Ini"
 
             } else {
@@ -133,9 +137,7 @@ object DateSet {
 //                val intDay = cal.get(Calendar.DAY_OF_WEEK)
                 val intMonth = Integer.parseInt(bulan)
                 val nameMonth = monthArray[intMonth]
-
                 nameDateFinal = "$tanggal $nameMonth $tahun"
-
             }
 
 
@@ -147,13 +149,12 @@ object DateSet {
 
     }
 
-    fun convertMonthName(month: String) :String {
+    fun convertMonthName(month: String?) :String? {
 
         val monthArray = arrayOf("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember")
-
         var intMonth:Int
 
-        if (month[0].equals("0")) {
+        if (month!![0].equals("0")) {
             val monthValue = month.replaceBefore("0", "")
             intMonth = Integer.parseInt(monthValue)
         } else {

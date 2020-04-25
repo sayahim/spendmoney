@@ -2,6 +2,7 @@ package com.himorfosis.kelolabelanja.network.config
 
 import android.content.Context
 import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import com.himorfosis.kelolabelanja.utilities.Util
 
 class ConnectionDetector {
@@ -15,8 +16,7 @@ class ConnectionDetector {
             return (network != null)
         }
 
+
     }
-
-
 
 }

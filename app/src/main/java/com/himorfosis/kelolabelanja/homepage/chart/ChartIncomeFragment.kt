@@ -18,6 +18,7 @@ import com.himorfosis.kelolabelanja.homepage.chart.adapter.ReportChartAdapter
 import com.himorfosis.kelolabelanja.homepage.chart.model.ReportCategoryModel
 import com.himorfosis.kelolabelanja.homepage.chart.model.ReportCategoryRequest
 import com.himorfosis.kelolabelanja.homepage.chart.repo.ReportViewModel
+import com.himorfosis.kelolabelanja.network.config.ConnectionDetector
 import com.himorfosis.kelolabelanja.network.state.StateNetwork
 import com.himorfosis.kelolabelanja.reports.view.ReportDetailActivity
 import com.himorfosis.kelolabelanja.reports.view.ReportsActivity
@@ -25,6 +26,7 @@ import com.himorfosis.kelolabelanja.utilities.Util
 import com.himorfosis.kelolabelanja.utilities.date.DateSet
 import kotlinx.android.synthetic.main.chart_fragment.*
 import kotlinx.android.synthetic.main.layout_status_failure.*
+import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.support.v4.intentFor
 
 class ChartIncomeFragment : Fragment() {
@@ -53,10 +55,14 @@ class ChartIncomeFragment : Fragment() {
         reportViewModel = ViewModelProvider(this).get(ReportViewModel::class.java)
         show_data_month_tv.text = "Data Bulan " + DateSet.getMonthSelected()
 
-        see_all_report_tv.setOnClickListener {
-            val post = Intent(requireContext(), ReportsActivity::class.java)
-            post.putExtra("type", FinancialsData.INCOME_TYPE)
-            startActivity(post)
+        loading_chart_shimmer.startShimmerAnimation()
+
+        see_all_report_tv.onClick {
+            see_all_report_tv.onClick {
+                startActivity(intentFor<ReportsActivity>(
+                        "type" to FinancialsData.SPEND_TYPE
+                ))
+            }
         }
 
     }
@@ -72,9 +78,8 @@ class ChartIncomeFragment : Fragment() {
         adapterReportChart.setOnclick(object : ReportChartAdapter.OnClickItem {
             override fun onItemClicked(data: ReportCategoryModel) {
                 startActivity(intentFor<ReportDetailActivity>(
-                        "type" to FinancialsData.SPEND_TYPE
+                        "id_category" to data.id
                 ))
-
             }
         })
 
@@ -82,28 +87,41 @@ class ChartIncomeFragment : Fragment() {
 
     private fun fetchReportCategory() {
 
-        reportViewModel.fetchReportFinanceCategory(FinancialsData.INCOME_TYPE)
-        reportViewModel.reportFinanceCategoryResponse.observe(viewLifecycleOwner, Observer {
-            progress_chart.visibility = View.GONE
-            when (it) {
-                is StateNetwork.OnSuccess -> {
-                    if (it.data.isNotEmpty()) {
-                        layout_chart_ll.visibility = View.VISIBLE
-                        fetchChartReport(it.data)
-                        adapterReportChart.addAll(it.data)
-                    } else {
-                        onError(
-                                getString(R.string.data_not_available),
-                                getString(R.string.data_not_available_message)
-                        )
+        if (ConnectionDetector.isConnectingToInternet(requireContext())) {
+
+            reportViewModel.fetchReportFinanceCategory(FinancialsData.INCOME_TYPE)
+            reportViewModel.reportFinanceCategoryResponse.observe(viewLifecycleOwner, Observer {
+                isLoadingStop()
+                when (it) {
+                    is StateNetwork.OnSuccess -> {
+                        if (it.data.isNotEmpty()) {
+                            layout_chart_ll.visibility = View.VISIBLE
+                            fetchChartReport(it.data)
+                            adapterReportChart.addAll(it.data)
+                        } else {
+                            onFailure(
+                                    getString(R.string.data_not_available),
+                                    getString(R.string.data_not_available_message))
+                        }
+                    }
+
+                    is StateNetwork.OnError -> {
+                        onFailure(it.error, it.message)
+                    }
+                    is StateNetwork.OnFailure ->  {
+                        onFailure(
+                                getString(R.string.check_connection),
+                                getString(R.string.check_connection_message))
                     }
                 }
 
-                is StateNetwork.OnError -> onError(it.error, it.message)
-                is StateNetwork.OnFailure -> onFailureNetwork()
-            }
+            })
 
-        })
+        } else {
+            onFailure(
+                    getString(R.string.disconnect),
+                    getString(R.string.disconnect_message))
+        }
 
     }
 
@@ -125,31 +143,23 @@ class ChartIncomeFragment : Fragment() {
                 pie_chart.invalidate()
 
                 layout_chart_ll.visibility = View.VISIBLE
-                progress_chart.visibility = View.GONE
             }
         })
 
     }
 
-    fun onError(title: String, message: String) {
+    fun isLoadingStop() {
+        loading_chart_shimmer.visibility = View.GONE
+    }
+
+    private fun onFailure(title: String, description: String) {
+        isLoadingStop()
         title_status_tv.visibility = View.VISIBLE
         description_status_tv.visibility = View.VISIBLE
+
         title_status_tv.text = title
-        description_status_tv.text = message
-    }
-
-    fun onFailureNetwork() {
-        title_status_tv.visibility = View.VISIBLE
-        description_status_tv.visibility = View.VISIBLE
-        title_status_tv.text = getString(R.string.check_connection)
-        description_status_tv.text = getString(R.string.check_connection_message)
-    }
-
-    fun onDisconnect() {
-        title_status_tv.visibility = View.VISIBLE
-        description_status_tv.visibility = View.VISIBLE
-        title_status_tv.text = getString(R.string.disconnect)
-        description_status_tv.text = getString(R.string.disconnect_message)
+        description_status_tv.text = description
+        isLog("Response Failed")
     }
 
     fun isLog(message: String) {

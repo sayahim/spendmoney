@@ -18,6 +18,7 @@ import com.himorfosis.kelolabelanja.homepage.home.adapter.HomeGroupAdapter
 import com.himorfosis.kelolabelanja.homepage.home.model.HomepageResponse
 import com.himorfosis.kelolabelanja.homepage.home.repo.HomeViewModel
 import com.himorfosis.kelolabelanja.month_picker.DialogMonthPicker
+import com.himorfosis.kelolabelanja.network.config.ConnectionDetector
 import com.himorfosis.kelolabelanja.network.state.StateNetwork
 import com.himorfosis.kelolabelanja.utilities.date.DateSet
 import com.himorfosis.kelolabelanja.utilities.Util
@@ -28,6 +29,8 @@ import kotlinx.android.synthetic.main.home_fragment.month_selected_tv
 import kotlinx.android.synthetic.main.home_fragment.select_month_click_ll
 import kotlinx.android.synthetic.main.layout_status_failure.*
 import kotlinx.android.synthetic.main.toolbar_title.*
+import org.jetbrains.anko.sdk27.coroutines.onClick
+import org.jetbrains.anko.support.v4.intentFor
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -61,11 +64,11 @@ class HomeFragment : Fragment() {
         financeViewModel = ViewModelProvider(this).get(FinancialViewModel::class.java)
         homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
-        add_data_finance_ll.setOnClickListener {
-            startActivity(Intent(context, InputFinancial::class.java))
+        add_data_finance_ll.onClick {
+            startActivity(intentFor<InputFinancial>())
         }
 
-        select_month_click_ll.setOnClickListener {
+        select_month_click_ll.onClick {
             dialogMonthPicker()
         }
 
@@ -84,34 +87,40 @@ class HomeFragment : Fragment() {
 
     private fun fetchDataFinanceUser() {
 
-        homeViewModel.financeUserFetch()
-        homeViewModel.financeUserResponse.observe(viewLifecycleOwner, Observer {
-            loadingStop()
-            when (it) {
-                is StateNetwork.OnSuccess -> {
-                    if (it.data.data.isNotEmpty()) {
-                        onSuccessFetchHomepage(it.data)
-                    } else {
+        if (ConnectionDetector.isConnectingToInternet(requireContext())) {
+            homeViewModel.financeUserFetch()
+            homeViewModel.financeUserResponse.observe(viewLifecycleOwner, Observer {
+                loadingStop()
+                when (it) {
+                    is StateNetwork.OnSuccess -> {
+                        if (it.data.data.isNotEmpty()) {
+                            onSuccessFetchHomepage(it.data)
+                        } else {
+                            onFailure(
+                                    getString(R.string.data_transaction_not_available),
+                                    getString(R.string.data_transaction_not_available_message))
+                        }
+                    }
+                    is StateNetwork.OnError -> {
+                        if (it.status == 401) {
+                            DataPreferences.account.clear()
+                        }
+                        onFailure(it.error, it.message)
+                    }
+
+                    is StateNetwork.OnFailure -> {
                         onFailure(
-                                getString(R.string.data_transaction_not_available),
-                                getString(R.string.data_transaction_not_available_message))
+                                getString(R.string.failed_server_connection),
+                                getString(R.string.failed_server_connection_message))
                     }
                 }
-                is StateNetwork.OnError -> {
-                    if (it.status == 401) {
-                        DataPreferences.account.clear()
-                    }
-                    onFailure(it.error, it.message)
-                }
 
-                is StateNetwork.OnFailure -> {
-                    onFailure(
-                            getString(R.string.failed_server_connection),
-                            getString(R.string.failed_server_connection_message))
-                }
-            }
-
-        })
+            })
+        } else {
+            onFailure(
+                    getString(R.string.disconnect),
+                    getString(R.string.disconnect_message))
+        }
 
     }
 
@@ -132,7 +141,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun onFailure(title: String, description: String) {
-
+        loadingStop()
         add_data_finance_ll.visibility = View.GONE
         title_status_tv.visibility = View.VISIBLE
         description_status_tv.visibility = View.VISIBLE
@@ -142,7 +151,7 @@ class HomeFragment : Fragment() {
         isLog("Response Failed")
     }
 
-    private fun loadingStop(){
+    private fun loadingStop() {
         loading_shimmer.visibility = View.GONE
     }
 

@@ -1,8 +1,6 @@
 package com.himorfosis.kelolabelanja.network.config
 
 import com.himorfosis.kelolabelanja.BuildConfig
-import com.himorfosis.kelolabelanja.app.MyApp
-import com.himorfosis.kelolabelanja.network.services.ClientService
 import com.himorfosis.kelolabelanja.utilities.Util
 import com.himorfosis.kelolabelanja.utilities.preferences.AccountPref
 import com.himorfosis.kelolabelanja.utilities.preferences.DataPreferences
@@ -11,7 +9,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 import java.lang.Exception
 import java.util.concurrent.TimeUnit
 

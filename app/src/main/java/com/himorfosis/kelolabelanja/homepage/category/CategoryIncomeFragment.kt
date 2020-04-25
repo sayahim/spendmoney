@@ -9,16 +9,21 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.himorfosis.kelolabelanja.R
+import com.himorfosis.kelolabelanja.category.AssetsCategory
 import com.himorfosis.kelolabelanja.category.adapter.CategoryListAdapter
 import com.himorfosis.kelolabelanja.category.repo.CategoryViewModel
 import com.himorfosis.kelolabelanja.data_sample.CategoryData
 import com.himorfosis.kelolabelanja.dialog.DialogInfo
 import com.himorfosis.kelolabelanja.network.config.ConnectionDetector
 import com.himorfosis.kelolabelanja.network.state.StateNetwork
-import com.himorfosis.kelolabelanja.response.CategoryResponse
+import com.himorfosis.kelolabelanja.category.model.CategoryResponse
+import com.himorfosis.kelolabelanja.state.TypeFinance
 import com.himorfosis.kelolabelanja.utilities.Util
+import com.himorfosis.kelolabelanja.utilities.preferences.CategoryPref
+import com.himorfosis.kelolabelanja.utilities.preferences.DataPreferences
 import kotlinx.android.synthetic.main.category_fragment.*
 import kotlinx.android.synthetic.main.layout_status_failure.*
+import org.jetbrains.anko.support.v4.intentFor
 import org.jetbrains.anko.support.v4.toast
 
 class CategoryIncomeFragment : Fragment() {
@@ -44,10 +49,9 @@ class CategoryIncomeFragment : Fragment() {
     private fun initializeUI() {
 
         loading_category_shimmer.startShimmerAnimation()
-
-
         add_new_category_btn.setOnClickListener {
-            toast("Click Category")
+            DataPreferences.category.saveString(CategoryPref.TYPE, CategoryData.INCOME)
+            startActivity(intentFor<AssetsCategory>())
         }
     }
 
@@ -76,11 +80,11 @@ class CategoryIncomeFragment : Fragment() {
             })
 
         } else {
+            add_new_category_btn.visibility = View.GONE
             onFailure(
                     getString(R.string.disconnect),
                     getString(R.string.disconnect_message))
         }
-
 
 
     }
@@ -117,7 +121,12 @@ class CategoryIncomeFragment : Fragment() {
 
     }
 
+    private fun isLoadingStop() {
+        loading_category_shimmer.visibility = View.GONE
+    }
+
     private fun onFailure(title: String, message: String) {
+        isLoadingStop()
         title_status_tv.visibility = View.VISIBLE
         description_status_tv.visibility = View.VISIBLE
         title_status_tv.text = title

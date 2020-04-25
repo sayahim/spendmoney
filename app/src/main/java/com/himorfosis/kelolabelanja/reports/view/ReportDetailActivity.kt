@@ -26,21 +26,28 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import com.himorfosis.kelolabelanja.R
 import com.himorfosis.kelolabelanja.data_sample.FinancialsData
+import com.himorfosis.kelolabelanja.homepage.activity.HomepageActivity
+import com.himorfosis.kelolabelanja.homepage.chart.repo.ReportViewModel
+import com.himorfosis.kelolabelanja.network.state.StateNetwork
 import com.himorfosis.kelolabelanja.reports.adapter.CustomMarker
 import com.himorfosis.kelolabelanja.reports.adapter.ReportsAdapter
+import com.himorfosis.kelolabelanja.reports.adapter.ReportsDetailAdapter
 import com.himorfosis.kelolabelanja.reports.repo.ReportsViewModel
+import com.himorfosis.kelolabelanja.state.HomeState
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.activity_report_detail.*
+import kotlinx.android.synthetic.main.layout_status_failure.*
 import kotlinx.android.synthetic.main.toolbar_detail.*
+import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.sdk27.coroutines.onClick
 
 
 class ReportDetailActivity : AppCompatActivity() {
 
     private val TAG = "ReportDetailActivity"
-    lateinit var reportsAdapter: ReportsAdapter
-
-    // view model
+    lateinit var reportsAdapter: ReportsDetailAdapter
     lateinit var reportsViewModel: ReportsViewModel
+    lateinit var viewModel: ReportViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,55 +55,67 @@ class ReportDetailActivity : AppCompatActivity() {
 
         setToolbar()
         reportsViewModel = ViewModelProviders.of(this)[ReportsViewModel::class.java]
+        viewModel = ViewModelProviders.of(this)[ReportViewModel::class.java]
         setAdapter()
-        fetchDataReports()
+        fetchReportDetailFinancePerCategory()
+//        fetchDataReports()
         costumChart()
+        isLog("")
 
     }
 
-    private fun fetchDataReports() {
+    private fun fetchReportDetailFinancePerCategory() {
 
-        val getType = intent.getStringExtra("type")
-
-        if (getType == FinancialsData.SPEND_TYPE) {
-            fetchReportDataByTypeFinance(FinancialsData.SPEND_TYPE)
-        } else if (getType == FinancialsData.INCOME_TYPE) {
-            fetchReportDataByTypeFinance(FinancialsData.INCOME_TYPE)
-        } else {
-//            status_report_tv.text = StatusData.notFound
-//            status_report_tv.visibility = View.VISIBLE
-        }
-
-    }
-
-    private fun fetchReportDataByTypeFinance(typeFinance: String) {
-
-        reportsViewModel.fetchReportFinancials(typeFinance)
-        reportsViewModel.fetchReportFinancialsResponse.observe(this, Observer {
-
-            if (it != null) {
-                Util.log(TAG, "data not null")
-
-                if (it.isNotEmpty()) {
-
-                    Util.log(TAG, "data available")
-
-                    reportsAdapter.addAll(it, it[0].total_nominal_category.toLong())
-//                    status_report_tv.visibility = View.GONE
+        val getIdCategory = intent.getStringExtra("id_category")
+        isLog("id category : $getIdCategory")
+        viewModel.fectchReportFinanceCategoryDetail(getIdCategory)
+        viewModel.reportFinanceCategoryDetailResponse.observe(this, Observer {
+            when (it) {
+                is StateNetwork.OnSuccess -> {
+                    if (it.data.isNotEmpty()) {
+                        reportsAdapter.addAll(it.data)
+                    } else {
+                        onDataEmpty()
+                    }
                 }
-            } else {
-                Util.log(TAG, "data null")
-//                status_report_tv.text = StatusData.notFound
-//                status_report_tv.visibility = View.VISIBLE
+
+                is StateNetwork.OnError -> onFailure(it.error, it.message)
+                is StateNetwork.OnFailure -> {
+                    onFailure(
+                            getString(R.string.check_connection),
+                            getString(R.string.check_connection_message))
+                }
             }
         })
-
     }
+
+//    private fun fetchReportDataByTypeFinance(typeFinance: String) {
+//
+//        reportsViewModel.fetchReportFinancials(typeFinance)
+//        reportsViewModel.fetchReportFinancialsResponse.observe(this, Observer {
+//
+//            if (it != null) {
+//                Util.log(TAG, "data not null")
+//
+//                if (it.isNotEmpty()) {
+//
+//                    Util.log(TAG, "data available")
+//
+//                    reportsAdapter.addAll(it, it[0].total_nominal_category.toLong())
+////                    status_report_tv.visibility = View.GONE
+//                }
+//            } else {
+//                Util.log(TAG, "data null")
+////                status_report_tv.text = StatusData.notFound
+////                status_report_tv.visibility = View.VISIBLE
+//            }
+//        })
+//
+//    }
 
     private fun setAdapter() {
 
-        reportsAdapter = ReportsAdapter()
-
+        reportsAdapter = ReportsDetailAdapter()
         recycler_report_detail.apply {
             layoutManager = LinearLayoutManager(this@ReportDetailActivity)
             adapter = reportsAdapter
@@ -149,12 +168,11 @@ class ReportDetailActivity : AppCompatActivity() {
         line_chart_view.description.text = ""
 
 
-
         // show data in line
         val dataSet = LineDataSet(entries, "Customized values")
         dataSet.color = ContextCompat.getColor(this, R.color.text_black_primary)
-        dataSet.setDrawCircleHole( true )
-        dataSet.setCircleColor( R.color.text_black_primary )
+        dataSet.setDrawCircleHole(true)
+        dataSet.setCircleColor(R.color.text_black_primary)
 
         dataSet.valueTextColor = ContextCompat.getColor(this, R.color.text_black_second)
         dataSet.setDrawHorizontalHighlightIndicator(false)
@@ -173,10 +191,28 @@ class ReportDetailActivity : AppCompatActivity() {
 
     }
 
-    private fun dataNotAvaiable() {
+    private fun onFailure(title: String, description: String) {
+        title_status_tv.visibility = View.VISIBLE
+        description_status_tv.visibility = View.VISIBLE
 
-        status_view.visibility = View.VISIBLE
+        title_status_tv.text = title
+        description_status_tv.text = description
+        isLog("Response Failed")
+    }
 
+    private fun onDataEmpty() {
+        title_status_tv.visibility = View.VISIBLE
+        description_status_tv.visibility = View.VISIBLE
+        title_status_tv.text = getString(R.string.data_transaction_not_available)
+        description_status_tv.text = getString(R.string.data_transaction_not_available_message)
+    }
+
+    private fun isLog(message: String) {
+        Util.log(TAG, message)
+    }
+
+    private fun actionBackpressed() {
+        finish()
     }
 
     private fun setToolbar() {
@@ -186,13 +222,15 @@ class ReportDetailActivity : AppCompatActivity() {
         supportActionBar!!.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
         supportActionBar!!.setCustomView(R.layout.toolbar_detail)
 
-        backBar_btn.setOnClickListener {
-            startActivity(Intent(this, ReportsActivity::class.java))
+        backBar_btn.onClick {
+            actionBackpressed()
         }
 
-        titleBar_tv.text  = "Detail Reports"
-
+        titleBar_tv.text = "Detail Reports"
     }
 
+    override fun onBackPressed() {
+        actionBackpressed()
+    }
 
 }

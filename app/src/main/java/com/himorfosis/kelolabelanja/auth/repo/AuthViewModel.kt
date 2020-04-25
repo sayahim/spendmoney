@@ -2,9 +2,8 @@ package com.himorfosis.kelolabelanja.auth.repo
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.himorfosis.kelolabelanja.homepage.home.repo.HomeRepo
 import com.himorfosis.kelolabelanja.network.state.StateNetwork
-import com.himorfosis.kelolabelanja.response.LoginResponse
+import com.himorfosis.kelolabelanja.auth.model.LoginResponse
 
 class AuthViewModel : ViewModel() {
 

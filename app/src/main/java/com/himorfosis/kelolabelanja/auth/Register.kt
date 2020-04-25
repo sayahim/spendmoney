@@ -13,11 +13,13 @@ import com.himorfosis.kelolabelanja.auth.repo.AuthViewModel
 import com.himorfosis.kelolabelanja.dialog.DialogInfo
 import com.himorfosis.kelolabelanja.dialog.DialogLoading
 import com.himorfosis.kelolabelanja.homepage.activity.HomepageActivity
+import com.himorfosis.kelolabelanja.network.config.ConnectionDetector
 import com.himorfosis.kelolabelanja.network.state.StateNetwork
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.toolbar_detail.*
 import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.toast
 
 class Register : AppCompatActivity() {
@@ -28,7 +30,6 @@ class Register : AppCompatActivity() {
 
         setToolbar()
         initializeUI()
-
     }
 
     private fun initializeUI() {
@@ -37,19 +38,29 @@ class Register : AppCompatActivity() {
         loadingDialog = DialogLoading(this)
         loadingDialog.setCancelable(false)
 
-        register_btn.setOnClickListener {
-            val name = name_ed.text.toString()
-            val email = email_ed.text.toString()
-            val password = password_ed.text.toString()
-            val confirm_pass = password_confirm_ed.text.toString()
-            if (name.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && confirm_pass.isNotEmpty()) {
-                if (password == confirm_pass) {
-                    registerPush(name, email, password)
+        register_btn.onClick {
+
+            if (ConnectionDetector.isConnectingToInternet(this@Register)) {
+
+                val name = name_ed.text.toString()
+                val email = email_ed.text.toString()
+                val password = password_ed.text.toString()
+                val confirm_pass = password_confirm_ed.text.toString()
+                if (name.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && confirm_pass.isNotEmpty()) {
+                    if (password == confirm_pass) {
+                        registerPush(name, email, password)
+                    } else {
+                        dialogInfo(getString(R.string.password_not_match), getString(R.string.password_not_match_message))
+                    }
                 } else {
-                    dialogInfo(getString(R.string.password_not_match), getString(R.string.password_not_match_message))
+                    toast(getString(R.string.please_complete_data))
                 }
+
             } else {
-                toast(getString(R.string.please_complete_data))
+                dialogInfo(
+                        getString(R.string.disconnect),
+                        getString(R.string.disconnect_message)
+                )
             }
         }
 

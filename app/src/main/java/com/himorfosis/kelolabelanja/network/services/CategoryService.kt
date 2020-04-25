@@ -1,6 +1,8 @@
 package com.himorfosis.kelolabelanja.network.services
 
-import com.himorfosis.kelolabelanja.response.CategoryResponse
+import com.himorfosis.kelolabelanja.category.model.AssetsModel
+import com.himorfosis.kelolabelanja.category.model.CategoryCreateResponse
+import com.himorfosis.kelolabelanja.category.model.CategoryResponse
 import io.reactivex.Observable
 import retrofit2.http.*
 
@@ -35,9 +37,21 @@ interface CategoryService {
     ): Observable<List<CategoryResponse>>
 
     @FormUrlEncoded
+    @POST("category/userCreate")
+    fun userCreateCategory(
+            @Field("title") title: String?,
+            @Field("assets") assets: String?,
+            @Field("user_id") user_id: String?,
+            @Field("type_category") type_category: String?
+    ): Observable<CategoryCreateResponse>
+
+    @FormUrlEncoded
     @DELETE("category/delete")
     fun deleteCategory(
             @Field("id") id: String?
     ): Observable<CategoryResponse>
+
+    @GET("assets/all")
+    fun assets(): Observable<List<AssetsModel>>
 
 }

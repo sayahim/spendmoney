@@ -34,10 +34,10 @@ android {
     flavorDimensions 'money-manager'
     productFlavors {
         production {
-            buildConfigField 'String', 'baseURL', '"http://192.190.0.102:8080/api/"'
+            buildConfigField 'String', 'baseURL', '"http://192.190.0.101:8080/api/"'
         }
         development {
-            buildConfigField 'String', 'baseURL', '"http://192.190.0.102:8080/api/"'
+            buildConfigField 'String', 'baseURL', '"http://192.190.0.101:8080/api/"'
         }
     }
 

@@ -1,4 +1,4 @@
-package com.himorfosis.kelolabelanja.response
+package com.himorfosis.kelolabelanja.category.model
 
 class CategoryResponse (
         val id: String,

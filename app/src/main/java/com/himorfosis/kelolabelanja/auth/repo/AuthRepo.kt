@@ -5,11 +5,11 @@ import com.himorfosis.kelolabelanja.network.config.Network
 import com.himorfosis.kelolabelanja.network.repository.BaseRepository
 import com.himorfosis.kelolabelanja.network.services.AuthService
 import com.himorfosis.kelolabelanja.network.state.StateNetwork
-import com.himorfosis.kelolabelanja.response.LoginResponse
+import com.himorfosis.kelolabelanja.auth.model.LoginResponse
+import com.himorfosis.kelolabelanja.utilities.Util
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import okhttp3.ResponseBody
 
 class AuthRepo: BaseRepository() {
 
@@ -21,6 +21,7 @@ class AuthRepo: BaseRepository() {
         service.login(getEmail, getPassword)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io()).subscribe({
+
                     data.value = StateNetwork.OnSuccess(it)
                 }, {
                     data.value = errorResponse(it)
@@ -35,8 +36,10 @@ class AuthRepo: BaseRepository() {
         service.register(getName, getEmail, getPassword, getPassword)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io()).subscribe({
+                    isLog("success : $it")
                     data.value = StateNetwork.OnSuccess(messageStatus(it.toString()))
                 }, {
+                    isLog("failed : $it")
                     data.value = errorResponse(it)
                 }).let {
                     disposable.add(it)
@@ -58,6 +61,10 @@ class AuthRepo: BaseRepository() {
                 }
         return data
 
+    }
+
+    private fun isLog(message: String) {
+        Util.log("AuthRepo",message)
     }
 
 }

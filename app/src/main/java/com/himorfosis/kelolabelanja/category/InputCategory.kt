@@ -80,7 +80,8 @@ class InputCategory : AppCompatActivity() {
         supportActionBar!!.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
         supportActionBar!!.setCustomView(R.layout.toolbar_detail)
 
-        backBar_btn.setOnClickListener {
+        backBar_btn.onClick {
+            finish()
 //            startActivity(Intent(this, Category::class.java))
         }
 

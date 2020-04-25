@@ -54,9 +54,7 @@ class DialogShow {
             yes_btn.setOnClickListener {
                 dismiss()
                 onItemClick.onYesClicked()
-
             }
-
         }
 
         interface OnDialogClickCallback {

@@ -11,7 +11,6 @@ class BottomSheetDialog {
 
     class Message(context: Context, getTitle: String, getMessage: String) : BottomSheetDialog(context) {
 
-
         init {
             setContentView(R.layout.dialog_bottom_message)
 

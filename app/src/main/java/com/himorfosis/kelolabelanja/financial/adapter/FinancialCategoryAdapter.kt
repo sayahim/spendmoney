@@ -7,8 +7,11 @@ import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.himorfosis.kelolabelanja.R
-import com.himorfosis.kelolabelanja.response.CategoryResponse
+import com.himorfosis.kelolabelanja.category.model.CategoryResponse
 import com.himorfosis.kelolabelanja.utilities.Util
+import com.himorfosis.kelolabelanja.utilities.preferences.AppPreferences
+import com.himorfosis.kelolabelanja.utilities.preferences.CategoryPref
+import com.himorfosis.kelolabelanja.utilities.preferences.DataPreferences
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_category_financials.view.*
 import java.util.ArrayList
@@ -30,7 +33,7 @@ class FinancialCategoryAdapter : RecyclerView.Adapter<FinancialCategoryAdapter.V
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        val getIdSelected = Util.getData("category", "selected", holder.itemView.context)
+        val getIdSelected = DataPreferences.category.getString(CategoryPref.SELECTED)
 
         var data = listData[position]
 

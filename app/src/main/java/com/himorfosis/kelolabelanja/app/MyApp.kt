@@ -1,7 +1,9 @@
 package com.himorfosis.kelolabelanja.app
 
 import android.app.Application
+import androidx.core.content.res.TypedArrayUtils.getText
 import com.bumptech.glide.Glide
+import com.himorfosis.kelolabelanja.R
 import com.himorfosis.kelolabelanja.network.config.Network
 import com.himorfosis.kelolabelanja.utilities.preferences.*
 
@@ -15,8 +17,6 @@ class MyApp: Application() {
         backpressed = AppPreferences(this, BackpressedPref.KEY)
         DataPreferences.invoke(this)
 
-//        if (BuildConfig.DEBUG) Stetho.initializeWithDefaults(this)
-//        Network.serviceWithToken()
     }
 
 //    @SuppressLint("HardwareIds")
@@ -34,7 +34,6 @@ class MyApp: Application() {
 
 
     companion object {
-//        lateinit var sharedPref: AppPreferences
         lateinit var account: AppPreferences
         lateinit var picker: AppPreferences
         lateinit var backpressed: AppPreferences
@@ -42,15 +41,6 @@ class MyApp: Application() {
         fun findInAccount(key: String): String? {
             return account.getString(key)
         }
-
-        fun findInPicker(key: String): String? {
-            return picker.getString(key)
-        }
-
-        fun findInBackpressd(): String? {
-            return backpressed.getString(BackpressedPref.DATA)
-        }
-
 
     }
 

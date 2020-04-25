@@ -3,7 +3,7 @@ package com.himorfosis.kelolabelanja.homepage.home.model
 data class HomepageResponse(
         val totalFinanceUser: TotalFinanceUser,
         val data: List<Data>
-) {
+    ) {
     data class TotalFinanceUser(
             val total_income: Int,
             val total_spend: Int

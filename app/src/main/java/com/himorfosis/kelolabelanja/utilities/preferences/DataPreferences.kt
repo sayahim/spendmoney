@@ -8,12 +8,14 @@ object DataPreferences {
     lateinit var backpressed: AppPreferences
     lateinit var picker: AppPreferences
     lateinit var account: AppPreferences
+    lateinit var category: AppPreferences
 
     fun invoke(context: Context) {
         default = AppPreferences(context)
         backpressed = AppPreferences(context, "BACKPRESSED")
         account = AppPreferences(context, "ACCOUNT")
         picker = AppPreferences(context, "PICKER")
+        category = AppPreferences(context, "category")
     }
 
     fun clearAllPreferences() {

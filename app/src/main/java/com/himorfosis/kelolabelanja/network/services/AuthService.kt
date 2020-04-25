@@ -1,7 +1,6 @@
 package com.himorfosis.kelolabelanja.network.services
 
-import com.himorfosis.kelolabelanja.auth.model.LoginModel
-import com.himorfosis.kelolabelanja.response.LoginResponse
+import com.himorfosis.kelolabelanja.auth.model.LoginResponse
 import io.reactivex.Observable
 import okhttp3.ResponseBody
 import retrofit2.http.Field
