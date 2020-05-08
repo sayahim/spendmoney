@@ -11,27 +11,16 @@ class MyApp: Application() {
 
     override fun onCreate() {
         super.onCreate()
-//        sharedPref = AppPreferences(this)
         account = AppPreferences(this, AccountPref.KEY)
-//        picker = AppPreferences(this, PickerPref.KEY)
         backpressed = AppPreferences(this, BackpressedPref.KEY)
         DataPreferences.invoke(this)
 
     }
 
-//    @SuppressLint("HardwareIds")
-//    fun storeDeviceId() {
-//        sharedPref.setString(
-//                "deviceId",
-//                Settings.Secure.getString(baseContext.contentResolver, ANDROID_ID)
-//        )
-//    }
-
     override fun onLowMemory() {
         super.onLowMemory()
         Glide.get(applicationContext).onTrimMemory(Glide.TRIM_MEMORY_RUNNING_LOW)
     }
-
 
     companion object {
         lateinit var account: AppPreferences
@@ -41,7 +30,5 @@ class MyApp: Application() {
         fun findInAccount(key: String): String? {
             return account.getString(key)
         }
-
     }
-
 }

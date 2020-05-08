@@ -3,6 +3,7 @@ package com.himorfosis.kelolabelanja.category.repo
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.himorfosis.kelolabelanja.category.model.AssetsModel
+import com.himorfosis.kelolabelanja.category.model.CategoryCreateRequest
 import com.himorfosis.kelolabelanja.category.model.CategoryCreateResponse
 import com.himorfosis.kelolabelanja.network.state.StateNetwork
 import com.himorfosis.kelolabelanja.category.model.CategoryResponse
@@ -23,8 +24,8 @@ class CategoryViewModel: ViewModel() {
         categoryTypeFinanceResponse = categoryRepo.categoryTypeFinance(type)
     }
 
-    fun userCreateCategoryPush(title: String, assets: String) {
-        userCreateCategoryResponse = categoryRepo.userCreateCategory(title, assets)
+    fun userCreateCategoryPush(it: CategoryCreateRequest) {
+        userCreateCategoryResponse = categoryRepo.userCreateCategory(it)
     }
 
     fun assetsFetch() {

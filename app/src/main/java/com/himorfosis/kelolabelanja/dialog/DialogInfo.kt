@@ -15,12 +15,17 @@ class DialogInfo(context: Context?, title: String = "", message: String = "") : 
         window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         setContentView(R.layout.dialog_message)
         actionBtn.setOnClickListener { dismiss() }
-        messageTv.text = message
 
-        if (title == "") {
-            titleTv.visibility = View.INVISIBLE
-        } else {
+        if (title.isNotEmpty()) {
             titleTv.text = title
+        } else {
+            titleTv.visibility = View.GONE
+        }
+
+        if (message.isNotEmpty()) {
+            messageTv.text = message
+        } else {
+            messageTv.visibility = View.GONE
         }
 
     }

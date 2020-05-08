@@ -32,11 +32,8 @@ class HomeGroupAdapter : RecyclerView.Adapter<HomeGroupAdapter.ViewHolder>() {
         var data = listData[position]
 
         if (data != null) {
-
             Util.log(TAG, "date : " + data.date)
-
             holder.day_date.text = DateSet.convertDateSpecific(data.date)
-
             if (data.spend != 0) {
                 holder.spend_tv.visibility = View.VISIBLE
                 holder.spend_tv.text = "Out : " +  Util.numberFormatMoney(data.spend.toString())
@@ -61,7 +58,6 @@ class HomeGroupAdapter : RecyclerView.Adapter<HomeGroupAdapter.ViewHolder>() {
                 }
 
                 // sorted list
-//                var sortedListDescending = data.financialEntitiy.sortedWith(compareByDescending { it.time })
                 adapterReports.addAll(data.financePerDay)
 
             }
@@ -76,14 +72,11 @@ class HomeGroupAdapter : RecyclerView.Adapter<HomeGroupAdapter.ViewHolder>() {
         val day_date = itemView.day_date
         val spend_tv = itemView.spend_tv
         val income_tv = itemView.income_tv
-
     }
 
     private fun add(data: HomepageResponse.Data) {
-
         listData.add(data)
         notifyItemInserted(listData.size - 1)
-
     }
 
     fun addAll(item: List<HomepageResponse.Data>) {
@@ -92,14 +85,11 @@ class HomeGroupAdapter : RecyclerView.Adapter<HomeGroupAdapter.ViewHolder>() {
         }
     }
 
-    fun removeListAdapter() {
-
+    fun clear() {
         if (listData.isNotEmpty()) {
-
             listData.clear()
             notifyDataSetChanged()
         }
-
     }
 
 

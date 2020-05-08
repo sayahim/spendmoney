@@ -1,6 +1,5 @@
 package com.himorfosis.kelolabelanja.homepage.chart
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +15,6 @@ import com.himorfosis.kelolabelanja.R
 import com.himorfosis.kelolabelanja.data_sample.FinancialsData
 import com.himorfosis.kelolabelanja.homepage.chart.adapter.ReportChartAdapter
 import com.himorfosis.kelolabelanja.homepage.chart.model.ReportCategoryModel
-import com.himorfosis.kelolabelanja.homepage.chart.model.ReportCategoryRequest
 import com.himorfosis.kelolabelanja.homepage.chart.repo.ReportViewModel
 import com.himorfosis.kelolabelanja.network.config.ConnectionDetector
 import com.himorfosis.kelolabelanja.network.state.StateNetwork
@@ -87,40 +85,45 @@ class ChartIncomeFragment : Fragment() {
 
     private fun fetchReportCategory() {
 
-        if (ConnectionDetector.isConnectingToInternet(requireContext())) {
+        if (activity != null) {
 
-            reportViewModel.fetchReportFinanceCategory(FinancialsData.INCOME_TYPE)
-            reportViewModel.reportFinanceCategoryResponse.observe(viewLifecycleOwner, Observer {
-                isLoadingStop()
-                when (it) {
-                    is StateNetwork.OnSuccess -> {
-                        if (it.data.isNotEmpty()) {
-                            layout_chart_ll.visibility = View.VISIBLE
-                            fetchChartReport(it.data)
-                            adapterReportChart.addAll(it.data)
-                        } else {
+            isLog("fetch report category income")
+
+            if (ConnectionDetector.isConnectingToInternet(requireContext())) {
+                reportViewModel.fetchReportFinanceCategory("income")
+                reportViewModel.reportFinanceCategoryResponse.observe(viewLifecycleOwner, Observer {
+                    isLoadingStop()
+                    when (it) {
+                        is StateNetwork.OnSuccess -> {
+                            if (it.data.isNotEmpty()) {
+                                layout_chart_ll.visibility = View.VISIBLE
+                                fetchChartReport(it.data)
+                                val list = it.data.sortedWith(compareByDescending { it.total_nominal.toInt() })
+                                adapterReportChart.addAll(list)
+                            } else {
+                                onFailure(
+                                        getString(R.string.data_not_available),
+                                        getString(R.string.data_not_available_message))
+                            }
+                        }
+
+                        is StateNetwork.OnError -> {
+                            onFailure(it.error, it.message)
+                        }
+                        is StateNetwork.OnFailure -> {
                             onFailure(
-                                    getString(R.string.data_not_available),
-                                    getString(R.string.data_not_available_message))
+                                    getString(R.string.check_connection),
+                                    getString(R.string.check_connection_message))
                         }
                     }
 
-                    is StateNetwork.OnError -> {
-                        onFailure(it.error, it.message)
-                    }
-                    is StateNetwork.OnFailure ->  {
-                        onFailure(
-                                getString(R.string.check_connection),
-                                getString(R.string.check_connection_message))
-                    }
-                }
+                })
 
-            })
-
-        } else {
-            onFailure(
-                    getString(R.string.disconnect),
-                    getString(R.string.disconnect_message))
+            } else {
+                onFailure(
+                        getString(R.string.disconnect),
+                        getString(R.string.disconnect_message))
+            }
         }
 
     }
@@ -163,7 +166,7 @@ class ChartIncomeFragment : Fragment() {
     }
 
     fun isLog(message: String) {
-        Util.log("Chart", message)
+        Util.log("Chart income", message)
     }
 
 

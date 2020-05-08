@@ -1,13 +1,13 @@
 package com.himorfosis.kelolabelanja.reports.model
 
 data class ReportDetailCategoryModel(
-    val totalNominalReport: Int,
+    val totalNominalReport: Long,
     val reportDay: List<ReportDay>,
     val `data`: List<Data>
 ) {
     data class ReportDay(
         val day: Int,
-        val total: Int,
+        val total: Long,
         val percent: Int
     )
 

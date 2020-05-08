@@ -5,7 +5,7 @@
             <solid android:color="@color/btn_green"/>
 
             <!--corners allow us to make the rounded corners button-->
-            <corners android:radius="30dp" />
+            <corners android:radius="@dimen/_5sdp" />
         </shape>
     </item>
 

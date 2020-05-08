@@ -5,17 +5,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.himorfosis.kelolabelanja.R
 import com.himorfosis.kelolabelanja.data_sample.CategoryData
+import com.himorfosis.kelolabelanja.financial.FinancialDetail
 import com.himorfosis.kelolabelanja.reports.model.ReportCategoryDetailsModel
+import com.himorfosis.kelolabelanja.reports.model.ReportDetailCategoryModel
 import com.himorfosis.kelolabelanja.utilities.Util
 import com.himorfosis.kelolabelanja.utilities.date.DateSet
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_report_detail.view.*
+import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.sdk27.coroutines.onClick
 
 class ReportsDetailAdapter : RecyclerView.Adapter<ReportsDetailAdapter.ViewHolder>() {
 
-    private var listData: MutableList<ReportCategoryDetailsModel> = ArrayList()
+    private var listData: MutableList<ReportDetailCategoryModel.Data> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.item_report_detail, parent, false)
@@ -27,40 +32,24 @@ class ReportsDetailAdapter : RecyclerView.Adapter<ReportsDetailAdapter.ViewHolde
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var data = listData[position]
+
         val context = holder.itemView.context
+        var data = listData[position]
 
-        if (data.note != null) {
-            holder.name_tv.text = data.category.title
-        } else {
-            holder.name_tv.text = data.note
-        }
+        holder.bindView(data)
 
-        holder.date_tv.text = DateSet.convertTimestamp(data.updated_at)
-
-        if (data.type_financial == CategoryData.INCOME) {
-            holder.nominal_tv.setTextColor(ContextCompat.getColor(context, R.color.green))
-            if (data.nominal != null) {
-                holder.nominal_tv.text = Util.numberFormatMoney(data.nominal.toString())
-            } else {
-                holder.nominal_tv.text = "Rp0"
-            }
-
-        } else {
-
-            holder.nominal_tv.setTextColor(ContextCompat.getColor(context, R.color.text_black_primary))
-            if (data.nominal != null) {
-                holder.nominal_tv.text = Util.numberFormatMoney(data.nominal.toString())
-            } else {
-                holder.nominal_tv.text = "Rp0"
-            }
+        holder.itemView.onClick {
+            context.startActivity(context.intentFor<FinancialDetail>(
+                    "id" to data.id,
+                    "nominal" to data.nominal.toString(),
+                    "title" to data.title,
+                    "date" to data.date.toString(),
+                    "note" to data.note,
+                    "image" to data.image_category_url
+            ))
 
         }
 
-        Picasso.with(holder.itemView.context)
-                .load(data.category.image_category_url)
-                .error(R.drawable.ic_broken_image)
-                .into(holder.category_img)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -68,14 +57,53 @@ class ReportsDetailAdapter : RecyclerView.Adapter<ReportsDetailAdapter.ViewHolde
         val nominal_tv = itemView.nominal_tv
         val category_img = itemView.category_img
         val date_tv = itemView.date_tv
+
+        fun bindView(data: ReportDetailCategoryModel.Data) {
+            val context = itemView.context
+
+            if (data.note != null) {
+                name_tv.text = data.title
+            } else {
+                name_tv.text = data.note
+            }
+
+            date_tv.text = DateSet.convertTimestamp(data.date)
+
+            if (data.type_finance == CategoryData.INCOME) {
+                nominal_tv.setTextColor(ContextCompat.getColor(context, R.color.green))
+                if (data.nominal != null) {
+                    nominal_tv.text = Util.numberFormatMoney(data.nominal.toString())
+                } else {
+                    nominal_tv.text = "Rp0"
+                }
+            } else {
+                nominal_tv.setTextColor(ContextCompat.getColor(context, R.color.text_black_primary))
+                if (data.nominal != null) {
+                    nominal_tv.text = Util.numberFormatMoney(data.nominal.toString())
+                } else {
+                    nominal_tv.text = "Rp0"
+                }
+
+            }
+
+            data.image_category_url.let {
+                Glide.with(itemView.context)
+                        .load(it)
+                        .thumbnail(0.1f)
+                        .error(R.drawable.ic_broken_image)
+                        .into(category_img)
+            }
+
+        }
+
     }
 
-    private fun add(data: ReportCategoryDetailsModel) {
+    private fun add(data: ReportDetailCategoryModel.Data) {
         listData.add(data)
         notifyItemInserted(listData.size - 1)
     }
 
-    fun addAll(posItems: List<ReportCategoryDetailsModel>) {
+    fun addAll(posItems: List<ReportDetailCategoryModel.Data>) {
         for (response in posItems) {
             add(response)
         }

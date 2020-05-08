@@ -66,14 +66,20 @@
     </style>
 
     <style name="text_title_item" parent="android:Widget.TextView">
-        <item name="android:textColor">@color/text_black_primary</item>
-        <item name="android:fontFamily">@font/regular_opensans</item>
+        <item name="android:textColor">@color/text_black_second</item>
+        <item name="android:fontFamily">@font/semi_bold_opensans</item>
         <item name="android:textSize">@dimen/_12ssp</item>
     </style>
 
     <style name="text_title_regular" parent="android:Widget.TextView">
         <item name="android:textColor">@color/text_black</item>
         <item name="android:fontFamily">@font/regular_opensans</item>
+        <item name="android:textSize">@dimen/_12ssp</item>
+    </style>
+
+    <style name="text_title_medium" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/text_black_second</item>
+        <item name="android:fontFamily">@font/semi_bold_opensans</item>
         <item name="android:textSize">@dimen/_12ssp</item>
     </style>
 
@@ -89,22 +95,52 @@
         <item name="android:textSize">@dimen/_14ssp</item>
     </style>
 
+    <style name="text_status_title" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/text_black</item>
+        <item name="android:fontFamily">@font/bold_opensans</item>
+        <item name="android:textSize">@dimen/_16ssp</item>
+    </style>
+
+    <style name="text_status_description" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/text_black_primary</item>
+        <item name="android:fontFamily">@font/regular_opensans</item>
+        <item name="android:textSize">@dimen/_14ssp</item>
+    </style>
+
+    <style name="text_item_data" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/text_black_second</item>
+        <item name="android:fontFamily">@font/regular_opensans</item>
+        <item name="android:textSize">@dimen/_14ssp</item>
+    </style>
+
+    <style name="text_item_value" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/text_black</item>
+        <item name="android:fontFamily">@font/semi_bold_opensans</item>
+        <item name="android:textSize">@dimen/_14ssp</item>
+    </style>
+
     <style name="loading_style" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="colorAccent">@color/colorPrimary</item>
     </style>
 
     <style name="text_edit" parent="android:Widget.TextView">
-        <item name="android:textColor">@color/text_black</item>
+        <item name="android:textColor">@color/text_black_primary</item>
         <item name="android:fontFamily">@font/regular_opensans</item>
-        <item name="android:textSize">@dimen/_14ssp</item>
+        <item name="android:textSize">@dimen/_12ssp</item>
     </style>
 
     <style name="btn_primary" parent="android:Widget.Button">
         <item name="android:textColor">@color/text_white</item>
         <item name="android:fontFamily">@font/semi_bold_opensans</item>
-        <item name="android:textSize">@dimen/_15ssp</item>
-        <item name="android:background">@drawable/btn_rounded_blue</item>
+        <item name="android:textSize">@dimen/_14ssp</item>
+        <item name="android:background">@drawable/btn_state_action</item>
+    </style>
 
+    <style name="btn_state_primary" parent="android:Widget.Button">
+        <item name="android:fontFamily">@font/semi_bold_opensans</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/_14ssp</item>
+        <item name="android:background">@drawable/btn_state_action</item>
     </style>
 
 

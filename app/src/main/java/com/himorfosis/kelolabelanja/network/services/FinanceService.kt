@@ -1,7 +1,9 @@
 package com.himorfosis.kelolabelanja.network.services
 
 import com.himorfosis.kelolabelanja.financial.model.FinanceCreateResponse
+import com.himorfosis.kelolabelanja.financial.model.FinanceStatusModel
 import io.reactivex.Observable
+import retrofit2.http.DELETE
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
@@ -32,5 +34,11 @@ interface FinanceService {
             @Field("date_end") date_end: String?,
             @Field("type_finance") type_finance: String?
     ): Observable<List<FinanceCreateResponse>>
+
+    @FormUrlEncoded
+    @POST("financials/delete")
+    fun deleteFinance(
+            @Field("id") id: String?
+    ): Observable<FinanceStatusModel>
 
 }

@@ -47,14 +47,15 @@ class DialogCategoryInput(internal var context: Context, var imageAssets: String
                 toast("Harap Masukkan Nama Kategori")
             } else {
 
-                viewModel.userCreateCategoryPush(name, imageAssets)
+//                viewModel.userCreateCategoryPush(name, imageAssets)
                 viewModel.userCreateCategoryResponse.observe(viewLifecycleOwner, Observer {
                     dismiss()
                     when (it) {
                         is StateNetwork.OnSuccess -> {
                             toast("Berhasil Menambah Category")
                             startActivity(intentFor<HomepageActivity>("from" to "category"))
-                        } else -> {
+                        }
+                        else -> {
                             toast("Gagal Menambah Category")
                         }
                     }
@@ -69,55 +70,7 @@ class DialogCategoryInput(internal var context: Context, var imageAssets: String
             close_img.onClick {
                 dismiss()
             }
-}
         }
-
-//    init {
-//        requestWindowFeature(Window.FEATURE_NO_TITLE)
-//        window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-//        setContentView(R.layout.layout_input_category)
-//        this.setCancelable(false)
-//
-//
-//        val viewModel = ViewModelProvider(ownerActivity).get(CategoryViewModel::class.java)
-//
-//        Picasso.with(context)
-//                .load(imageUrl)
-//                .error(R.drawable.ic_broken_image)
-//                .into(assets_category_img)
-//
-//        save_btn.onClick {
-//            val name = name_category_ed.text.toString()
-//            val typeDataFinance = DataPreferences.category.getString(CategoryPref.TYPE)
-//
-//            if (name.isEmpty()) {
-//                context.toast("Harap Masukkan Nama Kategori")
-//            } else {
-//
-//                viewModel.userCreateCategoryPush(name, imageUrl)
-//                viewModel.userCreateCategoryResponse.observe(co, Observer {
-//                    dismiss()
-//                    when (it) {
-//                        is StateNetwork.OnSuccess -> {
-//                            context.toast("Berhasil Menambah Category")
-//                            context.startActivity(context.intentFor<HomepageActivity>(
-//                                    "from" to "category"))
-//                        } else -> {
-//                            context.toast("Gagal Menambah Category")
-//                        }
-//                    }
-//                })
-//
-//
-//
-//            }
-//
-//        }
-//
-//        close_img.onClick {
-//            dismiss()
-//        }
-//
-//    }
+    }
 
 }

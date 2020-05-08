@@ -5,22 +5,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.himorfosis.kelolabelanja.R
+import com.himorfosis.kelolabelanja.homepage.chart.model.ReportCategoryModel
 import com.himorfosis.kelolabelanja.reports.model.ReportsDataModel
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.item_progress_financial.view.*
+import org.jetbrains.anko.sdk27.coroutines.onClick
 import java.util.ArrayList
 
 class ReportsAdapter : RecyclerView.Adapter<ReportsAdapter.ViewHolder>() {
 
-    private var listData: MutableList<ReportsDataModel> = ArrayList<ReportsDataModel>()
+    private var listData: MutableList<ReportCategoryModel> = ArrayList()
 
     lateinit var onClickItem: OnClickItem
 
     // progress
     internal var progressStatusCounter = 0
     internal var progressHandler = Handler()
-    var maxNominal: Long = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.item_progress_financial, parent, false)
@@ -34,28 +36,25 @@ class ReportsAdapter : RecyclerView.Adapter<ReportsAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val data = listData[position]
+        val context = holder.itemView.context
 
-        if (data != null) {
+        data.let {
+            holder.title_category_tv.text = data.title
+            holder.total_nominal_tv.text = Util.numberFormatMoney(data.total_nominal.toLong().toString())
 
-            holder.title_category_tv.text = data.category_name
-            holder.total_nominal_tv.text = "Rp " + data.total_nominal_category.toString()
-
-            // set image
-            val imageAssets = Util.convertImageDrawable(holder.itemView.context, data.category_image)
-            holder.category_image.setImageResource(imageAssets)
-            holder.category_image.visibility = View.VISIBLE
-
-            Util.log("Adapter", "image : ${data.category_image}")
-
-            // count to get persen
-            val progressPersen: Double = data.total_nominal_category!!.toDouble() / maxNominal.toDouble()
-            val persen: Double = progressPersen * 100.0
+            data.image_category_url.let {
+                Glide.with(context)
+                        .load(it)
+                        .thumbnail(0.1f)
+                        .error(R.drawable.ic_broken_image)
+                        .into(holder.category_image)
+            }
 
             Thread(Runnable {
                 while (progressStatusCounter < 100) {
                     progressHandler.post {
                         // set progress
-                        holder.total_progress.progress = persen.toInt()
+                        holder.total_progress.progress = it.total_percentage
                     }
                     try {
                         Thread.sleep(300)
@@ -66,13 +65,11 @@ class ReportsAdapter : RecyclerView.Adapter<ReportsAdapter.ViewHolder>() {
                 }
             }).start()
 
-            holder.itemView.setOnClickListener {
-
+            holder.itemView.onClick {
                 onClickItem.onItemClicked(data)
             }
 
         }
-
 
     }
 
@@ -84,37 +81,30 @@ class ReportsAdapter : RecyclerView.Adapter<ReportsAdapter.ViewHolder>() {
         val category_image = itemView.category_img
     }
 
-    private fun add(data: ReportsDataModel) {
-
+    private fun add(data: ReportCategoryModel) {
         listData.add(data)
         notifyItemInserted(listData.size - 1)
     }
 
-    fun addAll(posItems: List<ReportsDataModel>, getMaxNominal: Long) {
-        maxNominal = getMaxNominal
+    fun addAll(posItems: List<ReportCategoryModel>) {
         for (response in posItems) {
             add(response)
         }
     }
 
-    fun removeAdapter() {
-
+    fun clear() {
         if (listData.isNotEmpty()) {
             listData.clear()
             notifyDataSetChanged()
         }
     }
 
-
     interface OnClickItem {
-        fun onItemClicked(data: ReportsDataModel)
-
+        fun onItemClicked(data: ReportCategoryModel)
     }
 
     fun setOnclick(onClickItem: OnClickItem) {
         this.onClickItem = onClickItem
-
     }
-
 
 }

@@ -32,14 +32,19 @@ import com.himorfosis.kelolabelanja.network.state.StateNetwork
 import com.himorfosis.kelolabelanja.reports.adapter.CustomMarker
 import com.himorfosis.kelolabelanja.reports.adapter.ReportsAdapter
 import com.himorfosis.kelolabelanja.reports.adapter.ReportsDetailAdapter
+import com.himorfosis.kelolabelanja.reports.model.ReportDetailCategoryModel
 import com.himorfosis.kelolabelanja.reports.repo.ReportsViewModel
 import com.himorfosis.kelolabelanja.state.HomeState
 import com.himorfosis.kelolabelanja.utilities.Util
+import com.himorfosis.kelolabelanja.utilities.preferences.DataPreferences
+import com.himorfosis.kelolabelanja.utilities.preferences.PickerPref
 import kotlinx.android.synthetic.main.activity_report_detail.*
 import kotlinx.android.synthetic.main.layout_status_failure.*
 import kotlinx.android.synthetic.main.toolbar_detail.*
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.sdk27.coroutines.onClick
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class ReportDetailActivity : AppCompatActivity() {
@@ -48,6 +53,8 @@ class ReportDetailActivity : AppCompatActivity() {
     lateinit var reportsAdapter: ReportsDetailAdapter
     lateinit var reportsViewModel: ReportsViewModel
     lateinit var viewModel: ReportViewModel
+    var entries: ArrayList<Entry> = ArrayList()
+    var calendar: Calendar = Calendar.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,8 +65,6 @@ class ReportDetailActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this)[ReportViewModel::class.java]
         setAdapter()
         fetchReportDetailFinancePerCategory()
-//        fetchDataReports()
-        costumChart()
         isLog("")
 
     }
@@ -72,8 +77,11 @@ class ReportDetailActivity : AppCompatActivity() {
         viewModel.reportFinanceCategoryDetailResponse.observe(this, Observer {
             when (it) {
                 is StateNetwork.OnSuccess -> {
-                    if (it.data.isNotEmpty()) {
-                        reportsAdapter.addAll(it.data)
+                    if (it.data.data.isNotEmpty()) {
+                        val listData = it.data.data.sortedWith(compareBy { it.date })
+                        reportsAdapter.addAll(listData)
+                        total_data_finance_tv.text = "Total : " + Util.numberFormatMoney(it.data.totalNominalReport.toString())
+                        initDataChart(it.data.reportDay)
                     } else {
                         onDataEmpty()
                     }
@@ -89,30 +97,6 @@ class ReportDetailActivity : AppCompatActivity() {
         })
     }
 
-//    private fun fetchReportDataByTypeFinance(typeFinance: String) {
-//
-//        reportsViewModel.fetchReportFinancials(typeFinance)
-//        reportsViewModel.fetchReportFinancialsResponse.observe(this, Observer {
-//
-//            if (it != null) {
-//                Util.log(TAG, "data not null")
-//
-//                if (it.isNotEmpty()) {
-//
-//                    Util.log(TAG, "data available")
-//
-//                    reportsAdapter.addAll(it, it[0].total_nominal_category.toLong())
-////                    status_report_tv.visibility = View.GONE
-//                }
-//            } else {
-//                Util.log(TAG, "data null")
-////                status_report_tv.text = StatusData.notFound
-////                status_report_tv.visibility = View.VISIBLE
-//            }
-//        })
-//
-//    }
-
     private fun setAdapter() {
 
         reportsAdapter = ReportsDetailAdapter()
@@ -123,18 +107,67 @@ class ReportDetailActivity : AppCompatActivity() {
 
     }
 
-    private fun costumChart() {
+    private fun initDataChart(reportDataDay: List<ReportDetailCategoryModel.ReportDay>) {
+        isLog("initDataChart")
 
+        val yearPicker = DataPreferences.picker.getString(PickerPref.YEAR)
+        val monthPicker = DataPreferences.picker.getString(PickerPref.MONTH)
+
+        calendar.set(Calendar.YEAR, yearPicker!!.toInt())
+        calendar.set(Calendar.MONTH, monthPicker!!.toInt())
+        val maxDate = calendar.getActualMaximum(Calendar.DATE)
+        isLog("max date : $maxDate")
         // set data
-        val entries: ArrayList<Entry> = ArrayList()
-        entries.add(Entry(0f, 4f))
-        entries.add(Entry(5f, 1f))
-        entries.add(Entry(10f, 2f))
-        entries.add(Entry(15f, 4f))
-        entries.add(Entry(20f, 10f))
-        entries.add(Entry(25f, 5f))
-        entries.add(Entry(30f, 20f))
+        for (pos in 0 until maxDate) {
+            val it = pos + 1
+            var statusReportDay = false
+            reportDataDay.forEach { report ->
+                isLog("report day ${report.day}")
+                isLog("it $it")
+                if (report.day == it) {
+                    statusReportDay = true
+                    val total = report.total.toFloat()
+                    isLog("total : $total")
+                    entries.add(Entry(it.toFloat(), total))
+                }
+            }
 
+
+            if (!statusReportDay) {
+                entries.add(Entry(it.toFloat(), 0f))
+            }
+//            isLog("report $report")
+//            if (report != null) {
+//                val total = report.total.toFloat()
+//                isLog("total : $total")
+//                entries.add(Entry(it.toFloat(), total))
+//            } else {
+//                entries.add(Entry(it.toFloat(), 0f))
+//            }
+
+//            if (it == 1) {
+//
+//            } else if (it == 5) {
+//                entries.add(Entry(it.toFloat(), total))
+//            }
+//            when (it) {
+//                1 -> entries.add(Entry(it.toFloat(), total))
+//                5 -> entries.add(Entry(it.toFloat(), total))
+//                10 -> entries.add(Entry(it.toFloat(), total))
+//                15 -> entries.add(Entry(it.toFloat(), total))
+//                20 -> entries.add(Entry(it.toFloat(), total))
+//                25 -> entries.add(Entry(it.toFloat(), total))
+//                30 -> entries.add(Entry(it.toFloat(), total))
+//                else -> entries.add(Entry(it.toFloat(), total))
+//            }
+        }
+
+        isLog("entries size : " + entries.size)
+        initChartLine()
+    }
+
+    private fun initChartLine() {
+        isLog("initChartLine")
 
         // handle view chart
         line_chart_view.setTouchEnabled(false)
@@ -178,6 +211,7 @@ class ReportDetailActivity : AppCompatActivity() {
         dataSet.setDrawHorizontalHighlightIndicator(false)
         dataSet.setDrawVerticalHighlightIndicator(false)
         dataSet.setDrawHighlightIndicators(false)
+        dataSet.setDrawValues(false)
 //        dataSet.highLightColor(R.color.black)
 
         // costum view line
@@ -188,7 +222,6 @@ class ReportDetailActivity : AppCompatActivity() {
         val data = LineData(dataSet)
         line_chart_view.data = data
         line_chart_view.animateX(0)
-
     }
 
     private fun onFailure(title: String, description: String) {
@@ -201,10 +234,10 @@ class ReportDetailActivity : AppCompatActivity() {
     }
 
     private fun onDataEmpty() {
-        title_status_tv.visibility = View.VISIBLE
-        description_status_tv.visibility = View.VISIBLE
-        title_status_tv.text = getString(R.string.data_transaction_not_available)
-        description_status_tv.text = getString(R.string.data_transaction_not_available_message)
+//        title_status_tv.visibility = View.VISIBLE
+//        description_status_tv.visibility = View.VISIBLE
+//        title_status_tv.text = getString(R.string.data_transaction_not_available)
+//        description_status_tv.text = getString(R.string.data_transaction_not_available_message)
     }
 
     private fun isLog(message: String) {

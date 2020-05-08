@@ -14,6 +14,7 @@ import com.himorfosis.kelolabelanja.utilities.preferences.CategoryPref
 import com.himorfosis.kelolabelanja.utilities.preferences.DataPreferences
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_category_financials.view.*
+import org.jetbrains.anko.sdk27.coroutines.onClick
 import java.util.ArrayList
 
 class FinancialCategoryAdapter : RecyclerView.Adapter<FinancialCategoryAdapter.ViewHolder>(), Filterable {
@@ -33,14 +34,12 @@ class FinancialCategoryAdapter : RecyclerView.Adapter<FinancialCategoryAdapter.V
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        val getIdSelected = DataPreferences.category.getString(CategoryPref.SELECTED)
-
         var data = listData[position]
 
+        val getIdSelected = DataPreferences.category.getString(CategoryPref.SELECTED)
         // check selected
-        var convertID = data.id
-        if (getIdSelected != null) {
-            if (getIdSelected == convertID) {
+        if (getIdSelected!!.isNotEmpty()) {
+            if (getIdSelected ==  data.id) {
                 holder.frame.setBackgroundResource(R.drawable.circle_gold)
             } else {
                 holder.frame.setBackgroundResource(R.drawable.border_line)
@@ -57,7 +56,7 @@ class FinancialCategoryAdapter : RecyclerView.Adapter<FinancialCategoryAdapter.V
                 .error(R.drawable.ic_broken_image)
                 .into(holder.image_img)
 
-        holder.itemView.setOnClickListener {
+        holder.itemView.onClick {
             holder.frame.setBackgroundResource(R.drawable.circle_gold)
             Util.log(TAG, "id selected  : " + data.id)
             // callback adapter
@@ -76,7 +75,6 @@ class FinancialCategoryAdapter : RecyclerView.Adapter<FinancialCategoryAdapter.V
 
     interface AdapterOnClickItem {
         fun onItemClicked(data: CategoryResponse)
-
     }
 
     fun setOnclick(onClickItem: AdapterOnClickItem) {
@@ -112,45 +110,33 @@ class FinancialCategoryAdapter : RecyclerView.Adapter<FinancialCategoryAdapter.V
 
     override fun getFilter(): Filter {
         return object : Filter() {
-            override fun performFiltering(charSequence: CharSequence): Filter.FilterResults {
-
+            override fun performFiltering(charSequence: CharSequence): FilterResults {
                 val charString = charSequence.toString()
-
                 Util.log(TAG, "charString : $charString")
-
                 if (charString.isEmpty()) {
-
                     listData = dataListFilter
-
                 } else {
-
                     val filteredList = ArrayList<CategoryResponse>()
-                    for (row in dataListFilter.orEmpty()) {
-
-                        // check data search
-                        if (row.title.toLowerCase().contains(charString.toLowerCase()) || row.title.contains(charSequence)) {
-                            filteredList.add(row)
+                    dataListFilter.forEach {
+                        if (it.title.toLowerCase().contains(charString.toLowerCase()) ||
+                                it.title.contains(charSequence)) {
+                            filteredList.add(it)
                         }
                     }
 
                     listData = filteredList
                 }
-
-                val filterResults = Filter.FilterResults()
+                val filterResults = FilterResults()
                 filterResults.values = listData
                 return filterResults
             }
 
-            override fun publishResults(charSequence: CharSequence, filterResults: Filter.FilterResults) {
-
-                Util.log(TAG, "list filter : " + listData)
-
+            override fun publishResults(charSequence: CharSequence, filterResults: FilterResults) {
+                Util.log(TAG, "list filter : $listData")
                 if (listData != null) {
-
                     listData = filterResults.values as MutableList<CategoryResponse>
                     notifyDataSetChanged()
                 }
-
             }
         }
     }

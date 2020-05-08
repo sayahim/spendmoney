@@ -17,7 +17,6 @@ import com.himorfosis.kelolabelanja.dialog.DialogInfo
 import com.himorfosis.kelolabelanja.network.config.ConnectionDetector
 import com.himorfosis.kelolabelanja.network.state.StateNetwork
 import com.himorfosis.kelolabelanja.category.model.CategoryResponse
-import com.himorfosis.kelolabelanja.state.TypeFinance
 import com.himorfosis.kelolabelanja.utilities.Util
 import com.himorfosis.kelolabelanja.utilities.preferences.CategoryPref
 import com.himorfosis.kelolabelanja.utilities.preferences.DataPreferences

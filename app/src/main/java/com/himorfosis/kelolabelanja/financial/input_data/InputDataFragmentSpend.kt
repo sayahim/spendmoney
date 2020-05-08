@@ -22,11 +22,9 @@ import com.himorfosis.kelolabelanja.homepage.activity.HomepageActivity
 import com.himorfosis.kelolabelanja.network.config.ConnectionDetector
 import com.himorfosis.kelolabelanja.network.state.StateNetwork
 import com.himorfosis.kelolabelanja.category.model.CategoryResponse
+import com.himorfosis.kelolabelanja.data_sample.FinancialsData
 import com.himorfosis.kelolabelanja.utilities.Util
-import com.himorfosis.kelolabelanja.utilities.preferences.AccountPref
-import com.himorfosis.kelolabelanja.utilities.preferences.AppPreferences
-import com.himorfosis.kelolabelanja.utilities.preferences.BackpressedPref
-import com.himorfosis.kelolabelanja.utilities.preferences.DataPreferences
+import com.himorfosis.kelolabelanja.utilities.preferences.*
 import kotlinx.android.synthetic.main.category_fragment.*
 import kotlinx.android.synthetic.main.fragment_input_financial.*
 import kotlinx.android.synthetic.main.layout_status_failure.*
@@ -40,6 +38,7 @@ class InputDataFragmentSpend : Fragment() {
         lateinit var viewModelFinance: FinancialViewModel
         lateinit var adapterCategory: FinancialCategoryAdapter
         lateinit var loadingDialog : DialogLoading
+        private var listData : MutableList<CategoryResponse> = ArrayList()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -54,7 +53,6 @@ class InputDataFragmentSpend : Fragment() {
         viewModelFinance = ViewModelProvider(this).get(FinancialViewModel::class.java)
         setAdapter()
         initializeUI()
-
         getDataCategory()
 
     }
@@ -69,6 +67,10 @@ class InputDataFragmentSpend : Fragment() {
 
         adapterCategory.setOnclick(object : FinancialCategoryAdapter.AdapterOnClickItem {
             override fun onItemClicked(data: CategoryResponse) {
+                DataPreferences.category.saveString(CategoryPref.SELECTED, data.id)
+                // refresh adapter
+                adapterCategory.clear()
+                adapterCategory.addAll(listData)
                 showInputDataFinance(data)
             }
         })
@@ -89,7 +91,7 @@ class InputDataFragmentSpend : Fragment() {
                 val userId = DataPreferences.account.getString(AccountPref.ID)
 
                 pushFinanceData(FinanceCreateModel(
-                        userId, category.id, category.type_category, data.nominal, data.note))
+                        userId, category.id, FinancialsData.SPEND_TYPE, data.nominal, data.note))
             }
         })
     }
@@ -136,7 +138,8 @@ class InputDataFragmentSpend : Fragment() {
                 when (it) {
                     is StateNetwork.OnSuccess -> {
                         if (it.data.isNotEmpty()) {
-                            adapterCategory.addAll(it.data)
+                            listData.addAll(it.data)
+                            adapterCategory.addAll(listData)
                         } else {
                             onFailure(
                                     getString(R.string.data_not_available),

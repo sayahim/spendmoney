@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:drawable="@drawable/btn_rounded_blue"
+        android:textColor="@color/text_white"
+        android:state_enabled="true"
+        >
+    </item>
 
+    <item
+        android:drawable="@drawable/rounded_gray"
+        android:textColor="@color/text_black_primary"
+        android:state_enabled="false">
+    </item>
 </selector>

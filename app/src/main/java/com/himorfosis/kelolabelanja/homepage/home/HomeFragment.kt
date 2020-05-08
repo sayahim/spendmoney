@@ -22,6 +22,8 @@ import com.himorfosis.kelolabelanja.network.config.ConnectionDetector
 import com.himorfosis.kelolabelanja.network.state.StateNetwork
 import com.himorfosis.kelolabelanja.utilities.date.DateSet
 import com.himorfosis.kelolabelanja.utilities.Util
+import com.himorfosis.kelolabelanja.utilities.preferences.AccountPref
+import com.himorfosis.kelolabelanja.utilities.preferences.AppPreferences
 import com.himorfosis.kelolabelanja.utilities.preferences.DataPreferences
 import com.himorfosis.kelolabelanja.utilities.preferences.PickerPref
 import kotlinx.android.synthetic.main.home_fragment.*
@@ -33,7 +35,6 @@ import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.support.v4.intentFor
 import java.text.SimpleDateFormat
 import java.util.*
-
 
 class HomeFragment : Fragment() {
 
@@ -51,20 +52,22 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setToolbar()
+        loadingStart()
         initializeUI()
         setAdapter()
         fetchDataFinanceUser()
 
+        val id  = DataPreferences.account.getString(AccountPref.ID)
+        isLog("id : $id" )
     }
 
     private fun initializeUI() {
 
         layout_home.requestFocus()
-        loading_shimmer.startShimmerAnimation()
         financeViewModel = ViewModelProvider(this).get(FinancialViewModel::class.java)
         homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
-        add_data_finance_ll.onClick {
+        add_finance_img.onClick {
             startActivity(intentFor<InputFinancial>())
         }
 
@@ -82,6 +85,40 @@ class HomeFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = adapterHome
         }
+
+    }
+
+    private fun dialogMonthPicker() {
+
+        val dialog = DialogMonthPicker(context!!)
+        dialog.show(childFragmentManager, "dialog")
+        dialog.setOnclick(object : DialogMonthPicker.OnClickItem {
+            override fun onItemClicked(data: Boolean) {
+                if (data) {
+
+                    val getYearSelected = DataPreferences.picker.getString(PickerPref.YEAR)
+                    val getMonthSelected = DataPreferences.picker.getString(PickerPref.MONTH)
+                    val dateYear = SimpleDateFormat("yyyy")
+                    val year = dateYear.format(Date())
+
+                    isLog("get month : $getMonthSelected")
+                    isLog("get year : $getYearSelected")
+
+                    // show data
+                    if (getYearSelected == year) {
+                        val thisMonth = DateSet.convertMonthName(getMonthSelected!!)
+                        month_selected_tv.text = thisMonth
+                    } else {
+                        val thisMonth = DateSet.convertMonthName(getMonthSelected!!)
+                        month_selected_tv.text = "$thisMonth $getYearSelected"
+                    }
+
+                    adapterHome.clear()
+                    loadingStart()
+                    fetchDataFinanceUser()
+                }
+            }
+        })
 
     }
 
@@ -126,7 +163,10 @@ class HomeFragment : Fragment() {
 
 
     private fun onSuccessFetchHomepage(data: HomepageResponse) {
-        add_data_finance_ll.visibility = View.VISIBLE
+        title_status_tv.visibility = View.GONE
+        description_status_tv.visibility = View.GONE
+        add_finance_img.visibility = View.VISIBLE
+
         adapterHome.addAll(data.data)
         total_income_month.text = Util.numberFormatMoney(data.totalFinanceUser.total_income.toString())
         total_spend_month.text = Util.numberFormatMoney(data.totalFinanceUser.total_spend.toString())
@@ -142,7 +182,6 @@ class HomeFragment : Fragment() {
 
     private fun onFailure(title: String, description: String) {
         loadingStop()
-        add_data_finance_ll.visibility = View.GONE
         title_status_tv.visibility = View.VISIBLE
         description_status_tv.visibility = View.VISIBLE
 
@@ -151,42 +190,13 @@ class HomeFragment : Fragment() {
         isLog("Response Failed")
     }
 
+    private fun loadingStart() {
+        loading_shimmer.startShimmerAnimation()
+        loading_shimmer.visibility = View.VISIBLE
+    }
     private fun loadingStop() {
         loading_shimmer.visibility = View.GONE
     }
 
-    private fun dialogMonthPicker() {
-
-        val dialog = DialogMonthPicker(context!!)
-        dialog.show(childFragmentManager, "dialog")
-
-        dialog.setOnclick(object : DialogMonthPicker.OnClickItem {
-            override fun onItemClicked(data: Boolean) {
-                if (data) {
-
-                    val getYearSelected = DataPreferences.picker.getString(PickerPref.YEAR)
-                    val getMonthSelected = DataPreferences.picker.getString(PickerPref.MONTH)
-                    val dateYear = SimpleDateFormat("yyyy")
-                    val year = dateYear.format(Date())
-
-                    isLog("get month : $getMonthSelected")
-                    isLog("get year : $getYearSelected")
-
-                    // show data
-                    if (getYearSelected == year) {
-                        val thisMonth = DateSet.convertMonthName(getMonthSelected!!)
-                        month_selected_tv.text = thisMonth
-                    } else {
-                        val thisMonth = DateSet.convertMonthName(getMonthSelected!!)
-                        month_selected_tv.text = "$thisMonth  $getYearSelected"
-                    }
-
-                    // reload data
-                    fetchDataFinanceUser()
-                }
-            }
-        })
-
-    }
 
 }

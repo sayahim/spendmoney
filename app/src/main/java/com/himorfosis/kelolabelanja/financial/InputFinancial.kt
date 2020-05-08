@@ -21,6 +21,7 @@ import com.himorfosis.kelolabelanja.financial.model.InputDataModel
 import com.himorfosis.kelolabelanja.homepage.activity.HomepageActivity
 import com.himorfosis.kelolabelanja.utilities.Util
 import com.himorfosis.kelolabelanja.utilities.preferences.BackpressedPref
+import com.himorfosis.kelolabelanja.utilities.preferences.CategoryPref
 import com.himorfosis.kelolabelanja.utilities.preferences.DataPreferences
 import kotlinx.android.synthetic.main.activity_input_financial.*
 import kotlinx.android.synthetic.main.toolbar_detail.*
@@ -39,6 +40,7 @@ class InputFinancial : AppCompatActivity() {
         setToolbar()
         finance_pager.adapter = FinancePagerAdapter(supportFragmentManager)
         finance_tablayout.setupWithViewPager(finance_pager)
+        DataPreferences.category.saveString(CategoryPref.SELECTED, "")
 
     }
 
@@ -66,11 +68,11 @@ class InputFinancial : AppCompatActivity() {
 
         val typeFinance = DataPreferences.backpressed.getString(BackpressedPref.DATA)
         isLog(typeFinance!!)
-
         if (typeFinance == getString(R.string.income)) {
+            DataPreferences.backpressed.saveString(BackpressedPref.DATA, getString(R.string.spend))
             finance_pager.currentItem = 0
         } else {
-            startActivity(Intent(this, HomepageActivity::class.java))
+            finish()
         }
     }
 

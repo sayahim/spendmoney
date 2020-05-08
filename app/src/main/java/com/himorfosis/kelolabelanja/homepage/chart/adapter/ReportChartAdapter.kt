@@ -7,11 +7,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.himorfosis.kelolabelanja.R
-import com.himorfosis.kelolabelanja.homepage.chart.model.ChartCategoryModel
 import com.himorfosis.kelolabelanja.homepage.chart.model.ReportCategoryModel
-import com.himorfosis.kelolabelanja.reports.model.ReportsDataModel
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.item_progress_financial.view.*
+import org.jetbrains.anko.sdk27.coroutines.onClick
 import java.util.ArrayList
 
 class ReportChartAdapter : RecyclerView.Adapter<ReportChartAdapter.ViewHolder>() {
@@ -27,7 +26,6 @@ class ReportChartAdapter : RecyclerView.Adapter<ReportChartAdapter.ViewHolder>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.item_progress_financial, parent, false)
         return ViewHolder(v)
-
     }
 
     override fun getItemCount(): Int {
@@ -38,15 +36,18 @@ class ReportChartAdapter : RecyclerView.Adapter<ReportChartAdapter.ViewHolder>()
 
         val data = listData[position]
 
-        if (data != null) {
+        data.let {
 
             holder.title_category_tv.text = data.title
-            holder.total_nominal_tv.text = "Rp " + data.total_nominal.toString()
+            holder.total_nominal_tv.text = Util.numberFormatMoney(data.total_nominal.toLong().toString())
 
-            Glide.with(holder.itemView.context).load(data.image_category_url)
-                    .thumbnail(0.1f)
-                    .error(R.drawable.ic_broken_image)
-                    .into(holder.category_image)
+            data.image_category_url.let {
+                Glide.with(holder.itemView.context)
+                        .load(it)
+                        .thumbnail(0.1f)
+                        .error(R.drawable.ic_broken_image)
+                        .into(holder.category_image)
+            }
 
             Thread(Runnable {
                 while (progressStatusCounter < 100) {
@@ -63,14 +64,13 @@ class ReportChartAdapter : RecyclerView.Adapter<ReportChartAdapter.ViewHolder>()
                 }
             }).start()
 
-            holder.itemView.setOnClickListener {
+            holder.itemView.onClick {
                 onClickItem.onItemClicked(data)
             }
 
         }
 
     }
-
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -91,7 +91,7 @@ class ReportChartAdapter : RecyclerView.Adapter<ReportChartAdapter.ViewHolder>()
         }
     }
 
-    fun removeAdapter() {
+    fun clear() {
 
         if (listData.isNotEmpty()) {
             listData.clear()

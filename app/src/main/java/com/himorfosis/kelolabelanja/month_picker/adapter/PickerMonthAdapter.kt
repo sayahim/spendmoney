@@ -1,5 +1,6 @@
 package com.himorfosis.kelolabelanja.month_picker.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import com.himorfosis.kelolabelanja.utilities.Util
 import com.himorfosis.kelolabelanja.utilities.preferences.DataPreferences
 import com.himorfosis.kelolabelanja.utilities.preferences.PickerPref
 import kotlinx.android.synthetic.main.item_calendar_month.view.*
+import org.jetbrains.anko.sdk27.coroutines.onClick
 import java.util.*
 
 class PickerMonthAdapter : RecyclerView.Adapter<PickerMonthAdapter.ViewHolder>() {
@@ -17,11 +19,10 @@ class PickerMonthAdapter : RecyclerView.Adapter<PickerMonthAdapter.ViewHolder>()
     private var listData: MutableList<String> = ArrayList()
     lateinit var onClickItem: OnClickItem
     private var yearSelected = ""
-    private val TAG = "PickerMonthAdapter"
-
+    val getMonthSelected = DataPreferences.picker.getString(PickerPref.MONTH)
+    val getYearSelected = DataPreferences.picker.getString(PickerPref.YEAR)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-
         val v = LayoutInflater.from(parent.context).inflate(R.layout.item_calendar_month, parent, false)
         return ViewHolder(v)
     }
@@ -34,48 +35,40 @@ class PickerMonthAdapter : RecyclerView.Adapter<PickerMonthAdapter.ViewHolder>()
 
         val data = listData[position]
 
-        holder.month_tv.text = data
-        var monthValue = "0"
-        if (position < 10) {
-            val monthPosition = position + 1
-            monthValue += monthPosition.toString()
-        }
+        val monthPosition = position + 1
+        val monthValue: String = if (monthPosition < 10) "0$monthPosition" else monthPosition.toString()
 
-        val getMonthSelected = DataPreferences.picker.getString(PickerPref.MONTH)
-        val getYearSelected = DataPreferences.picker.getString(PickerPref.YEAR)
+        data.let {
 
-        if (getMonthSelected == monthValue && yearSelected == getYearSelected) {
-            // set background
-            holder.bg_month_ll.setBackgroundResource(R.drawable.circle_gold)
-            holder.month_tv.setTextColor(holder.itemView.context.resources.getColor(R.color.text_black_primary))
-        } else {
-            // delete background
-            holder.bg_month_ll.setBackgroundResource(0)
-        }
+            holder.month_tv.text = data
 
-        holder.itemView.setOnClickListener {
-
-            // delete background
-            holder.bg_month_ll.setBackgroundResource(0)
-
-            // set background
-            holder.bg_month_ll.setBackgroundResource(R.drawable.circle_gold)
-            holder.month_tv.setTextColor(holder.itemView.context.resources.getColor(R.color.text_black_primary))
-
-            var monthValue = "0"
-
-            if (position < 10) {
-                val monthPosition = position + 1
-                monthValue += monthPosition.toString()
+            if (getMonthSelected == monthValue && yearSelected == getYearSelected) {
+                // set background
+                holder.bg_month_ll.setBackgroundResource(R.drawable.circle_gold)
+                holder.month_tv.setTextColor(holder.itemView.context.resources.getColor(R.color.text_black_primary))
             } else {
-                val monthPosition = position + 1
-                monthValue = monthPosition.toString()
+                // delete background
+                holder.bg_month_ll.setBackgroundResource(0)
             }
-            onClickItem.onItemClicked(monthValue)
+
+            holder.itemView.onClick {
+
+                // delete background
+                holder.bg_month_ll.setBackgroundResource(0)
+                // set background
+                holder.bg_month_ll.setBackgroundResource(R.drawable.circle_gold)
+                holder.month_tv.setTextColor(holder.itemView.context.resources.getColor(R.color.text_black_primary))
+
+                val monthSelected = position + 1
+                val monthValueSelected: String = if (monthPosition < 10) "0$monthSelected" else monthSelected.toString()
+
+                isLog("month selected : $monthValueSelected")
+                onClickItem.onItemClicked(monthValueSelected)
+            }
+
         }
 
     }
-
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val month_tv = itemView.item_month_tv
@@ -91,26 +84,25 @@ class PickerMonthAdapter : RecyclerView.Adapter<PickerMonthAdapter.ViewHolder>()
         for (response in posItems) {
             add(response)
         }
-
         yearSelected = getYear
     }
 
     fun removeListAdapter() {
-
         listData.clear()
-
         notifyDataSetChanged()
-
     }
 
     interface OnClickItem {
         fun onItemClicked(data: String)
-
     }
 
     fun setOnclick(onClickItem: OnClickItem) {
         this.onClickItem = onClickItem
 
+    }
+
+    private fun isLog(msg: String) {
+        Log.e("PickerMonthAdapter", msg)
     }
 
 }

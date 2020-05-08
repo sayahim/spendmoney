@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -12,6 +13,7 @@ import com.himorfosis.kelolabelanja.financial.model.InputDataModel
 import com.himorfosis.kelolabelanja.utilities.date.DateSet
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.input_finance.*
+import org.jetbrains.anko.toast
 import java.text.DecimalFormat
 import java.util.*
 
@@ -25,10 +27,16 @@ class InputFinanceBottomDialog(context: Context): BottomSheetDialog(context) {
         interface OnClickItemDialog {
             fun onItemClicked(data: InputDataModel)
         }
-
         fun setOnclick(onClickItem: OnClickItemDialog) {
             this.onClickItem = onClickItem
         }
+
+        var dateSelected: String = ""
+
+        // setNumberFormatNominal
+        val decimalFormat = DecimalFormat("#,###,###,###,###,##")
+        val decimalFormatNotEdit = DecimalFormat("#,###")
+        var hasFractionalPart = false
 
     }
 
@@ -36,13 +44,20 @@ class InputFinanceBottomDialog(context: Context): BottomSheetDialog(context) {
 
         setContentView(R.layout.input_finance)
         window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        decimalFormat.isDecimalSeparatorAlwaysShown = true
+
+//        nominal_et?.addTextChangedListener(textWatcher)
+//        note_et?.addTextChangedListener(textWatcher)
+        // setting date
+        dateSelected = DateSet.getDateToday()
 
         close_img.setOnClickListener {
             dismiss()
         }
 
-        // setting date
-        var dateSelected = DateSet.getDateToday()
+        save_btn.setOnClickListener {
+            saveFinance()
+        }
 
         select_date_ll.setOnClickListener {
 
@@ -53,7 +68,9 @@ class InputFinanceBottomDialog(context: Context): BottomSheetDialog(context) {
 
             val dateDialog = DatePickerDialog(context, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
 
-                dateSelected = "$dayOfMonth.${monthOfYear + 1}.$year"
+                dateSelected = "$year-${monthOfYear + 1}-$dayOfMonth"
+                selected_date_tv.text = "$dayOfMonth/${monthOfYear + 1}/$year"
+
                 Util.log(TAG, "date selected : $dateSelected")
 
             }, year, month, day)
@@ -61,26 +78,15 @@ class InputFinanceBottomDialog(context: Context): BottomSheetDialog(context) {
 
         }
 
-        // setNumberFormatNominal
-        val decimalFormat = DecimalFormat("#,###,###,###,###,##")
-        decimalFormat.isDecimalSeparatorAlwaysShown = true
-        val decimalFormatNotEdit = DecimalFormat("#,###")
-        var hasFractionalPart = false
-
         nominal_et.addTextChangedListener(object : TextWatcher {
-
             override fun afterTextChanged(s: Editable) {
-
                 nominal_et.removeTextChangedListener(this)
-
                 try {
 
                     var nominalSize = nominal_et.text.toString().length
                     var originalString = s.toString()
-
-                    if (originalString != "") {
+                    if (originalString.isNotEmpty()) {
                         originalString = originalString.replace(decimalFormat.decimalFormatSymbols.groupingSeparator.toString(), "")
-
                         var number: Number = decimalFormat.parse(originalString)
                         var selectionNominal = nominal_et.selectionStart
 
@@ -91,7 +97,6 @@ class InputFinanceBottomDialog(context: Context): BottomSheetDialog(context) {
                         }
 
                         val endSize = nominal_et.text.toString().length
-
                         var setIndicatorEditText = (selectionNominal + (endSize - nominalSize))
                         if (setIndicatorEditText in 1..endSize) {
                             nominal_et.setSelection(setIndicatorEditText)
@@ -103,51 +108,42 @@ class InputFinanceBottomDialog(context: Context): BottomSheetDialog(context) {
                 } catch (e : java.lang.NumberFormatException) {
                     // do nothing?
                 }
-
                 nominal_et.addTextChangedListener(this)
 
             }
-
-            override fun beforeTextChanged(s: CharSequence, start: Int,
-                                           count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence, start: Int,
-                                       before: Int, count: Int) {
-
-            }
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
 
         })
 
         // setNoteLength
         note_et.addTextChangedListener(object : TextWatcher {
-
             override fun afterTextChanged(s: Editable) {
                 var noteSize = note_et.text.toString().length
                 note_length_tv.text = "$noteSize/50"
             }
 
-            override fun beforeTextChanged(s: CharSequence, start: Int,
-                                           count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-
-            }
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
 
         })
 
-        save_btn.setOnClickListener {
-            val nominal = nominal_et.text.toString()
-            val note = note_et.text.toString()
-            val date = dateSelected
+    }
 
+    private fun saveFinance() {
+
+        val nominal = nominal_et.text.toString()
+        val note = note_et.text.toString()
+        val date = dateSelected
+
+        if (nominal.isNotEmpty()) {
             val nominalReplace = nominal.replace(".", "")
-
             onClickItem.onItemClicked(InputDataModel(nominalReplace, note, date))
             dismiss()
-
+        } else {
+            context.toast("Harap masukkan nominal")
         }
 
     }
+
 }

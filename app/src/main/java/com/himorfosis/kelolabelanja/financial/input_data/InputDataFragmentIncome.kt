@@ -23,6 +23,7 @@ import com.himorfosis.kelolabelanja.homepage.activity.HomepageActivity
 import com.himorfosis.kelolabelanja.network.config.ConnectionDetector
 import com.himorfosis.kelolabelanja.network.state.StateNetwork
 import com.himorfosis.kelolabelanja.category.model.CategoryResponse
+import com.himorfosis.kelolabelanja.data_sample.FinancialsData
 import com.himorfosis.kelolabelanja.utilities.Util
 import com.himorfosis.kelolabelanja.utilities.preferences.AccountPref
 import com.himorfosis.kelolabelanja.utilities.preferences.AppPreferences
@@ -87,7 +88,7 @@ class InputDataFragmentIncome: Fragment() {
                 val userId = DataPreferences.account.getString(AccountPref.ID)
 
                 pushFinanceData(FinanceCreateModel(
-                        userId, category.id, category.type_category, data.nominal, data.note))
+                        userId, category.id, FinancialsData.INCOME_TYPE, data.nominal, data.note))
             }
         })
     }

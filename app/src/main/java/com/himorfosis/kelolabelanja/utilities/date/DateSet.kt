@@ -13,7 +13,6 @@ import java.util.*
 object DateSet {
 
     fun getDateToday(): String {
-
         val date = SimpleDateFormat("yyyy-MM-dd")
         val today = date.format(Date())
         return today.toString()
@@ -24,6 +23,19 @@ object DateSet {
         val date = SimpleDateFormat("dd")
         val today = date.format(Date())
         return today.toString()
+    }
+
+    fun getYearNow(): Int {
+        val date = SimpleDateFormat("yyyy")
+        return date.format(Date()).toInt()
+    }
+
+    fun dateMaxOnMonth(year: String?, month: String?):String {
+        var calendar: Calendar = Calendar.getInstance()
+        calendar.set(Calendar.YEAR, year!!.toInt())
+        calendar.set(Calendar.MONTH, month!!.toInt())
+        val maxDate = calendar.getActualMaximum(Calendar.DATE)
+        return maxDate.toString()
     }
 
     fun getDateMonthStartToday(): String {
@@ -38,21 +50,6 @@ object DateSet {
         val date = Date(dateTime)
         val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
         return format.format(date)
-
-//        var dateFinal: String
-//
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            val current = LocalDateTime.now()
-//            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-//            dateFinal =  current.format(formatter)
-//        } else {
-//            var date = Date()
-//            val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-//            dateFinal = formatter.format(date)
-//        }
-
-//        return dateFinal
-
     }
 
     fun getMonthSelected(): String? {

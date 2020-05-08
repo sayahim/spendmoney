@@ -13,30 +13,32 @@
 
     <TextView
         android:id="@+id/title_status_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Title Description"
-        android:textSize="@dimen/_16ssp"
-        android:textColor="@color/text_black_second"
-        android:fontFamily="@font/semi_bold_opensans"
-        android:layout_gravity="center"
+        android:gravity="center"
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginLeft="@dimen/_20sdp"
         android:layout_marginRight="@dimen/_20sdp"
-        android:visibility="invisible"/>
+        android:visibility="gone"
+        style="@style/text_status_title"
+        />
 
     <TextView
         android:id="@+id/description_status_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Description"
+        android:text="Description Disini Kesalahannya"
         android:textSize="@dimen/_14ssp"
         android:textColor="@color/text_black_second"
         android:fontFamily="@font/regular_opensans"
-        android:layout_gravity="center"
+        android:gravity="center"
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginLeft="@dimen/_20sdp"
         android:layout_marginRight="@dimen/_20sdp"
-        android:visibility="invisible"/>
+        android:visibility="gone"
+        style="@style/text_status_description"
+
+        />
 
 </LinearLayout>

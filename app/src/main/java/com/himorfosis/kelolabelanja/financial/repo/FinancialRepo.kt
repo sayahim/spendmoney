@@ -2,10 +2,7 @@ package com.himorfosis.kelolabelanja.financial.repo
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
-import com.himorfosis.kelolabelanja.financial.model.FinanceCreateModel
-import com.himorfosis.kelolabelanja.financial.model.FinanceCreateResponse
-import com.himorfosis.kelolabelanja.financial.model.FinanceUserFetchModel
-import com.himorfosis.kelolabelanja.financial.model.FinancialEntitiy
+import com.himorfosis.kelolabelanja.financial.model.*
 import com.himorfosis.kelolabelanja.network.config.Network
 import com.himorfosis.kelolabelanja.network.repository.BaseRepository
 import com.himorfosis.kelolabelanja.network.services.FinanceService
@@ -14,7 +11,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-object FinancialRepo: BaseRepository() {
+class FinancialRepo: BaseRepository() {
 
 
     val service = Network.createService(FinanceService::class.java)
@@ -46,6 +43,22 @@ object FinancialRepo: BaseRepository() {
                         item.user_id,
                         item.date_start, item.date_end,
                         item.type_finance)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io()).subscribe({
+                    data.value = StateNetwork.OnSuccess(it)
+                }, {
+                    data.value = errorResponse(it)
+                }).let {
+                    disposable.add(it)
+                }
+
+        return data
+    }
+
+    fun deleteFinanceUser(id: String):MutableLiveData<StateNetwork<FinanceStatusModel>> {
+
+        var  data = MutableLiveData<StateNetwork<FinanceStatusModel>>()
+        service.deleteFinance(id)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io()).subscribe({
                     data.value = StateNetwork.OnSuccess(it)

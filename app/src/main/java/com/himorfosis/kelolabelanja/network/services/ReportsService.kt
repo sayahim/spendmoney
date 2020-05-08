@@ -2,6 +2,7 @@ package com.himorfosis.kelolabelanja.network.services
 
 import com.himorfosis.kelolabelanja.homepage.chart.model.ReportCategoryModel
 import com.himorfosis.kelolabelanja.reports.model.ReportCategoryDetailsModel
+import com.himorfosis.kelolabelanja.reports.model.ReportDetailCategoryModel
 import io.reactivex.Observable
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -25,6 +26,6 @@ interface ReportsService {
             @Field("date_start") date_start: String,
             @Field("date_today") date_today: String,
             @Field("id_category") id_category: String
-    ): Observable<List<ReportCategoryDetailsModel>>
+    ): Observable<ReportDetailCategoryModel>
 
 }

@@ -41,9 +41,6 @@ class InputCategory : AppCompatActivity() {
 
     }
 
-    private fun fetchParseData() {
-
-    }
 
     private fun onSelectedTypeFinance(typeFinance: String) {
         if(CategoryData.SPEND == typeFinance) {
@@ -54,7 +51,6 @@ class InputCategory : AppCompatActivity() {
             type_spend_rb.isChecked = false
             type_income_rb.isChecked = true
             typeFinanceSelected = CategoryData.INCOME
-
 
         }
     }

@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white">
+    android:gravity="center">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/_260sdp"
         android:layout_height="wrap_content"
         android:padding="@dimen/_10sdp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/white"
+        >
+
+        <ImageView
+            android:id="@+id/close_img"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:src="@drawable/ic_close_black"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -22,6 +31,7 @@
             android:layout_marginTop="@dimen/_20sdp"/>
 
         <TextView
+            android:id="@+id/message_dialog_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Catatan ini akan terhapus secara permanen dari data anda"
@@ -41,11 +51,12 @@
             android:orientation="horizontal"
             android:layout_marginTop="@dimen/_20sdp"
             android:gravity="center"
+            android:weightSum="2"
             >
 
             <Button
                 android:id="@+id/cancel_btn"
-                android:layout_width="@dimen/_120sdp"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/_40sdp"
                 android:layout_margin="@dimen/_5sdp"
                 android:text="Batal"
@@ -53,11 +64,12 @@
                 android:textSize="@dimen/_14ssp"
                 android:textColor="@color/text_second"
                 android:fontFamily="@font/bold_opensans"
-                android:background="@drawable/button_background_cancel"/>
+                android:background="@drawable/button_background_cancel"
+                android:layout_weight="1"/>
 
             <Button
                 android:id="@+id/action_btn"
-                android:layout_width="@dimen/_120sdp"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/_40sdp"
                 android:layout_margin="@dimen/_5sdp"
                 android:text="Hapus"
@@ -65,7 +77,8 @@
                 android:textSize="@dimen/_14ssp"
                 android:textColor="@color/text_white"
                 android:fontFamily="@font/bold_opensans"
-                android:background="@drawable/button_background_ok"/>
+                android:background="@drawable/button_background_ok"
+                android:layout_weight="1"/>
 
         </LinearLayout>
 

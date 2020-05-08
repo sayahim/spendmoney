@@ -14,6 +14,7 @@ import com.himorfosis.kelolabelanja.utilities.preferences.PickerPref
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import java.util.*
 
 class HomeRepo:BaseRepository() {
 
@@ -26,15 +27,11 @@ class HomeRepo:BaseRepository() {
         val monthPicker = DataPreferences.picker.getString(PickerPref.MONTH)
         val yearPicker = DataPreferences.picker.getString(PickerPref.YEAR)
 
-        isLog("yearPicker : $yearPicker")
-        isLog("monthPicker : $monthPicker")
-        isLog("date start : $monthPicker$yearPicker${DateSet.getDateNow()}")
-
         val data = MutableLiveData<StateNetwork<HomepageResponse>>()
         service.homepageFetch(
                         userId,
                         "$yearPicker-$monthPicker-01",
-                        "$yearPicker-$monthPicker-${DateSet.getDateNow()}"
+                        "$yearPicker-$monthPicker-${DateSet.dateMaxOnMonth(yearPicker, monthPicker)}"
                 )
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io()).subscribe({

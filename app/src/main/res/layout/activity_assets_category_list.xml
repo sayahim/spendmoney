@@ -5,35 +5,85 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".category.AssetsCategory">
+    tools:context=".category.AssetsCategory"
+    android:background="@android:color/white">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/_10sdp"
-        style="@style/text_title"
-        android:text="@string/choose_image"/>
+        android:layout_height="match_parent"
+        android:layout_weight="0.8"
+        android:orientation="vertical">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/assets_recycler"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-        <include
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            layout="@layout/layout_status_failure"
             android:gravity="center"
-            android:layout_gravity="center"
-            />
+            android:orientation="horizontal"
+            android:layout_margin="@dimen/_10sdp"
+            android:padding="@dimen/_5sdp"
+            android:background="@drawable/border_edit_text">
 
+            <EditText
+                android:id="@+id/title_category_ed"
+                style="@style/text_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/transparent"
+                android:hint="Tulis Nama Kategori"
+                android:layout_marginRight="@dimen/_35sdp"/>
 
-    </FrameLayout>
+            <ImageView
+                android:id="@+id/assets_selected_img"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:src="@drawable/ic_picture"
+                android:padding="@dimen/_5sdp"
+                android:background="@drawable/border_line"
+                android:layout_gravity="right|center"/>
 
+        </FrameLayout>
 
+        <TextView
+            style="@style/text_title_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10sdp"
+            android:text="@string/choose_image" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/assets_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <include
+                layout="@layout/layout_status_failure"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center" />
+
+            <ProgressBar
+                android:id="@+id/assets_category_progress"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_gravity="center"/>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/save_category_btn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_45sdp"
+        android:layout_margin="@dimen/_5sdp"
+        style="@style/btn_state_primary"
+        android:text="Simpan Kategori"
+        android:enabled="true"
+        />
 
 </LinearLayout>

@@ -1,9 +1,11 @@
 package com.himorfosis.kelolabelanja.homepage.home.model
 
+import java.io.Serializable
+
 data class HomepageResponse(
         val totalFinanceUser: TotalFinanceUser,
         val data: List<Data>
-    ) {
+    ): Serializable {
     data class TotalFinanceUser(
             val total_income: Int,
             val total_spend: Int
@@ -16,23 +18,18 @@ data class HomepageResponse(
             val financePerDay: List<FinancePerDay>
     ) {
         data class FinancePerDay(
-                val id: Int,
-                val id_category: Int,
-                val id_user: Int,
+                val id: String,
+                val id_category: String,
                 val code: String,
                 val type_financial: String,
-                val nominal: Int,
+                val nominal: Long,
                 val note: String,
-                val created_at: String,
-                val updated_at: String,
-                val category: Category
-        )
+                val image_category: String,
+                val image_category_url: String,
+                val titleCategory: String,
+                val created_at: Long,
+                val updated_at: Long
+        ): Serializable
 
-        data class Category(
-                val title: String,
-                val description: String,
-                val type_category: String,
-                val image_category_url: String
-        )
     }
 }

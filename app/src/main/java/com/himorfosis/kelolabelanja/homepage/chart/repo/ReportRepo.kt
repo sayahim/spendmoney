@@ -9,6 +9,7 @@ import com.himorfosis.kelolabelanja.network.services.ReportsService
 import com.himorfosis.kelolabelanja.network.state.StateNetwork
 import com.himorfosis.kelolabelanja.reports.model.ReportCategoryDetailRequest
 import com.himorfosis.kelolabelanja.reports.model.ReportCategoryDetailsModel
+import com.himorfosis.kelolabelanja.reports.model.ReportDetailCategoryModel
 import com.himorfosis.kelolabelanja.utilities.Util
 import com.himorfosis.kelolabelanja.utilities.date.DateSet
 import com.himorfosis.kelolabelanja.utilities.preferences.AccountPref
@@ -32,12 +33,12 @@ class ReportRepo:BaseRepository() {
         isLog("yearPicker : $yearPicker")
         isLog("monthPicker : $monthPicker")
         isLog("date start : $yearPicker-$monthPicker-01")
-        isLog("date today : $yearPicker-$monthPicker-${DateSet.getDateNow()}")
+        isLog("date today : $yearPicker-$monthPicker-${DateSet.dateMaxOnMonth(yearPicker, monthPicker)}")
 
         service.reportsFinancePerCategory(
                                 userId!!,
                         "$yearPicker-$monthPicker-01",
-                        "$yearPicker-$monthPicker-${DateSet.getDateNow()}",
+                        "$yearPicker-$monthPicker-${DateSet.dateMaxOnMonth(yearPicker, monthPicker)}",
                                 type_finance)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io()).subscribe({
@@ -50,8 +51,8 @@ class ReportRepo:BaseRepository() {
         return response
     }
 
-    fun reportFinanceCategoryDetail(id_category: String): MutableLiveData<StateNetwork<List<ReportCategoryDetailsModel>>> {
-        val response = MutableLiveData<StateNetwork<List<ReportCategoryDetailsModel>>>()
+    fun reportFinanceCategoryDetail(id_category: String): MutableLiveData<StateNetwork<ReportDetailCategoryModel>> {
+        val response = MutableLiveData<StateNetwork<ReportDetailCategoryModel>>()
         val userId = DataPreferences.account.getString(AccountPref.ID)
         val monthPicker = DataPreferences.picker.getString(PickerPref.MONTH)
         val yearPicker = DataPreferences.picker.getString(PickerPref.YEAR)
@@ -59,7 +60,7 @@ class ReportRepo:BaseRepository() {
         service.reportsFinancePerCategoryDetail(
                         userId!!,
                         "$yearPicker-$monthPicker-01",
-                        "$yearPicker-$monthPicker-${DateSet.getDateNow()}",
+                        "$yearPicker-$monthPicker-${DateSet.dateMaxOnMonth(yearPicker, monthPicker)}",
                         id_category)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io()).subscribe({

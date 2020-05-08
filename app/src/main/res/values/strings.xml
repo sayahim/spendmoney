@@ -30,7 +30,7 @@
     <string name="input_title">Masukkan judul disini...</string>
     <string name="input_name">Masukkan nama disini...</string>
     <string name="description_optional">Tambahkan deskripsi anda disini (Opsional)</string>
-    <string name="choose_image">Silahkan Pilih Gambar</string>
+    <string name="choose_image">Silahkan pilih gambar</string>
 
     // button
     <string name="save">Simpan</string>
@@ -61,8 +61,11 @@
 
     // status data
     <string name="please_complete_data">Harap isi data dengan lengkap</string>
+    <string name="please_complete_data_message">Coba periksa kelengkapan data anda</string>
     <string name="data_not_available">Yah, data belum tersedia</string>
     <string name="data_not_available_message">Silahkan tambahkan data</string>
+    <string name="note_empty">Tidak ada catatan</string>
+
 
     <string name="data_transaction_not_available">Tidak ada transaksi</string>
     <string name="data_transaction_not_available_message">Ketuk + untuk menambahkan data transaksi anda</string>
@@ -78,6 +81,10 @@
     <string name="image_category">Gambar Kategori</string>
     <string name="category_title_input_hint">Masukkan judul kategori...</string>
     <string name="category_description_input_hint">Masukkan deskripsi kategori...</string>
+
+    // detail
+    <string name="note">Kategori</string>
+    <string name="date">Tanggal</string>
 
 
     <string-array name="month_full_list">

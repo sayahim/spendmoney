@@ -1,30 +1,52 @@
 package com.himorfosis.kelolabelanja.category
 
 import android.graphics.drawable.ColorDrawable
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.LinearInterpolator
+import android.view.animation.RotateAnimation
+import android.view.animation.ScaleAnimation
 import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.himorfosis.kelolabelanja.R
+import com.himorfosis.kelolabelanja.category.adapter.AssetsAdapter
 import com.himorfosis.kelolabelanja.category.adapter.AssetsGroupAdapter
 import com.himorfosis.kelolabelanja.category.model.AssetsModel
+import com.himorfosis.kelolabelanja.category.model.CategoryCreateRequest
+import com.himorfosis.kelolabelanja.category.repo.AssetsCallback
 import com.himorfosis.kelolabelanja.category.repo.CategoryViewModel
 import com.himorfosis.kelolabelanja.dialog.DialogInfo
+import com.himorfosis.kelolabelanja.dialog.DialogLoading
+import com.himorfosis.kelolabelanja.homepage.activity.HomepageActivity
 import com.himorfosis.kelolabelanja.network.state.StateNetwork
 import com.himorfosis.kelolabelanja.utilities.Util
+import com.himorfosis.kelolabelanja.utilities.preferences.CategoryPref
+import com.himorfosis.kelolabelanja.utilities.preferences.DataPreferences
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_assets_category_list.*
 import kotlinx.android.synthetic.main.layout_status_failure.*
 import kotlinx.android.synthetic.main.toolbar_detail.*
+import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.sdk27.coroutines.onClick
+import org.jetbrains.anko.toast
 
-class AssetsCategory : AppCompatActivity() {
+
+class AssetsCategory : AppCompatActivity(), AssetsCallback.OnClickItemAssets {
 
     lateinit var viewModel: CategoryViewModel
     lateinit var adapterAssets: AssetsGroupAdapter
+    lateinit var animScale: ScaleAnimation
+    lateinit var animRotate: ScaleAnimation
+    private var listData: MutableList<AssetsModel> = ArrayList()
+    lateinit var loadingDialog: DialogLoading
+
+    private var assetSelected = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,12 +54,24 @@ class AssetsCategory : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this).get(CategoryViewModel::class.java)
         initializeUI()
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+        DataPreferences.category.saveString(CategoryPref.SELECTED, "")
     }
 
     private fun initializeUI() {
         setToolbar()
         setAdapter()
         fetchAssets()
+        setEffectImage()
+        save_category_btn.onClick {
+            isLoading()
+            pushCreateCategory()
+        }
+
     }
 
     private fun fetchAssets() {
@@ -48,15 +82,8 @@ class AssetsCategory : AppCompatActivity() {
             when (it) {
                 is StateNetwork.OnSuccess -> {
                     if (it.data.isNotEmpty()) {
-
-                        var listData : MutableList<AssetsModel> = ArrayList()
-                        for(item in it.data) {
-                            if (item.assets.isNotEmpty()) {
-                                listData.add(item)
-                            }
-                        }
-                        adapterAssets.addAll(listData)
-
+                        listData.addAll(it.data)
+                        adapterAssets.addAll(it.data)
                     } else {
                         onFailure(
                                 getString(R.string.data_not_available),
@@ -77,12 +104,53 @@ class AssetsCategory : AppCompatActivity() {
 
     }
 
+    private fun pushCreateCategory() {
+        val title = title_category_ed.text.toString()
+        if (title.isNotEmpty() && assetSelected.isNotEmpty()) {
+            viewModel.userCreateCategoryPush(CategoryCreateRequest(title, assetSelected))
+            viewModel.userCreateCategoryResponse.observe(this, Observer {
+                loadingDialog.dismiss()
+                when (it) {
+                    is StateNetwork.OnSuccess -> {
+                        toast("Berhasil Menambah Kategori")
+                        startActivity(intentFor<HomepageActivity>("from" to "category"))
+                    }
+                    is StateNetwork.OnError -> {
+                        dialogInfo(it.error, it.message)
+                    }
+                    else -> {
+                        toast("Gagal Menambah Kategori")
+                    }
+                }
+            })
+        } else {
+            loadingDialog.dismiss()
+            dialogInfo(getString(R.string.please_complete_data), getString(R.string.please_complete_data_message))
+        }
+
+    }
+
+    private fun setEffectImage() {
+        //        anim = RotateAnimation(0f, 350f, 15f, 15f)
+        animScale = ScaleAnimation(0f, 350f, 15f, 15f)
+        animScale.interpolator = LinearInterpolator()
+        animScale.repeatCount = Animation.ZORDER_TOP
+        animScale.duration = 100
+    }
+
     private fun setAdapter() {
         adapterAssets = AssetsGroupAdapter()
         assets_recycler.apply {
             layoutManager = LinearLayoutManager(this@AssetsCategory)
             adapter = adapterAssets
         }
+
+    }
+
+    private fun isLoading() {
+        loadingDialog = DialogLoading(this)
+        loadingDialog.setCancelable(false)
+        loadingDialog.show()
     }
 
     private fun setToolbar() {
@@ -101,7 +169,7 @@ class AssetsCategory : AppCompatActivity() {
     }
 
     private fun isLoadingStop() {
-//        loading_category_shimmer.visibility = View.GONE
+        assets_category_progress.visibility = View.GONE
     }
 
     private fun onFailure(title: String, message: String) {
@@ -118,6 +186,34 @@ class AssetsCategory : AppCompatActivity() {
 
     fun isLog(message: String) {
         Util.log("Category Income Fragment", message)
+    }
+
+    override fun onItemClicked(data: AssetsModel.Asset) {
+
+        Glide.with(this@AssetsCategory)
+                .load(data.image_assets_url)
+                .thumbnail(0.1f)
+                .error(R.drawable.ic_broken_image)
+                .into(assets_selected_img)
+
+        assets_selected_img.startAnimation(animScale)
+
+        assetSelected = data.image_assets
+
+        val type = DataPreferences.category.getString(CategoryPref.TYPE)
+        isLog("type $type")
+
+        val checkData = DataPreferences.category.getString(CategoryPref.SELECTED)
+        if (checkData!!.isNotEmpty()) {
+            isLog("id assets : ${data.id}")
+            DataPreferences.category.saveString(CategoryPref.SELECTED, data.id.toString())
+            // reffresh adapter
+            adapterAssets.notifyDataSetChanged()
+            adapterAssets.addAll(listData)
+        } else {
+            DataPreferences.category.saveString(CategoryPref.SELECTED, data.id.toString())
+        }
+
     }
 
 }

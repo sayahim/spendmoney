@@ -2,6 +2,7 @@ package com.himorfosis.kelolabelanja.category.repo
 
 import androidx.lifecycle.MutableLiveData
 import com.himorfosis.kelolabelanja.category.model.AssetsModel
+import com.himorfosis.kelolabelanja.category.model.CategoryCreateRequest
 import com.himorfosis.kelolabelanja.category.model.CategoryCreateResponse
 import com.himorfosis.kelolabelanja.network.config.Network
 import com.himorfosis.kelolabelanja.network.repository.BaseRepository
@@ -48,13 +49,13 @@ class CategoryRepo: BaseRepository(){
         return data
     }
 
-    fun userCreateCategory(title: String, assets: String): MutableLiveData<StateNetwork<CategoryCreateResponse>> {
+    fun userCreateCategory(it: CategoryCreateRequest): MutableLiveData<StateNetwork<CategoryCreateResponse>> {
         val data = MutableLiveData<StateNetwork<CategoryCreateResponse>>()
 
         val userId = DataPreferences.account.getString(AccountPref.ID)
         val type = DataPreferences.category.getString(CategoryPref.TYPE)
 
-        service.userCreateCategory(title, assets, userId, type)
+        service.userCreateCategory(it.title, it.assets, userId, type)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io()).subscribe({
                     data.value = StateNetwork.OnSuccess(it)

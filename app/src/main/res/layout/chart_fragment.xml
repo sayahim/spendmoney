@@ -66,10 +66,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
-                        android:fontFamily="@font/semi_bold_opensans"
                         android:text="Daftar Data Teratas"
-                        android:textColor="@color/text_black_second"
-                        android:textSize="@dimen/_12ssp" />
+                        style="@style/text_title_item"/>
 
                     <TextView
                         android:id="@+id/see_all_report_tv"
@@ -124,42 +122,34 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_10sdp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:gravity="center">
 
 
                 <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_210sdp"
-                    android:orientation="vertical">
+                    android:layout_height="@dimen/_180sdp"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/_10sdp">
 
                     <FrameLayout
-                        android:layout_width="@dimen/_100sdp"
-                        android:layout_height="@dimen/_15sdp"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:background="@drawable/loading_corner" />
-
-                    <FrameLayout
-                        android:layout_width="@dimen/_130sdp"
-                        android:layout_height="@dimen/_130sdp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_gravity="center"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:background="@drawable/loading_circle" />
+                        android:background="@drawable/loading_corner" />
 
                 </FrameLayout>
 
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_25sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
                     android:layout_marginBottom="@dimen/_20sdp"
                     android:orientation="vertical">
 
                     <View
                         android:layout_width="@dimen/_120sdp"
                         android:layout_height="@dimen/_15sdp"
-                        android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:background="@drawable/loading_corner"
                         android:layout_gravity="left"/>

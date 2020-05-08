@@ -1,4 +1,6 @@
 package com.himorfosis.kelolabelanja.category.model
 
-class CategoryCreateRequest {
-}
+class CategoryCreateRequest (
+        var title: String,
+        var assets: String
+)

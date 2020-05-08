@@ -32,6 +32,7 @@
     <color name="btn_blue">#1889FD</color>
     <color name="btn_blue_dark">#10518C</color>
     <color name="btn_green">#00ab6b</color>
+    <color name="btn_gray">#9B9B9B</color>
 
     <color name="indicator">#00ab6b</color>
 
@@ -57,6 +58,7 @@
     <color name="text_green">#00ab6b</color>
     <color name="text_red">#F85A59</color>
     <color name="text_yellow">#FCB038</color>
+    <color name="text_btn_unclick">#FCB038</color>
 
     <color name="background_gray">#F3F3F3</color>
     <color name="line_indicator">#00ab6b</color>

@@ -27,7 +27,7 @@ class CategoryListAdapter : RecyclerView.Adapter<CategoryListAdapter.ViewHolder>
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val data = listData[position]
 
-        if (data != null) {
+        data.let {
             holder.category_name_tv.text = data.title
 
 //            val imageAssets = Util.convertImageDrawable(holder.itemView.context, data.image_category)
@@ -41,8 +41,8 @@ class CategoryListAdapter : RecyclerView.Adapter<CategoryListAdapter.ViewHolder>
                 onClickItem.onItemClicked(data)
 
             }
-
         }
+
 
     }
 

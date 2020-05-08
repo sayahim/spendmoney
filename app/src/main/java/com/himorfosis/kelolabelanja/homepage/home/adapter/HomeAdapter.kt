@@ -4,13 +4,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.himorfosis.kelolabelanja.R
 import com.himorfosis.kelolabelanja.data_sample.CategoryData
+import com.himorfosis.kelolabelanja.financial.FinancialDetail
 import com.himorfosis.kelolabelanja.homepage.home.model.HomepageResponse
 import com.himorfosis.kelolabelanja.utilities.Util
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_home.view.*
+import org.jetbrains.anko.intentFor
 
 class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
@@ -30,48 +34,56 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
         var data = listData!![position]
         val context = holder.itemView.context
 
-        if (data.note != null) {
-            holder.name_tv.text = data.category.title
+        data.let { data->
 
-        } else {
-            holder.name_tv.text = data.note
-        }
-
-        if (data.type_financial == CategoryData.INCOME) {
-            holder.nominal_tv.setTextColor(ContextCompat.getColor(context, R.color.green))
-            if (data.nominal != null) {
-                holder.nominal_tv.text = Util.numberFormatMoney(data.nominal.toString())
+            if (data.note.isEmpty()) {
+                holder.name_tv.text = data.titleCategory
             } else {
-                holder.nominal_tv.text = "Rp0"
+                holder.name_tv.text = data.note
             }
 
-        } else {
+            if (data.type_financial == CategoryData.INCOME) {
+                holder.nominal_tv.setTextColor(ContextCompat.getColor(context, R.color.green))
+                if (data.nominal != null) {
+                    holder.nominal_tv.text = Util.numberFormatMoney(data.nominal.toString())
+                } else {
+                    holder.nominal_tv.text = "Rp0"
+                }
 
-            holder.nominal_tv.setTextColor(ContextCompat.getColor(context, R.color.text_black_primary))
-            if (data.nominal != null) {
-                holder.nominal_tv.text = Util.numberFormatMoney(data.nominal.toString())
             } else {
-                holder.nominal_tv.text = "Rp0"
+
+                holder.nominal_tv.setTextColor(ContextCompat.getColor(context, R.color.text_black_primary))
+                if (data.nominal != null) {
+                    holder.nominal_tv.text = Util.numberFormatMoney(data.nominal.toString())
+                } else {
+                    holder.nominal_tv.text = "Rp0"
+                }
+
+            }
+
+            data.image_category_url.let {
+                Glide.with(holder.itemView.context)
+                        .load(it)
+                        .thumbnail(0.1f)
+                        .error(R.drawable.ic_broken_image)
+                        .into(holder.category_img)
+            }
+
+
+
+            holder.itemView.setOnClickListener {
+
+                context.startActivity(context.intentFor<FinancialDetail>(
+                        "id" to data.id,
+                        "nominal" to data.nominal.toString(),
+                        "title" to data.titleCategory,
+                        "date" to data.updated_at.toString(),
+                        "note" to data.note,
+                        "image" to data.image_category_url
+                ))
             }
 
         }
-
-        Picasso.with(holder.itemView.context)
-                .load(data.category.image_category_url)
-                .error(R.drawable.ic_broken_image)
-                .into(holder.category_img)
-
-//        val imageAssets = Util.convertImageDrawable(context, data.)
-//        holder.category_img.setImageResource(imageAssets)
-
-        holder.itemView.setOnClickListener {
-            isLog("click bos")
-//            val intent = Intent(context, FinancialDetail::class.java)
-//            intent.putExtra("id", data.id)
-//            context.startActivity(intent)
-
-        }
-
 
     }
 

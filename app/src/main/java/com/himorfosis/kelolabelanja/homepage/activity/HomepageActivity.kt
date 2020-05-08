@@ -26,7 +26,6 @@ class HomepageActivity : AppCompatActivity() {
         var fragmentActive = 0
         val NAV_START = 0
         val NAV_ACTION = 1
-        private lateinit var preferences: AppPreferences
 
     }
 
@@ -60,7 +59,6 @@ class HomepageActivity : AppCompatActivity() {
         setContentView(R.layout.activity_homepage)
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-
         checkParseData()
 
     }
@@ -114,7 +112,7 @@ class HomepageActivity : AppCompatActivity() {
 
         val getToken = DataPreferences.account.getString(AccountPref.TOKEN)
 
-        if (getToken == "") {
+        if (getToken!!.isEmpty()) {
             startActivity(Intent(this, Login::class.java))
         } else {
             fragmentActive = NAV_ACTION
@@ -133,13 +131,11 @@ class HomepageActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-
         if (fragmentActive == 0) {
             finishAffinity()
         } else {
             homeFragment()
         }
-
     }
 
     private fun isLog(message: String) {

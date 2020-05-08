@@ -1,6 +1,5 @@
 package com.himorfosis.kelolabelanja.reports.view
 
-import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
@@ -11,8 +10,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.himorfosis.kelolabelanja.R
-import com.himorfosis.kelolabelanja.app.MyApp
-import com.himorfosis.kelolabelanja.data_sample.FinancialsData
 import com.himorfosis.kelolabelanja.homepage.activity.HomepageActivity
 import com.himorfosis.kelolabelanja.homepage.chart.adapter.ReportChartAdapter
 import com.himorfosis.kelolabelanja.homepage.chart.model.ReportCategoryModel
@@ -20,10 +17,7 @@ import com.himorfosis.kelolabelanja.homepage.chart.repo.ReportViewModel
 import com.himorfosis.kelolabelanja.month_picker.DialogMonthPicker
 import com.himorfosis.kelolabelanja.network.state.StateNetwork
 import com.himorfosis.kelolabelanja.reports.adapter.ReportsAdapter
-import com.himorfosis.kelolabelanja.reports.model.ReportsDataModel
-import com.himorfosis.kelolabelanja.reports.repo.ReportsViewModel
 import com.himorfosis.kelolabelanja.state.HomeState
-import com.himorfosis.kelolabelanja.state.StatusData
 import com.himorfosis.kelolabelanja.utilities.Util
 import com.himorfosis.kelolabelanja.utilities.date.DateSet
 import com.himorfosis.kelolabelanja.utilities.preferences.DataPreferences
@@ -32,15 +26,12 @@ import kotlinx.android.synthetic.main.layout_status_failure.*
 import kotlinx.android.synthetic.main.reports_activity.*
 import kotlinx.android.synthetic.main.toolbar_detail.*
 import org.jetbrains.anko.intentFor
-import org.jetbrains.anko.support.v4.intentFor
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 class ReportsActivity : AppCompatActivity() {
 
-//    lateinit var reportsAdapter: ReportsAdapter
-    lateinit var adapterReport: ReportChartAdapter
+    lateinit var adapterReport: ReportsAdapter
     lateinit var viewModel: ReportViewModel
     private val TAG = "ReportsActivity"
 
@@ -52,9 +43,8 @@ class ReportsActivity : AppCompatActivity() {
         setToolbar()
         setAdapter()
         fetchReportFinanceCategory()
-        isLog("")
-    }
 
+    }
 
     private fun fetchReportFinanceCategory() {
         val typeFinance = intent.getStringExtra("type")
@@ -63,7 +53,8 @@ class ReportsActivity : AppCompatActivity() {
             when (it) {
                 is StateNetwork.OnSuccess -> {
                     if (it.data.isNotEmpty()) {
-                        adapterReport.addAll(it.data)
+                        val listData = it.data.sortedWith(compareByDescending { it.total_nominal.toLong() })
+                        adapterReport.addAll(listData)
                     } else {
                         onDataEmpty()
                     }
@@ -78,53 +69,14 @@ class ReportsActivity : AppCompatActivity() {
         })
     }
 
-    private fun onSuccess() {
-
-    }
-
-//    private fun fetchReportDataByTypeFinance(typeFinance: String) {
-//
-//        reportsViewModel.fetchReportFinancials(typeFinance)
-//        reportsViewModel.fetchReportFinancialsResponse.observe(this, Observer {
-//
-//            if (it != null) {
-//
-//                if (it.isNotEmpty()) {
-//                    var collectingData: MutableList<ReportsDataModel> = ArrayList<ReportsDataModel>()
-//                    collectingData.forEach {
-//                        collectingData.add(it)
-//                    }
-//
-////                    for (position in it.indices) {
-////                        if (position < 5) {
-////                            collectingData.add(it[position])
-////                        } else {
-////                            break
-////                        }
-////                    }
-//
-//                    reportsAdapter.addAll(collectingData, collectingData[0].total_nominal_category.toLong())
-//                    status_report_tv.visibility = View.GONE
-//                }
-//            } else {
-//                status_report_tv.text = StatusData.notFound
-//                status_report_tv.visibility = View.VISIBLE
-//            }
-//        })
-//
-//    }
-
     private fun setAdapter() {
-
-//        reportsAdapter = ReportsAdapter()
-        adapterReport = ReportChartAdapter()
-
+        adapterReport = ReportsAdapter()
         recycler_reports.apply {
             layoutManager = LinearLayoutManager(this@ReportsActivity)
             adapter = adapterReport
         }
 
-        adapterReport.setOnclick(object : ReportChartAdapter.OnClickItem {
+        adapterReport.setOnclick(object : ReportsAdapter.OnClickItem {
             override fun onItemClicked(data: ReportCategoryModel) {
                 startActivity(intentFor<ReportDetailActivity>(
                         "id_category" to data.id
@@ -164,7 +116,6 @@ class ReportsActivity : AppCompatActivity() {
         description_status_tv.visibility = View.VISIBLE
         title_status_tv.text = getString(R.string.data_not_available)
         description_status_tv.text = getString(R.string.data_not_available_message)
-
     }
 
     private fun setTitleToolbar() {
