@@ -1,6 +1,6 @@
 package com.himorfosis.kelolabelanja.network.services
 
-import com.himorfosis.kelolabelanja.auth.model.LoginResponse
+import com.himorfosis.kelolabelanja.auth.model.LoginModel
 import io.reactivex.Observable
 import okhttp3.ResponseBody
 import retrofit2.http.Field
@@ -14,13 +14,14 @@ interface AuthService {
     fun login(
             @Field("email") email: String?,
             @Field("password") password: String?
-    ): Observable<LoginResponse>
+    ): Observable<LoginModel>
 
     @FormUrlEncoded
     @POST("register")
     fun register(
             @Field("name") name: String?,
             @Field("email") email: String?,
+            @Field("gender") gender: String?,
             @Field("password") password: String?,
             @Field("password_confirm") password_confirm: String?
     ): Observable<ResponseBody>

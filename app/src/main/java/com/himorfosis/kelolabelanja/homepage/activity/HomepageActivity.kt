@@ -24,30 +24,39 @@ class HomepageActivity : AppCompatActivity() {
     companion object {
         val TAG = "HomepageActivity"
         var fragmentActive = 0
-        val NAV_START = 0
-        val NAV_ACTION = 1
+        val NAV_HOME = 0
+        val NAV_REPORT = 1
+        val NAV_CATEGORY = 2
+        val NAV_PROFIL = 3
 
     }
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.nav_home -> {
-                homeFragment()
-                return@OnNavigationItemSelectedListener true
+                if (fragmentActive != NAV_HOME) {
+                    homeFragment()
+                    return@OnNavigationItemSelectedListener true
+                }
             }
             R.id.nav_reports -> {
-                reportFragment()
-                return@OnNavigationItemSelectedListener true
+                if (fragmentActive != NAV_REPORT) {
+                    reportFragment()
+                    return@OnNavigationItemSelectedListener true
+                }
             }
             R.id.nav_category -> {
-                categoryFragment()
-                return@OnNavigationItemSelectedListener true
+                if (fragmentActive != NAV_CATEGORY) {
+                    categoryFragment()
+                    return@OnNavigationItemSelectedListener true
+                }
             }
 
             R.id.nav_profile -> {
-                profileFragment()
-                return@OnNavigationItemSelectedListener true
-
+                if (fragmentActive != NAV_PROFIL) {
+                    profileFragment()
+                    return@OnNavigationItemSelectedListener true
+                }
             }
         }
         false
@@ -65,9 +74,8 @@ class HomepageActivity : AppCompatActivity() {
 
     private fun checkParseData() {
 
-        val getFrom = intent.getStringExtra("home")
+        val getFrom = intent.getStringExtra("from")
         if (getFrom != null) {
-
             if (getFrom == HomeState.PROFILE) {
                 profileFragment()
             } else if (getFrom == HomeState.REPORT) {
@@ -85,7 +93,7 @@ class HomepageActivity : AppCompatActivity() {
     }
 
     private fun homeFragment() {
-        fragmentActive = NAV_START
+        fragmentActive = NAV_HOME
         val fragment = HomeFragment()
         replaceFragment(fragment)
         navigation.menu.findItem(R.id.nav_home).isChecked = true
@@ -93,7 +101,7 @@ class HomepageActivity : AppCompatActivity() {
     }
 
     private fun reportFragment() {
-        fragmentActive = NAV_ACTION
+        fragmentActive = NAV_REPORT
         val fragment = ChartMain()
         replaceFragment(fragment)
         navigation.menu.findItem(R.id.nav_reports).isChecked = true
@@ -101,7 +109,7 @@ class HomepageActivity : AppCompatActivity() {
     }
 
     private fun categoryFragment() {
-        fragmentActive = NAV_ACTION
+        fragmentActive = NAV_CATEGORY
         val fragment = CategoryMain()
         replaceFragment(fragment)
         navigation.menu.findItem(R.id.nav_category).isChecked = true
@@ -115,7 +123,7 @@ class HomepageActivity : AppCompatActivity() {
         if (getToken!!.isEmpty()) {
             startActivity(Intent(this, Login::class.java))
         } else {
-            fragmentActive = NAV_ACTION
+            fragmentActive = NAV_PROFIL
             val fragment = ProfileFragment()
             replaceFragment(fragment)
             navigation.menu.findItem(R.id.nav_profile).isChecked = true
@@ -131,9 +139,10 @@ class HomepageActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (fragmentActive == 0) {
+        if (fragmentActive == NAV_HOME) {
             finishAffinity()
         } else {
+            fragmentActive = NAV_HOME
             homeFragment()
         }
     }

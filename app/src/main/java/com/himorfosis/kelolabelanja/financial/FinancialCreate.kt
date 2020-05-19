@@ -1,11 +1,13 @@
 package com.himorfosis.kelolabelanja.financial
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.ActionBar
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
@@ -29,7 +31,7 @@ import org.jetbrains.anko.toast
 import kotlin.collections.ArrayList
 
 
-class InputFinancial : AppCompatActivity() {
+class FinancialCreate : AppCompatActivity() {
 
     var TAG = "InputFinancial"
 

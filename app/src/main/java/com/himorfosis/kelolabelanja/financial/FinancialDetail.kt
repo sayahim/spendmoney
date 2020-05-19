@@ -33,8 +33,18 @@ import org.jetbrains.anko.toast
 
 class FinancialDetail : AppCompatActivity() {
 
-    lateinit var viewModel: FinancialViewModel
-    lateinit var loadingDialog: DialogLoading
+    companion object {
+        lateinit var viewModel: FinancialViewModel
+        lateinit var loadingDialog: DialogLoading
+        lateinit var id: String
+        lateinit var nominal: String
+        lateinit var title: String
+        lateinit var date: String
+        lateinit var note: String
+        lateinit var image: String
+        lateinit var id_category: String
+        lateinit var type_finance: String
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,17 +59,28 @@ class FinancialDetail : AppCompatActivity() {
 
     private fun initUI() {
         edit_btn.onClick {
-            toast("on progress")
+            startActivity(intentFor<FinancialEdit>(
+                    "id" to id,
+                    "id_category" to id_category,
+                    "nominal" to nominal,
+                    "date" to date,
+                    "note" to note,
+                    "image" to image,
+                    "type_finance" to type_finance
+            ))
         }
     }
 
     private fun setShowDataFinancialDetail() {
 
-        val nominal = intent.getStringExtra("nominal")
-        val title = intent.getStringExtra("title")
-        val date = intent.getStringExtra("date")
-        val note = intent.getStringExtra("note")
-        val image = intent.getStringExtra("image")
+        id = intent.getStringExtra("id")
+        nominal = intent.getStringExtra("nominal")
+        title = intent.getStringExtra("title")
+        date = intent.getStringExtra("date")
+        note = intent.getStringExtra("note")
+        image = intent.getStringExtra("image")
+        id_category = intent.getStringExtra("id_category")
+        type_finance = intent.getStringExtra("type_finance")
 
         Picasso.with(this@FinancialDetail)
                 .load(image)

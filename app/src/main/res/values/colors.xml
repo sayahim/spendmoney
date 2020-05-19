@@ -28,6 +28,7 @@
 
     <color name="bg_blue">#2c61b9</color>
     <color name="bg_blue_dark">#2e62bb</color>
+    <color name="bg_edit_text">#F5F6FA</color>
 
     <color name="btn_blue">#1889FD</color>
     <color name="btn_blue_dark">#10518C</color>
@@ -39,6 +40,13 @@
     <color name="icon_black">#7C7F81</color>
     <!--<color name="line">#B6B6B6</color>-->
     <color name="line_dark">#7C7F81</color>
+    <color name="line_frame">#F0F3FF</color>
+    <color name="line_indicator">#00ab6b</color>
+    <color name="line">#F4F4F4</color>
+    <color name="line_corner_gray">#F3F3F3</color>
+
+    // border
+    <color name="border_edit_text">#EAEAEA</color>
 
     <color name="button_ok">#2F7EB7</color>
     <color name="button_cancel">#DEEEFD</color>
@@ -52,6 +60,7 @@
     <color name="text_black_second">#4B4B4D</color>
     <color name="text_second">#81868c</color>
     <color name="text_hint">#a6a6a6</color>
+    <color name="text_title_hint">#9B9A9B</color>
     <color name="text_white">#ffffff</color>
     <color name="text_blue_dark">#10518C</color>
     <color name="text_blue">#2F7EB7</color>
@@ -61,9 +70,7 @@
     <color name="text_btn_unclick">#FCB038</color>
 
     <color name="background_gray">#F3F3F3</color>
-    <color name="line_indicator">#00ab6b</color>
-    <color name="line">#F4F4F4</color>
-    <color name="line_corner_gray">#F3F3F3</color>
+
 
     <color name="loading_color">#F0EFEF</color>
 

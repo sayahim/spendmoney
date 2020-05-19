@@ -15,6 +15,7 @@ class CategoryViewModel: ViewModel() {
     var categoryTypeFinanceResponse = MutableLiveData<StateNetwork<List<CategoryResponse>>>()
     var assetsResponse = MutableLiveData<StateNetwork<List<AssetsModel>>>()
     var userCreateCategoryResponse = MutableLiveData<StateNetwork<CategoryCreateResponse>>()
+    var userUpdateCategoryResponse = MutableLiveData<StateNetwork<CategoryCreateResponse>>()
 
     fun categoryFetch() {
         categoryResponse = categoryRepo.category()
@@ -25,7 +26,10 @@ class CategoryViewModel: ViewModel() {
     }
 
     fun userCreateCategoryPush(it: CategoryCreateRequest) {
-        userCreateCategoryResponse = categoryRepo.userCreateCategory(it)
+        userCreateCategoryResponse = categoryRepo.createCategory(it)
+    }
+    fun userUpdateCategoryPush(it: CategoryCreateRequest) {
+        userUpdateCategoryResponse = categoryRepo.updateCategory(it)
     }
 
     fun assetsFetch() {

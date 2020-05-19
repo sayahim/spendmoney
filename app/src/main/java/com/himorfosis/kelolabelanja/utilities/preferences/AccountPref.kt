@@ -12,5 +12,7 @@ object AccountPref {
     val EMAIL = "EMAIL"
     val PHONE_NUMBER = "PHONE_NUMBER"
     val IMAGE = "IMAGE"
+    val BORN = "BORN"
+    val GENDER = "GENDER"
 
 }

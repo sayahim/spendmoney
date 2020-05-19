@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
-import android.view.animation.RotateAnimation
 import android.view.animation.ScaleAnimation
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
@@ -15,7 +14,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.himorfosis.kelolabelanja.R
-import com.himorfosis.kelolabelanja.category.adapter.AssetsAdapter
 import com.himorfosis.kelolabelanja.category.adapter.AssetsGroupAdapter
 import com.himorfosis.kelolabelanja.category.model.AssetsModel
 import com.himorfosis.kelolabelanja.category.model.CategoryCreateRequest
@@ -25,11 +23,11 @@ import com.himorfosis.kelolabelanja.dialog.DialogInfo
 import com.himorfosis.kelolabelanja.dialog.DialogLoading
 import com.himorfosis.kelolabelanja.homepage.activity.HomepageActivity
 import com.himorfosis.kelolabelanja.network.state.StateNetwork
+import com.himorfosis.kelolabelanja.state.HomeState
 import com.himorfosis.kelolabelanja.utilities.Util
 import com.himorfosis.kelolabelanja.utilities.preferences.CategoryPref
 import com.himorfosis.kelolabelanja.utilities.preferences.DataPreferences
-import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_assets_category_list.*
+import kotlinx.android.synthetic.main.activity_category_create.*
 import kotlinx.android.synthetic.main.layout_status_failure.*
 import kotlinx.android.synthetic.main.toolbar_detail.*
 import org.jetbrains.anko.intentFor
@@ -37,7 +35,7 @@ import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.toast
 
 
-class AssetsCategory : AppCompatActivity(), AssetsCallback.OnClickItemAssets {
+class CategoryCreate : AppCompatActivity(), AssetsCallback.OnClickItemAssets {
 
     lateinit var viewModel: CategoryViewModel
     lateinit var adapterAssets: AssetsGroupAdapter
@@ -50,7 +48,7 @@ class AssetsCategory : AppCompatActivity(), AssetsCallback.OnClickItemAssets {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_assets_category_list)
+        setContentView(R.layout.activity_category_create)
 
         viewModel = ViewModelProvider(this).get(CategoryViewModel::class.java)
         initializeUI()
@@ -113,7 +111,7 @@ class AssetsCategory : AppCompatActivity(), AssetsCallback.OnClickItemAssets {
                 when (it) {
                     is StateNetwork.OnSuccess -> {
                         toast("Berhasil Menambah Kategori")
-                        startActivity(intentFor<HomepageActivity>("from" to "category"))
+                        startActivity(intentFor<HomepageActivity>("from" to HomeState.CATEGORY))
                     }
                     is StateNetwork.OnError -> {
                         dialogInfo(it.error, it.message)
@@ -141,16 +139,10 @@ class AssetsCategory : AppCompatActivity(), AssetsCallback.OnClickItemAssets {
     private fun setAdapter() {
         adapterAssets = AssetsGroupAdapter()
         assets_recycler.apply {
-            layoutManager = LinearLayoutManager(this@AssetsCategory)
+            layoutManager = LinearLayoutManager(this@CategoryCreate)
             adapter = adapterAssets
         }
 
-    }
-
-    private fun isLoading() {
-        loadingDialog = DialogLoading(this)
-        loadingDialog.setCancelable(false)
-        loadingDialog.show()
     }
 
     private fun setToolbar() {
@@ -164,8 +156,14 @@ class AssetsCategory : AppCompatActivity(), AssetsCallback.OnClickItemAssets {
             finish()
         }
 
-        titleBar_tv.text = "Assets"
+        titleBar_tv.text = "Tambah Kategori"
 
+    }
+
+    private fun isLoading() {
+        loadingDialog = DialogLoading(this)
+        loadingDialog.setCancelable(false)
+        loadingDialog.show()
     }
 
     private fun isLoadingStop() {
@@ -181,7 +179,7 @@ class AssetsCategory : AppCompatActivity(), AssetsCallback.OnClickItemAssets {
     }
 
     private fun dialogInfo(title: String?, message: String?) {
-        DialogInfo(this@AssetsCategory, title.toString(), message.toString()).show()
+        DialogInfo(this@CategoryCreate, title.toString(), message.toString()).show()
     }
 
     fun isLog(message: String) {
@@ -190,7 +188,7 @@ class AssetsCategory : AppCompatActivity(), AssetsCallback.OnClickItemAssets {
 
     override fun onItemClicked(data: AssetsModel.Asset) {
 
-        Glide.with(this@AssetsCategory)
+        Glide.with(this@CategoryCreate)
                 .load(data.image_assets_url)
                 .thumbnail(0.1f)
                 .error(R.drawable.ic_broken_image)
@@ -206,12 +204,12 @@ class AssetsCategory : AppCompatActivity(), AssetsCallback.OnClickItemAssets {
         val checkData = DataPreferences.category.getString(CategoryPref.SELECTED)
         if (checkData!!.isNotEmpty()) {
             isLog("id assets : ${data.id}")
-            DataPreferences.category.saveString(CategoryPref.SELECTED, data.id.toString())
+            DataPreferences.category.saveString(CategoryPref.SELECTED, data.image_assets)
             // reffresh adapter
             adapterAssets.notifyDataSetChanged()
             adapterAssets.addAll(listData)
         } else {
-            DataPreferences.category.saveString(CategoryPref.SELECTED, data.id.toString())
+            DataPreferences.category.saveString(CategoryPref.SELECTED, data.image_assets)
         }
 
     }

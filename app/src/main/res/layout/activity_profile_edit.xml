@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    tools:context=".profile.ProfileEdit">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.8">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:orientation="vertical"
+            android:layout_margin="@dimen/_15sdp"
+            android:paddingBottom="@dimen/_50sdp">
+
+            <ImageView
+                android:id="@+id/profile_img"
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_60sdp"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
+                />
+
+            <TextView
+                android:id="@+id/change_profile_photo_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:fontFamily="@font/regular_opensans"
+                android:text="@string/change_photo_profile"
+                android:textColor="@color/text_blue"
+                android:textSize="@dimen/_13ssp" />
+
+            <!--            <View-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="@dimen/_2sdp"-->
+            <!--                android:layout_marginTop="@dimen/_10sdp"-->
+            <!--                android:layout_marginBottom="@dimen/_10sdp"-->
+            <!--                android:background="@color/line" />-->
+
+            <TextView
+                style="@style/text_title_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nama Lengkap"
+                android:textAllCaps="false" />
+
+            <EditText
+                android:id="@+id/name_ed"
+                style="@style/EditTextData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/line"
+                android:hint="Nama Lengkap Anda..." />
+
+            <TextView
+                style="@style/text_title_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nomor Telepon"
+                android:textAllCaps="false" />
+
+            <EditText
+                android:id="@+id/phone_ed"
+                style="@style/EditTextData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/line"
+                android:hint="Nomor Telephone Anda..."
+                android:inputType="number"/>
+
+            <TextView
+                style="@style/text_title_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tanggal Lahir"
+                android:textAllCaps="false" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/date_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:dropDownWidth="wrap_content"
+                    android:spinnerMode="dropdown"
+                    android:visibility="visible"
+                    android:background="@drawable/bg_date_spinner"
+                    />
+
+                <Spinner
+                    android:id="@+id/month_spinner"
+                    android:layout_width="@dimen/_120sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:dropDownWidth="wrap_content"
+                    android:spinnerMode="dropdown"
+                    android:visibility="visible"
+                    android:background="@drawable/bg_date_spinner"
+                    />
+
+                <Spinner
+                    android:id="@+id/year_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:dropDownWidth="wrap_content"
+                    android:spinnerMode="dropdown"
+                    android:visibility="visible"
+                    android:background="@drawable/bg_date_spinner"
+                    />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_2sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:background="@color/line" />
+
+            <TextView
+                style="@style/text_title_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Jenis Kelamin"
+                android:textAllCaps="false" />
+
+            <LinearLayout
+                android:id="@+id/gender_frame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:visibility="gone"
+                >
+
+                <RadioButton
+                    android:id="@+id/male_rb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/gold"
+                    android:text="Laki - Laki"
+                    android:textSize="@dimen/_12ssp" />
+
+                <RadioButton
+                    android:id="@+id/female_rb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_20sdp"
+                    android:buttonTint="@color/gold"
+                    android:text="Perempuan"
+                    android:textSize="@dimen/_12ssp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/gender_tv"
+                style="@style/text_item_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_3sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:text="Gender"
+                android:textAllCaps="false"
+                android:visibility="visible"/>
+
+            <TextView
+                style="@style/text_title_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email"
+                android:textAllCaps="false" />
+
+            <TextView
+                android:id="@+id/email_tv"
+                style="@style/text_item_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_3sdp"
+                android:text="Alamat Email"
+                android:textAllCaps="false" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <Button
+        android:id="@+id/save_btn"
+        style="@style/btn_primary"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_margin="@dimen/_5sdp"
+        android:text="Simpan" />
+
+
+</LinearLayout>

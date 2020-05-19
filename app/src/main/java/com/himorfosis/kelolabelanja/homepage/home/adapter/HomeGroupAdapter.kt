@@ -31,12 +31,12 @@ class HomeGroupAdapter : RecyclerView.Adapter<HomeGroupAdapter.ViewHolder>() {
 
         var data = listData[position]
 
-        if (data != null) {
-            Util.log(TAG, "date : " + data.date)
-            holder.day_date.text = DateSet.convertDateSpecific(data.date)
-            if (data.spend != 0) {
+        data.let {
+            Util.log(TAG, "date : " + it.date)
+            holder.day_date.text = DateSet.convertDateSpecific(it.date)
+            if (it.spend != 0) {
                 holder.spend_tv.visibility = View.VISIBLE
-                holder.spend_tv.text = "Out : " +  Util.numberFormatMoney(data.spend.toString())
+                holder.spend_tv.text = "Out : " +  Util.numberFormatMoney(it.spend.toString())
             } else {
                 holder.spend_tv.visibility = View.INVISIBLE
             }

@@ -9,11 +9,9 @@ import com.bumptech.glide.Glide
 import com.himorfosis.kelolabelanja.R
 import com.himorfosis.kelolabelanja.data_sample.CategoryData
 import com.himorfosis.kelolabelanja.financial.FinancialDetail
-import com.himorfosis.kelolabelanja.reports.model.ReportCategoryDetailsModel
 import com.himorfosis.kelolabelanja.reports.model.ReportDetailCategoryModel
 import com.himorfosis.kelolabelanja.utilities.Util
 import com.himorfosis.kelolabelanja.utilities.date.DateSet
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_report_detail.view.*
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.sdk27.coroutines.onClick
@@ -42,9 +40,11 @@ class ReportsDetailAdapter : RecyclerView.Adapter<ReportsDetailAdapter.ViewHolde
             context.startActivity(context.intentFor<FinancialDetail>(
                     "id" to data.id,
                     "nominal" to data.nominal.toString(),
-                    "title" to data.title,
+                    "id_category" to data.id_category,
                     "date" to data.date.toString(),
                     "note" to data.note,
+                    "title" to data.title,
+                    "type_finance" to data.type_finance,
                     "image" to data.image_category_url
             ))
 
@@ -61,7 +61,7 @@ class ReportsDetailAdapter : RecyclerView.Adapter<ReportsDetailAdapter.ViewHolde
         fun bindView(data: ReportDetailCategoryModel.Data) {
             val context = itemView.context
 
-            if (data.note != null) {
+            if (data.note.isEmpty() || data.note == null) {
                 name_tv.text = data.title
             } else {
                 name_tv.text = data.note

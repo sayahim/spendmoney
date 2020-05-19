@@ -18,7 +18,7 @@ import org.jetbrains.anko.intentFor
 
 class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
-    private var listData: MutableList<HomepageResponse.Data.FinancePerDay>? = ArrayList<HomepageResponse.Data.FinancePerDay>()
+    private var listData: MutableList<HomepageResponse.Data.FinancePerDay>? = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.item_home, parent, false)
@@ -77,9 +77,11 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
                         "id" to data.id,
                         "nominal" to data.nominal.toString(),
                         "title" to data.titleCategory,
-                        "date" to data.updated_at.toString(),
+                        "date" to data.date.toString(),
                         "note" to data.note,
-                        "image" to data.image_category_url
+                        "image" to data.image_category_url,
+                        "type_finance" to data.type_financial,
+                        "id_category" to data.id_category
                 ))
             }
 

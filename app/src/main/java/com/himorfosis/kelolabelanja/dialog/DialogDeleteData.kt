@@ -20,7 +20,6 @@ class DialogDeleteData(var message: String) : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
         message_dialog_tv.text = message
 
         action_btn.onClick {
@@ -36,7 +35,6 @@ class DialogDeleteData(var message: String) : DialogFragment() {
         }
 
     }
-
 
     interface DialogDeleteCallback {
         fun onAcceptClicked()

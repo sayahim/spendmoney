@@ -29,7 +29,7 @@
             android:textSize="@dimen/_14ssp"
             android:layout_marginLeft="@dimen/_50sdp"
             android:textColor="@color/text_black_primary"
-            android:fontFamily="@font/semi_bold_opensans"/>
+            android:fontFamily="@font/medium"/>
 
         <ImageView
             android:id="@+id/action_btn"

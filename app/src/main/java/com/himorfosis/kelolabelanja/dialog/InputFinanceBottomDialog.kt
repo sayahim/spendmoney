@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.himorfosis.kelolabelanja.R
 import com.himorfosis.kelolabelanja.financial.model.InputDataModel
@@ -46,8 +47,6 @@ class InputFinanceBottomDialog(context: Context): BottomSheetDialog(context) {
         window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         decimalFormat.isDecimalSeparatorAlwaysShown = true
 
-//        nominal_et?.addTextChangedListener(textWatcher)
-//        note_et?.addTextChangedListener(textWatcher)
         // setting date
         dateSelected = DateSet.getDateToday()
 
@@ -68,10 +67,13 @@ class InputFinanceBottomDialog(context: Context): BottomSheetDialog(context) {
 
             val dateDialog = DatePickerDialog(context, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
 
-                dateSelected = "$year-${monthOfYear + 1}-$dayOfMonth"
-                selected_date_tv.text = "$dayOfMonth/${monthOfYear + 1}/$year"
+                val monthPicker = monthOfYear + 1
+                val date = if (dayOfMonth < 10) "0$dayOfMonth" else dayOfMonth.toString()
+                val month = if (monthPicker < 10) "0$monthPicker" else monthPicker.toString()
 
-                Util.log(TAG, "date selected : $dateSelected")
+                dateSelected = "$year-$month-$date"
+                selected_date_tv.text = "$date/$month/$year"
+                isLog("date selected : $dateSelected")
 
             }, year, month, day)
             dateDialog.show()
@@ -144,6 +146,10 @@ class InputFinanceBottomDialog(context: Context): BottomSheetDialog(context) {
             context.toast("Harap masukkan nominal")
         }
 
+    }
+
+    private fun isLog(msg: String) {
+        Log.e(TAG, msg)
     }
 
 }

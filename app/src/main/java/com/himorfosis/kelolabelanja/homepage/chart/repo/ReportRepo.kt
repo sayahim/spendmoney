@@ -7,8 +7,6 @@ import com.himorfosis.kelolabelanja.network.config.Network
 import com.himorfosis.kelolabelanja.network.repository.BaseRepository
 import com.himorfosis.kelolabelanja.network.services.ReportsService
 import com.himorfosis.kelolabelanja.network.state.StateNetwork
-import com.himorfosis.kelolabelanja.reports.model.ReportCategoryDetailRequest
-import com.himorfosis.kelolabelanja.reports.model.ReportCategoryDetailsModel
 import com.himorfosis.kelolabelanja.reports.model.ReportDetailCategoryModel
 import com.himorfosis.kelolabelanja.utilities.Util
 import com.himorfosis.kelolabelanja.utilities.date.DateSet

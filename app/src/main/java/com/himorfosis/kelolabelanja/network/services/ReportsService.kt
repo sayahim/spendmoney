@@ -1,7 +1,6 @@
 package com.himorfosis.kelolabelanja.network.services
 
 import com.himorfosis.kelolabelanja.homepage.chart.model.ReportCategoryModel
-import com.himorfosis.kelolabelanja.reports.model.ReportCategoryDetailsModel
 import com.himorfosis.kelolabelanja.reports.model.ReportDetailCategoryModel
 import io.reactivex.Observable
 import retrofit2.http.Field

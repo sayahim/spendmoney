@@ -12,7 +12,7 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.8">
+            >
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_category"
@@ -56,19 +56,34 @@
 
             </io.supercharge.shimmerlayout.ShimmerLayout>
 
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/fab_add_category"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_gravity="bottom|center"
+                android:gravity="center"
+                android:layout_margin="@dimen/_16sdp"
+                android:text="+  Tambah"
+                android:textSize="@dimen/_14ssp"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/blue"
+                android:theme="@style/MyMaterialTheme"
+                />
+
         </FrameLayout>
 
-        <Button
-            android:id="@+id/add_new_category_btn"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
-            android:background="@color/white"
-            android:text="+ Tambah Kategori Baru"
-            android:textAllCaps="false"
-            android:textColor="@color/text_black_primary"
-            android:textSize="@dimen/_10ssp"
-            android:visibility="gone"
-            />
+<!--        <Button-->
+<!--            android:id="@+id/add_new_category_btn"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="@dimen/_40sdp"-->
+<!--            android:background="@color/white"-->
+<!--            android:text="+ Tambah Kategori Baru"-->
+<!--            android:textAllCaps="false"-->
+<!--            android:textColor="@color/text_black_primary"-->
+<!--            android:textSize="@dimen/_10ssp"-->
+<!--            android:visibility="gone"-->
+<!--            />-->
 
     </LinearLayout>
 

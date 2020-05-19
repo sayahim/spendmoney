@@ -82,8 +82,26 @@
     <string name="category_title_input_hint">Masukkan judul kategori...</string>
     <string name="category_description_input_hint">Masukkan deskripsi kategori...</string>
 
+    // profile
+    <string name="change_photo_profile">Ganti Foto Profil</string>
+    <string name="name_full">Nama Lengkap</string>
+    <string name="gender">Jenis Kelamin</string>
+    <string name="phone_number">Nomor Telepon</string>
+    <string name="date_born">Tanggal Lahir</string>
+    <string name="password">Password</string>
+    <string name="password_konf">Konfirmasi Password</string>
+    <string name="email">Email</string>
+
+    <string name="name_full_hint">Nama Lengkap Anda...</string>
+    <string name="email_hint">Email Anda...</string>
+    <string name="password_hint">Password Anda...</string>
+    <string name="password_confirm_hint">Password Konfirmasi Anda...</string>
+    <string name="male">Pria</string>
+    <string name="female">Wanita</string>
+
+
     // detail
-    <string name="note">Kategori</string>
+    <string name="note">Catatan</string>
     <string name="date">Tanggal</string>
 
 

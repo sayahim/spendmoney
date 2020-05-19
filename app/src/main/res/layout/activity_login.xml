@@ -41,19 +41,37 @@
                 android:layout_width="@dimen/_90sdp"
                 android:layout_height="@dimen/_90sdp"
                 android:layout_gravity="center"
-                android:layout_marginTop="@dimen/_30sdp"
-                android:layout_marginBottom="@dimen/_50sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginBottom="@dimen/_40sdp"
                 android:src="@mipmap/logo_app" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email"
+                android:textAllCaps="false"
+                style="@style/text_title_hint"
+                />
 
             <EditText
                 android:id="@+id/email_ed"
-                style="@style/MyEditTextStyle"
+                style="@style/EditTextBorderData"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Masukkan Email"
+                android:hint="Masukkan Email..."
                 android:inputType="textEmailAddress"
-                android:imeOptions="actionDone" />
+                android:imeOptions="actionNext"
+                android:padding="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"/>
 
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Password"
+                android:textAllCaps="false"
+                style="@style/text_title_hint"
+                />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/passinput"
@@ -69,13 +87,15 @@
 
             <EditText
                 android:id="@+id/password_ed"
-                style="@style/MyEditTextStyle"
+                style="@style/EditTextBorderData"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:hint="Masukkan Password"
+                android:hint="Masukkan Password..."
                 android:inputType="textPassword"
-                android:imeOptions="actionDone" />
+                android:imeOptions="actionDone"
+                android:padding="@dimen/_10sdp"
+                />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -109,7 +129,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_5sdp"
-                    android:fontFamily="@font/semi_bold_opensans"
+                    android:fontFamily="@font/medium"
                     android:text="Daftar disini"
                     android:textColor="@color/text_blue"
                     android:textSize="@dimen/_14ssp" />

@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.item_profile_list.view.*
 class ProfileListAdapter : RecyclerView.Adapter<ProfileListAdapter.ViewHolder>() {
 
     lateinit var onClickItem: OnClickItem
-    var listData: MutableList<ProfileListModel> = ArrayList<ProfileListModel>()
+    var listData: MutableList<ProfileListModel> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.item_profile_list, parent, false)

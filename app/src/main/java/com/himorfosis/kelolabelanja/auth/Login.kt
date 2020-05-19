@@ -1,22 +1,21 @@
 package com.himorfosis.kelolabelanja.auth
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.himorfosis.kelolabelanja.R
+import com.himorfosis.kelolabelanja.auth.model.LoginRequest
 import com.himorfosis.kelolabelanja.auth.repo.AuthViewModel
 import com.himorfosis.kelolabelanja.dialog.DialogInfo
 import com.himorfosis.kelolabelanja.dialog.DialogLoading
 import com.himorfosis.kelolabelanja.homepage.activity.HomepageActivity
 import com.himorfosis.kelolabelanja.network.config.Network
 import com.himorfosis.kelolabelanja.network.state.StateNetwork
-import com.himorfosis.kelolabelanja.auth.model.LoginResponse
+import com.himorfosis.kelolabelanja.auth.model.LoginModel
 import com.himorfosis.kelolabelanja.network.config.ConnectionDetector
 import com.himorfosis.kelolabelanja.utilities.Util
 import com.himorfosis.kelolabelanja.utilities.preferences.AccountPref
-import com.himorfosis.kelolabelanja.utilities.preferences.AppPreferences
 import com.himorfosis.kelolabelanja.utilities.preferences.DataPreferences
 import kotlinx.android.synthetic.main.activity_login.*
 import org.jetbrains.anko.intentFor
@@ -45,7 +44,7 @@ class Login : AppCompatActivity() {
                 val password = password_ed.text.toString()
 
                 if (email.isNotEmpty() && password.isNotEmpty()) {
-                    pushLogin(email, password)
+                    pushLogin(LoginRequest(email, password))
                 } else {
                     toast(getString(R.string.please_complete_data))
                 }
@@ -68,11 +67,10 @@ class Login : AppCompatActivity() {
 
     }
 
-    private fun pushLogin(email: String, password: String) {
+    private fun pushLogin(item: LoginRequest) {
 
         isLoading()
-
-        viewModel.loginPush(email, password)
+        viewModel.loginPush(item)
         viewModel.loginResponse.observe(this, Observer {
             loadingDialog.dismiss()
             when (it) {
@@ -89,26 +87,25 @@ class Login : AppCompatActivity() {
 
     }
 
-    private fun loginSuccess(response: LoginResponse) {
+    private fun loginSuccess(model: LoginModel) {
 
-        val preferences = AppPreferences(this, AccountPref.KEY)
-        preferences.saveString(AccountPref.ID, response.id)
-        preferences.saveString(AccountPref.TOKEN, response.token)
-        preferences.saveString(AccountPref.NAME, response.name)
-        preferences.saveString(AccountPref.EMAIL, response.email)
-        preferences.saveString(AccountPref.PHONE_NUMBER, response.phone_number)
-        preferences.saveString(AccountPref.IMAGE, response.image)
+        DataPreferences.account.saveString(AccountPref.ID, model.id)
+        DataPreferences.account.saveString(AccountPref.TOKEN, model.token)
+        DataPreferences.account.saveString(AccountPref.NAME, model.name)
+        DataPreferences.account.saveString(AccountPref.EMAIL, model.email)
+        DataPreferences.account.saveString(AccountPref.PHONE_NUMBER, model.phone_number)
+        DataPreferences.account.saveString(AccountPref.IMAGE, model.image_url)
+        DataPreferences.account.saveString(AccountPref.BORN, model.born)
+        DataPreferences.account.saveString(AccountPref.GENDER, model.gender)
 
         // refresh network to get token
         Network.build()
-
-        closeActivityLogin()
+        startActivity(intentFor<HomepageActivity>())
     }
 
 
     private fun closeActivityLogin() {
-        startActivity(intentFor<HomepageActivity>())
-
+        finishAffinity()
     }
 
     private fun dialogInfo(title: String?, message: String) {

@@ -20,8 +20,9 @@ object DataPreferences {
 
     fun clearAllPreferences() {
         backpressed.clear()
-        picker.clear()
+//        picker.clear()
         account.clear()
+        category.clear()
     }
 
 }

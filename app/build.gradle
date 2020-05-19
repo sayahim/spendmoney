@@ -34,10 +34,10 @@ android {
     flavorDimensions 'money-manager'
     productFlavors {
         production {
-            buildConfigField 'String', 'baseURL', '"http://192.190.0.101:8080/api/"'
+            buildConfigField 'String', 'baseURL', '"http://192.190.0.100:8080/api/"'
         }
         development {
-            buildConfigField 'String', 'baseURL', '"http://192.190.0.101:8080/api/"'
+            buildConfigField 'String', 'baseURL', '"http://192.190.0.100:8080/api/"'
         }
     }
 
@@ -47,7 +47,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'com.google.android.material:material:1.1.0-beta01'
+    implementation 'com.google.android.material:material:1.2.0-alpha01'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta2'
     implementation 'androidx.vectordrawable:vectordrawable:1.1.0'
     testImplementation 'junit:junit:4.12'

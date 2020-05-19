@@ -14,12 +14,9 @@ import kotlin.properties.Delegates
 
 class AssetsGroupAdapter : RecyclerView.Adapter<AssetsGroupAdapter.ViewHolder>() {
 
-//    private var listData: MutableList<AssetsModel> = ArrayList()
-
     var listData: List<AssetsModel> by Delegates.observable(emptyList()) { _, oldList, newList ->
         notifyChanges(oldList, newList)
     }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.item_assets_group, parent, false)
@@ -62,7 +59,6 @@ class AssetsGroupAdapter : RecyclerView.Adapter<AssetsGroupAdapter.ViewHolder>()
             }
 
             override fun getOldListSize() = oldList.size
-
             override fun getNewListSize() = newList.size
         })
         diff.dispatchUpdatesTo(this)

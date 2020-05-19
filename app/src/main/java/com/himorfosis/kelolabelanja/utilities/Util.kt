@@ -13,6 +13,7 @@ import kotlin.collections.ArrayList
 import android.widget.DatePicker
 import android.app.DatePickerDialog
 import android.view.View
+import okhttp3.RequestBody
 
 class Util {
 
@@ -27,6 +28,11 @@ class Util {
             val formatRupiah = NumberFormat.getCurrencyInstance(localeID)
             return formatRupiah.format(nominal.toDouble())
         }
+
+        fun createRequestString(data: String?): RequestBody {
+            return RequestBody.create(okhttp3.MultipartBody.FORM, data!!)
+        }
+
 
         fun convertImageDrawable(c: Context, ImageName: String): Int {
             return c.resources.getIdentifier(ImageName, "drawable", c.packageName)

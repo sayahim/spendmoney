@@ -85,7 +85,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/_10sdp"
             android:background="@drawable/rounded_blue"
-            android:fontFamily="@font/semi_bold_opensans"
+            android:fontFamily="@font/medium"
             android:paddingLeft="@dimen/_40sdp"
             android:paddingRight="@dimen/_40sdp"
             android:text="@string/save"

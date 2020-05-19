@@ -24,6 +24,7 @@ data class HomepageResponse(
                 val type_financial: String,
                 val nominal: Long,
                 val note: String,
+                val date: Long,
                 val image_category: String,
                 val image_category_url: String,
                 val titleCategory: String,

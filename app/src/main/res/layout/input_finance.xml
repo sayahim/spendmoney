@@ -6,7 +6,6 @@
     android:background="@android:color/transparent"
     android:orientation="vertical">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,7 +24,7 @@
                 android:text="Input Data"
                 android:textSize="@dimen/_10ssp"
                 android:textColor="@color/text_black"
-                android:fontFamily="@font/semi_bold_opensans"
+                android:fontFamily="@font/medium"
                 android:layout_gravity="center|left"/>
 
             <ImageView
@@ -69,13 +68,8 @@
                     android:layout_marginRight="@dimen/_40sdp"
                     android:backgroundTint="@color/transparant"
                     android:clickable="true"
-                    android:fontFamily="@font/bold_opensans"
                     android:hint="0"
-                    android:imeOptions="actionDone"
-                    android:inputType="number"
-                    android:maxLines="1"
-                    android:textColor="@color/text_black_primary"
-                    android:textSize="@dimen/_20ssp" />
+                    style="@style/EditTextNominal"/>
 
                 <LinearLayout
                     android:id="@+id/select_date_ll"
@@ -122,13 +116,10 @@
                 android:layout_margin="@dimen/_10sdp"
                 android:backgroundTint="@color/transparant"
                 android:clickable="false"
-                android:fontFamily="@font/regular_opensans"
                 android:gravity="left|top"
                 android:hint="@string/note_optional"
-                android:imeOptions="actionDone"
                 android:maxLength="50"
-                android:textColor="@color/text_black_primary"
-                android:textSize="@dimen/_12ssp" />
+                style="@style/EditTextNote"/>
 
             <TextView
                 android:id="@+id/note_length_tv"
@@ -138,10 +129,8 @@
                 android:paddingTop="@dimen/_10sdp"
                 android:paddingBottom="@dimen/_5sdp"
                 android:paddingRight="@dimen/_5sdp"
-                android:fontFamily="@font/regular_opensans"
                 android:text="0/50"
-                android:textColor="@color/text_hint"
-                android:textSize="@dimen/_10ssp" />
+                style="@style/text_hint"/>
 
         </FrameLayout>
 
@@ -151,12 +140,8 @@
             android:layout_height="@dimen/_40sdp"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/_10sdp"
-            android:background="@drawable/corner_green"
-            android:fontFamily="@font/semi_bold_opensans"
             android:text="@string/save"
-            android:textAllCaps="false"
-            android:textColor="@color/text_white"
-            android:textSize="@dimen/_14sdp" />
+            style="@style/btn_secondary"/>
 
 
     </LinearLayout>

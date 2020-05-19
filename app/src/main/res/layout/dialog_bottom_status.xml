@@ -55,7 +55,7 @@
             android:layout_height="@dimen/_45sdp"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/_10sdp"
-            android:fontFamily="@font/semi_bold_opensans"
+            android:fontFamily="@font/medium"
             android:text="@string/oke"
             style="@style/btn_primary"/>
 

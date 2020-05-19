@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.himorfosis.kelolabelanja.R
 import com.himorfosis.kelolabelanja.homepage.chart.model.ReportCategoryModel
-import com.himorfosis.kelolabelanja.reports.model.ReportsDataModel
 import com.himorfosis.kelolabelanja.utilities.Util
 import kotlinx.android.synthetic.main.item_progress_financial.view.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
@@ -89,13 +88,6 @@ class ReportsAdapter : RecyclerView.Adapter<ReportsAdapter.ViewHolder>() {
     fun addAll(posItems: List<ReportCategoryModel>) {
         for (response in posItems) {
             add(response)
-        }
-    }
-
-    fun clear() {
-        if (listData.isNotEmpty()) {
-            listData.clear()
-            notifyDataSetChanged()
         }
     }
 

@@ -46,6 +46,14 @@ interface CategoryService {
     ): Observable<CategoryCreateResponse>
 
     @FormUrlEncoded
+    @POST("category/userUpdate")
+    fun userUpdateCategory(
+            @Field("id") id: String?,
+            @Field("title") title: String?,
+            @Field("assets") assets: String?
+    ): Observable<CategoryCreateResponse>
+
+    @FormUrlEncoded
     @DELETE("category/delete")
     fun deleteCategory(
             @Field("id") id: String?

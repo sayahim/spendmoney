@@ -23,7 +23,18 @@ interface FinanceService {
             @Field("id_category") id_category: String?,
             @Field("type_financial") type_financial: String?,
             @Field("nominal") nominal: String?,
-            @Field("note") note: String?
+            @Field("note") note: String?,
+            @Field("datetime") date: String?
+    ): Observable<FinanceCreateResponse>
+
+    @FormUrlEncoded
+    @POST("financials/update")
+    fun financialsUpdate(
+            @Field("id") id_user: String?,
+            @Field("id_category") id_category: String?,
+            @Field("nominal") nominal: String?,
+            @Field("note") note: String?,
+            @Field("datetime") date: String?
     ): Observable<FinanceCreateResponse>
 
     @FormUrlEncoded

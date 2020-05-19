@@ -1,13 +1,9 @@
 package com.himorfosis.kelolabelanja.utilities.date
 
-import android.content.Context
-import android.os.Build
 import com.himorfosis.kelolabelanja.utilities.Util
 import com.himorfosis.kelolabelanja.utilities.preferences.DataPreferences
 import com.himorfosis.kelolabelanja.utilities.preferences.PickerPref
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 object DateSet {
@@ -18,16 +14,19 @@ object DateSet {
         return today.toString()
     }
 
-    fun getDateNow(): String {
-
-        val date = SimpleDateFormat("dd")
-        val today = date.format(Date())
-        return today.toString()
-    }
-
     fun getYearNow(): Int {
         val date = SimpleDateFormat("yyyy")
         return date.format(Date()).toInt()
+    }
+
+    fun getTimeNow(): String {
+        val date = SimpleDateFormat("HH:mm:ss")
+        return date.format(Date())
+    }
+
+    fun getDateTimeNow(): String {
+        val date = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        return date.format(Date())
     }
 
     fun dateMaxOnMonth(year: String?, month: String?):String {
@@ -49,6 +48,13 @@ object DateSet {
 
         val date = Date(dateTime)
         val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        return format.format(date)
+    }
+
+    fun convertTimestampDate(dateTime: Long): String {
+
+        val date = Date(dateTime)
+        val format = SimpleDateFormat("yyyy-MM-dd")
         return format.format(date)
     }
 
@@ -120,7 +126,6 @@ object DateSet {
 
             if (date == getDateToday) {
                 nameDateFinal = "Hari Ini"
-
             } else {
 
                 val cal = Calendar.getInstance()
@@ -158,8 +163,21 @@ object DateSet {
             intMonth = Integer.parseInt(month)
         }
         return monthArray[intMonth]
-
     }
 
+
+    fun selectedDate(date: String): String {
+        val setting = date.substring(date.indexOf("-") + 1)
+        return setting.substring(setting.lastIndexOf("-") + 1)
+    }
+
+    fun selectedMonth(date: String): String {
+        val dateOfMonth = date.substring(date.indexOf("-") + 1)
+        return dateOfMonth.substring(0, dateOfMonth.indexOf("-"))
+    }
+
+    fun selectedYear(date: String): String {
+        return date.substring(0, date.indexOf("-"))
+    }
 
 }

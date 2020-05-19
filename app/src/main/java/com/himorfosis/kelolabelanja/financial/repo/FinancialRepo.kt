@@ -1,6 +1,7 @@
 package com.himorfosis.kelolabelanja.financial.repo
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.himorfosis.kelolabelanja.financial.model.*
 import com.himorfosis.kelolabelanja.network.config.Network
@@ -23,7 +24,7 @@ class FinancialRepo: BaseRepository() {
         service.financialsCreate(
                         item.id_user, item.id_category,
                         item.type_financial, item.nominal,
-                        item.note)
+                        item.note, item.datetime)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io()).subscribe({
                     data.value = StateNetwork.OnSuccess(it)
@@ -35,6 +36,31 @@ class FinancialRepo: BaseRepository() {
 
         return data
     }
+
+    fun editFinance(item: FinanceUpdateModel):MutableLiveData<StateNetwork<FinanceCreateResponse>> {
+
+        isLog("id : ${item.id}")
+        isLog("category : ${item.id_category}")
+        isLog("nominal : ${item.nominal}")
+        isLog("note : ${item.note}")
+        isLog("date : ${item.datetime}")
+
+        var data = MutableLiveData<StateNetwork<FinanceCreateResponse>>()
+        service.financialsUpdate(
+                        item.id, item.id_category,
+                        item.nominal, item.note, item.datetime)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io()).subscribe({
+                    data.value = StateNetwork.OnSuccess(it)
+                }, {
+                    data.value = errorResponse(it)
+                }).let {
+                    disposable.add(it)
+                }
+
+        return data
+    }
+
 
     fun fetchFinanceUsers(item: FinanceUserFetchModel):MutableLiveData<StateNetwork<List<FinanceCreateResponse>>> {
 
@@ -69,6 +95,10 @@ class FinancialRepo: BaseRepository() {
                 }
 
         return data
+    }
+
+    private fun isLog(msg: String) {
+        Log.e("FinanceRepo", msg)
     }
 
 }

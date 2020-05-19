@@ -1,5 +1,6 @@
 package com.himorfosis.kelolabelanja.category.repo
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.himorfosis.kelolabelanja.category.model.AssetsModel
 import com.himorfosis.kelolabelanja.category.model.CategoryCreateRequest
@@ -49,7 +50,7 @@ class CategoryRepo: BaseRepository(){
         return data
     }
 
-    fun userCreateCategory(it: CategoryCreateRequest): MutableLiveData<StateNetwork<CategoryCreateResponse>> {
+    fun createCategory(it: CategoryCreateRequest): MutableLiveData<StateNetwork<CategoryCreateResponse>> {
         val data = MutableLiveData<StateNetwork<CategoryCreateResponse>>()
 
         val userId = DataPreferences.account.getString(AccountPref.ID)
@@ -67,6 +68,24 @@ class CategoryRepo: BaseRepository(){
         return data
     }
 
+    fun updateCategory(it: CategoryCreateRequest): MutableLiveData<StateNetwork<CategoryCreateResponse>> {
+        val data = MutableLiveData<StateNetwork<CategoryCreateResponse>>()
+
+        val id_category = DataPreferences.category.getString(CategoryPref.ID)
+        isLog("id : $id_category")
+        isLog("title : ${it.title}")
+        isLog("assets : ${it.assets}")
+        service.userUpdateCategory(id_category, it.title, it.assets)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io()).subscribe({
+                    data.value = StateNetwork.OnSuccess(it)
+                }, {
+                    data.value = errorResponse(it)
+                }).let {
+                    disposable.add(it)
+                }
+        return data
+    }
 
     fun assets(): MutableLiveData<StateNetwork<List<AssetsModel>>> {
         val data = MutableLiveData<StateNetwork<List<AssetsModel>>>()
@@ -80,6 +99,10 @@ class CategoryRepo: BaseRepository(){
                     disposable.add(it)
                 }
         return data
+    }
+
+    private fun isLog(msg: String) {
+        Log.e("CategoryRepo", msg)
     }
 
 }

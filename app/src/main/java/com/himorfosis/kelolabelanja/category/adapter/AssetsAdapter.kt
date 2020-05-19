@@ -37,10 +37,9 @@ class AssetsAdapter : RecyclerView.Adapter<AssetsAdapter.ViewHolder>() {
 
         item.let { data ->
 
-            isLog("name : ${data.id_assets_category}")
             // check selected
             if (getIdSelected!!.isNotEmpty()) {
-                if (getIdSelected == data.id.toString()) {
+                if (getIdSelected == data.image_assets) {
                     holder.assets_img.setBackgroundResource(R.drawable.circle_gold)
                 } else {
                     holder.assets_img.setBackgroundResource(R.drawable.border_line)
